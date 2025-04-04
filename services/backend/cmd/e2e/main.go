@@ -13,13 +13,12 @@ func main() {
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	mux := &http.ServeMux{}
+	port := mustGetPort()
 
 	frontendHandler := handler.NewHandler(handler.Configuration{
 		Files: frontend.Files,
 	})
 	frontendHandler.Register(mux, "")
-
-	port := "8080"
 
 	go func() {
 		err := http.ListenAndServe(":"+port, mux)
@@ -33,4 +32,12 @@ func main() {
 
 	c := make(chan os.Signal, 1)
 	<-c
+}
+
+func mustGetPort() string {
+	if port := os.Getenv("MSL_BACKEND_PORT"); port != "" {
+		return port
+	}
+
+	return "8080"
 }
