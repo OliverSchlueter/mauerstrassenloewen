@@ -10,6 +10,9 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
 func main() {
@@ -44,7 +47,17 @@ func main() {
 	slog.Info(fmt.Sprintf("Started server on http://localhost:%s\n", port))
 
 	c := make(chan os.Signal, 1)
-	<-c
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	switch <-c {
+	case os.Interrupt:
+		slog.Info("Received interrupt signal, shutting down...")
+		if err := containers.StopAllContainers(ctx); err != nil {
+			slog.Error("Could not stop containers", slog.Any("err", err.Error()))
+		}
+
+		time.Sleep(5 * time.Second)
+		slog.Info("All test containers stopped")
+	}
 }
 
 func mustGetPort() string {
