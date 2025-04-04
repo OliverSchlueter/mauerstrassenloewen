@@ -17,6 +17,17 @@ jobs:
         with:
           go-version: 1.23
 
+      - name: Create fake frontend files
+        run: |
+          mkdir -p frontend/dist
+          echo "<h1>Hello World!</h1>" > frontend/dist/index.html
+
+      - name: Copy frontend files
+        run: |
+          cd scripts
+          chmod +x copy-frontend-files.sh
+          ./copy-frontend-files.sh
+
       - name: Build project
         run: cd services/backend && go build cmd/e2e/main.go
 
@@ -31,6 +42,17 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.23
+
+      - name: Create fake frontend files
+        run: |
+          mkdir frontend/dist
+          echo "<h1>Hello World!</h1>" > frontend/dist/index.html
+
+      - name: Copy frontend files
+        run: |
+          cd scripts
+          chmod +x copy-frontend-files.sh
+          ./copy-frontend-files.sh
 
       - name: Install dependencies
         run: cd services/backend && go mod tidy
