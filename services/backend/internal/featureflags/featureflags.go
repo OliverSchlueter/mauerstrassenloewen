@@ -22,6 +22,10 @@ func (ff FeatureFlag) Disable() {
 	flags[ff] = false
 }
 
+func (ff FeatureFlag) Reset() {
+	delete(flags, ff)
+}
+
 func (ff FeatureFlag) IsEnabled() bool {
 	value := os.Getenv(string(ff))
 	if value == "true" {
