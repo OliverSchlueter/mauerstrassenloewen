@@ -6,6 +6,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
 	"log/slog"
 	"net/http"
 	"os"
@@ -33,7 +34,7 @@ func main() {
 	frontendHandler.Register(mux, "")
 
 	go func() {
-		err := http.ListenAndServe(":"+port, mux)
+		err := http.ListenAndServe(":"+port, middleware.Logging(middleware.RecoveryMiddleware(mux)))
 		if err != nil {
 			slog.Error("Could not start server", slog.Any("port", port), slog.Any("err", err.Error()))
 			os.Exit(1)
