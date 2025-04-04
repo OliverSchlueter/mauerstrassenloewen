@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
+	"github.com/OliverSchlueter/mauerstrassenloewen/libs/containers"
 	"log/slog"
 	"net/http"
 	"os"
@@ -12,6 +14,16 @@ import (
 func main() {
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 
+	ctx := context.Background()
+
+	// Start test containers
+	_, err := containers.StartMongoDB(ctx)
+	if err != nil {
+		slog.Error("Could not start MongoDB", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+
+	// Start the web server
 	mux := &http.ServeMux{}
 	port := mustGetPort()
 
