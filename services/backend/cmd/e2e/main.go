@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
 	"log/slog"
@@ -10,8 +11,6 @@ import (
 
 func main() {
 	slog.SetLogLoggerLevel(slog.LevelDebug)
-
-	slog.Info("Hallo Welt")
 
 	mux := &http.ServeMux{}
 
@@ -29,6 +28,8 @@ func main() {
 			os.Exit(1)
 		}
 	}()
+
+	slog.Info(fmt.Sprintf("Started server on http://localhost:%s\n", port))
 
 	c := make(chan os.Signal, 1)
 	<-c
