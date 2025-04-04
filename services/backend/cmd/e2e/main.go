@@ -3,10 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
 	"log/slog"
 	"net/http"
@@ -40,10 +39,10 @@ func main() {
 	mux := &http.ServeMux{}
 	port := mustGetPort()
 
-	frontendHandler := handler.NewHandler(handler.Configuration{
-		Files: frontend.Files,
-	})
-	frontendHandler.Register(mux, "")
+	appCfg := backend.Configuration{
+		Mux: mux,
+	}
+	backend.Start(appCfg)
 
 	go func() {
 		err := http.ListenAndServe(":"+port, middleware.Logging(middleware.RecoveryMiddleware(mux)))
