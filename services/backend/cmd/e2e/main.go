@@ -17,7 +17,6 @@ import (
 
 func main() {
 	featureflags.EndToEndEnvironment.Enable()
-
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	ctx := context.Background()
@@ -37,7 +36,7 @@ func main() {
 
 	// Start the web server
 	mux := &http.ServeMux{}
-	port := mustGetPort()
+	port := "8080"
 
 	appCfg := backend.Configuration{
 		Mux: mux,
@@ -66,12 +65,4 @@ func main() {
 		time.Sleep(5 * time.Second)
 		slog.Info("All test containers stopped")
 	}
-}
-
-func mustGetPort() string {
-	if port := os.Getenv("MSL_BACKEND_PORT"); port != "" {
-		return port
-	}
-
-	return "8080"
 }
