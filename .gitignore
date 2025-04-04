@@ -1,1 +1,4 @@
 .idea
+
+frontend/dist/
+services/backend/internal/frontend/assets
