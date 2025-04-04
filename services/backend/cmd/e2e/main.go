@@ -27,6 +27,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	_, err = containers.StartNATS(ctx)
+	if err != nil {
+		slog.Error("Could not start NATS", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+
 	// Start the web server
 	mux := &http.ServeMux{}
 	port := mustGetPort()
