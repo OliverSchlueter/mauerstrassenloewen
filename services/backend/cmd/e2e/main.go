@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
@@ -16,6 +17,8 @@ import (
 )
 
 func main() {
+	featureflags.EndToEndEnvironment.Enable()
+
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 
 	ctx := context.Background()
