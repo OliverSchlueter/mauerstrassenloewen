@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
-	"github.com/OliverSchlueter/mauerstrassenloewen/libs/containers"
 	"log/slog"
 	"net/http"
 	"os"
