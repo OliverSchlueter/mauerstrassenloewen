@@ -8,7 +8,7 @@ var (
 	EndToEndEnvironment FeatureFlag = register("FEATURE_FLAGS_END_TO_END_ENVIRONMENT")
 )
 
-var flags map[FeatureFlag]bool
+var flags = make(map[FeatureFlag]bool)
 
 func register(flag string) FeatureFlag {
 	return FeatureFlag(flag)
