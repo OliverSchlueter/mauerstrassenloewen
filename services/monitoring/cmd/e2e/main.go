@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/backend"
+	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
 	"os"
@@ -10,7 +11,14 @@ import (
 )
 
 func main() {
-	slog.SetLogLoggerLevel(slog.LevelDebug)
+	// Setup logging
+	lokiService := sloki.NewService(sloki.Configuration{
+		URL:          "http://localhost:3100/loki/api/v1/push",
+		Service:      "monitoring",
+		ConsoleLevel: slog.LevelDebug,
+		LokiLevel:    slog.LevelInfo,
+	})
+	slog.SetDefault(slog.New(lokiService))
 
 	// Setup NATS
 	natsClient, err := nats.Connect(nats.DefaultURL)
