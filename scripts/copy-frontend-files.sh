@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cp -r ../frontend/dist/* ../services/backend/internal/frontend/assets
+cp -r ../frontend/dist/frontend/browser/* ../services/backend/internal/frontend/assets
