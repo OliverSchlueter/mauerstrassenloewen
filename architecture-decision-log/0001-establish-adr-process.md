@@ -48,7 +48,7 @@ This ensures that resources are easily identifiable and associated with the corr
 ## Consequences
 
 - Every time an architecture decision is made, there is a need to create a new ADR entry in the log
-- Every architecture decision must be reviewed and accepted by all team members
+- Every architecture decision must be reviewed and approved by all team members in order to be accepted
 - We do not modify existing ADR entries, but we can add new ones to clarify or update previous decisions
 
 ## References
