@@ -1,0 +1,39 @@
+name: Test AI Worker
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build AI worker
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.24.2
+
+      - name: Build project
+        run: cd services/ai-worker && go build cmd/e2e/main.go
+
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.24.2
+
+      - name: Install dependencies
+        run: cd services/ai-worker && go mod tidy
+
+      - name: Run tests
+        run: cd services/ai-worker && go test ./... -v
