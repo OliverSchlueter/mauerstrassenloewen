@@ -29,14 +29,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	natsPort, err := containers.StartNATS(ctx)
+	_, err = containers.StartNATS(ctx)
 	if err != nil {
 		slog.Error("Could not start NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
 
 	// Setup NATS
-	natsClient, err := nats.Connect("nats://127.0.0.1:" + natsPort)
+	natsClient, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
 		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
