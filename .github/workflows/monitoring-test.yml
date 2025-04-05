@@ -1,4 +1,4 @@
-name: Test AI Worker
+name: Test monitoring
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
           go-version: 1.24.2
 
       - name: Build project
-        run: cd services/ai-worker && go build cmd/e2e/main.go
+        run: cd services/monitoring && go build cmd/e2e/main.go
 
   test:
     name: Run tests
@@ -32,7 +32,7 @@ jobs:
           go-version: 1.24.2
 
       - name: Install dependencies
-        run: cd services/ai-worker && go mod tidy
+        run: cd services/monitoring && go mod tidy
 
       - name: Run tests
-        run: cd services/ai-worker && go test ./... -v
+        run: cd services/monitoring && go test ./... -v
