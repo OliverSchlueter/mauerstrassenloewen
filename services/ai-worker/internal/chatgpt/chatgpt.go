@@ -3,15 +3,17 @@ package chatgpt
 import (
 	"context"
 	"fmt"
-	openai "github.com/sashabaranov/go-openai"
+	"github.com/sashabaranov/go-openai"
 )
 
 type Client struct {
 	client *openai.Client
+	model  string
 }
 
 type Configuration struct {
 	AuthToken string
+	Model     string
 }
 
 func NewClient(cfg Configuration) *Client {
@@ -19,12 +21,13 @@ func NewClient(cfg Configuration) *Client {
 
 	return &Client{
 		client: client,
+		model:  cfg.Model,
 	}
 }
 
 func (c *Client) Chat(ctx context.Context, message string) (string, error) {
 	req := openai.ChatCompletionRequest{
-		Model: openai.GPT4o,
+		Model: c.model,
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleUser,

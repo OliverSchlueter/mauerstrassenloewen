@@ -11,10 +11,10 @@ import (
 func main() {
 	slog.SetLogLoggerLevel(slog.LevelDebug)
 	ctx := context.Background()
-	askOpenAI(ctx)
+	askChatGPT(ctx)
 }
 
-func askOpenAI(ctx context.Context) {
+func askChatGPT(ctx context.Context) {
 	client := chatgpt.NewClient(chatgpt.Configuration{
 		AuthToken: "",
 	})
