@@ -21,7 +21,7 @@ func NewHandler(cfg Configuration) *Handler {
 }
 
 func (h *Handler) Register() error {
-	if _, err := h.nats.Subscribe(">", h.handleMessage); err != nil {
+	if _, err := h.nats.Subscribe("msl.>", h.handleMessage); err != nil {
 		return fmt.Errorf("could not subscribe to NATS: %w", err)
 	}
 
