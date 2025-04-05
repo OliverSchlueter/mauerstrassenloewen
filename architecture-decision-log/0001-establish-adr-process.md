@@ -1,7 +1,5 @@
 # 1. Establish ADR Process
 
----
-
 Date: 2025-04-05
 
 Status: proposed
