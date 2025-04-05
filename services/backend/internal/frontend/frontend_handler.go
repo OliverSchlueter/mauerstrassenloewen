@@ -9,6 +9,35 @@ import (
 	"strings"
 )
 
+var contentTypes = map[string]string{
+	".css":   "text/css",
+	".js":    "application/javascript",
+	".html":  "text/html",
+	".json":  "application/json",
+	".png":   "image/png",
+	".jpg":   "image/jpeg",
+	".gif":   "image/gif",
+	".svg":   "image/svg+xml",
+	".woff":  "font/woff",
+	".woff2": "font/woff2",
+	".ttf":   "font/ttf",
+	".ico":   "image/x-icon",
+	".webp":  "image/webp",
+	".mp4":   "video/mp4",
+	".mp3":   "audio/mpeg",
+	".ogg":   "audio/ogg",
+	".wav":   "audio/wav",
+	".pdf":   "application/pdf",
+	".xml":   "application/xml",
+	".zip":   "application/zip",
+	".tar":   "application/x-tar",
+	".gz":    "application/gzip",
+	".xz":    "application/x-xz",
+	".rar":   "application/x-rar-compressed",
+	".csv":   "text/csv",
+	".txt":   "text/plain",
+}
+
 type Handler struct {
 	files embed.FS
 }
@@ -60,8 +89,11 @@ func (h *Handler) handleAssets(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if strings.HasSuffix(path, ".js") {
-		w.Header().Set("Content-Type", "application/javascript")
+	for ext, ct := range contentTypes {
+		if strings.HasSuffix(path, ext) {
+			w.Header().Set("Content-Type", ct)
+			break
+		}
 	}
 
 	if !featureflags.EndToEndEnvironment.IsEnabled() {
