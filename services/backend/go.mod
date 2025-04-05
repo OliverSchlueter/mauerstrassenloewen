@@ -1,6 +1,6 @@
 module github.com/OliverSchlueter/mauerstrassenloewen/backend
 
-go 1.23.3
+go 1.24.2
 
 require github.com/testcontainers/testcontainers-go v0.36.0
 
