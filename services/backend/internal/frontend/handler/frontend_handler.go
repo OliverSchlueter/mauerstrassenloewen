@@ -2,6 +2,7 @@ package handler
 
 import (
 	"embed"
+	"fmt"
 	"log/slog"
 	"net/http"
 )
@@ -21,7 +22,16 @@ func NewHandler(cfg Configuration) *Handler {
 }
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
+	pages := []string{
+		"login",
+		"register",
+	}
+
 	mux.HandleFunc(prefix+"/{$}", h.handleIndex)
+	for _, p := range pages {
+		mux.HandleFunc(fmt.Sprintf("%s/%s", prefix, p), h.handleIndex)
+	}
+
 	mux.HandleFunc(prefix+"/", h.handleAssets)
 }
 
