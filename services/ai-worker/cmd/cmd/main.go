@@ -5,12 +5,24 @@ import (
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatgpt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/nats-io/nats.go"
 	"log/slog"
+	"os"
 )
 
 func main() {
 	slog.SetLogLoggerLevel(slog.LevelDebug)
+
 	ctx := context.Background()
+
+	// Setup NATS
+	natsClient, err := nats.Connect(nats.DefaultURL)
+	if err != nil {
+		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+	_ = natsClient.Publish("foo", []byte("bar"))
+
 	askChatGPT(ctx)
 }
 
