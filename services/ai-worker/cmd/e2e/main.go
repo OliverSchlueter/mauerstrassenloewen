@@ -5,13 +5,21 @@ import (
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatgpt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
 	"os"
 )
 
 func main() {
-	slog.SetLogLoggerLevel(slog.LevelDebug)
+	// Setup logging
+	lokiService := sloki.NewService(sloki.Configuration{
+		URL:          "http://localhost:3100/loki/api/v1/push",
+		Service:      "ai-worker",
+		ConsoleLevel: slog.LevelDebug,
+		LokiLevel:    slog.LevelInfo,
+	})
+	slog.SetDefault(slog.New(lokiService))
 
 	ctx := context.Background()
 
@@ -23,7 +31,7 @@ func main() {
 	}
 	_ = natsClient.Publish("foo", []byte("bar"))
 
-	askChatGPT(ctx)
+	askOllama(ctx)
 }
 
 func askChatGPT(ctx context.Context) {
