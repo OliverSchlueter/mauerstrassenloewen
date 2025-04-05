@@ -44,8 +44,8 @@ jobs:
 
       - name: Create fake frontend files
         run: |
-          mkdir frontend/dist
-          echo "<h1>Hello World!</h1>" > frontend/dist/index.html
+          mkdir -p frontend/dist/frontend/browser
+          echo "<h1>Hello World!</h1>" > frontend/dist/frontend/browser/index.html
 
       - name: Copy frontend files
         run: |
