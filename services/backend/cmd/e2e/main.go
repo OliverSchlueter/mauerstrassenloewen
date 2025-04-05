@@ -7,6 +7,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
+	"github.com/nats-io/nats.go"
 	"log/slog"
 	"net/http"
 	"os"
@@ -28,11 +29,19 @@ func main() {
 		os.Exit(1)
 	}
 
-	_, err = containers.StartNATS(ctx)
+	natsPort, err := containers.StartNATS(ctx)
 	if err != nil {
 		slog.Error("Could not start NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
+
+	// Setup NATS
+	natsClient, err := nats.Connect("nats://127.0.0.1:" + natsPort)
+	if err != nil {
+		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+	_ = natsClient.Publish("foo", []byte("bar"))
 
 	// Start the web server
 	mux := &http.ServeMux{}
