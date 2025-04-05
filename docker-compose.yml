@@ -40,6 +40,15 @@ services:
       msl_network:
     restart: always
 
+  msl_monitoring:
+    image: oliverschlueter/msl_monitoring:latest
+    container_name: msl_monitoring
+    depends_on:
+      - msl_backend
+    networks:
+      msl_network:
+    restart: always
+
 networks:
   msl_network:
     driver: bridge
