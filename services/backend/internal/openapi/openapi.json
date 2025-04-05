@@ -1,0 +1,14 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Mauerstrassenloewen API",
+    "description": "API for interacting with the Mauerstrassenloewen application.",
+    "version": "0.0.1"
+  },
+  "servers": [
+  ],
+  "paths": {
+  },
+  "components": {
+  }
+}
