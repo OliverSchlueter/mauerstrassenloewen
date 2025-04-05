@@ -24,7 +24,7 @@ This ADR aims to establish a structured approach to record architecture decision
 ## Decision
 
 All architectural decisions must be recorded using Markdown-based ADRs following the template defined in this document.
-ADRs will be stored in the `architecture-decision-log/` directory.
+ADRs will be stored in the `architecture-decision-log/` directory of the GitHub repository, to take advantage of the history and versioning features of Git.
 Filenames will use the format: `XXXX-title.md`, where `XXXX` is a zero-padded index (e.g., `0001-record-architecture-decisions.md`).
 Related resources will go into `architecture-decision-log/resources/`, prefixed with the ADR number.
 
