@@ -41,3 +41,10 @@ Viele Menschen scheitern beim Einstieg ins Trading – zu komplex, zu emotional,
 - **Datenbanken:** MongoDB, Redis
 - **Datenquellen:** Yahoo Finance, TradingView API
 - **KI-Anbindung:** Modelle von OpenAI und ollama
+
+---
+
+## Architektur
+
+Alle unsere architektur-relevanten Entscheidungen sind in Form von Architecture-Decision-Records (ADRs) dokumentiert. Diese sind im Ordner `/architecture-decision-log/` zu finden.
+
