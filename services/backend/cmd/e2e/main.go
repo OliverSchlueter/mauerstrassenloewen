@@ -36,12 +36,11 @@ func main() {
 	}
 
 	// Setup NATS
-	natsClient, err := nats.Connect(nats.DefaultURL)
+	_, err = nats.Connect(nats.DefaultURL)
 	if err != nil {
 		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
-	_ = natsClient.Publish("foo", []byte("bar"))
 
 	// Start the web server
 	mux := &http.ServeMux{}
@@ -62,9 +61,10 @@ func main() {
 
 	slog.Info(fmt.Sprintf("Started server on http://localhost:%s\n", port))
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	switch <-c {
+	// Wait for a signal to exit
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
+	switch <-sig {
 	case os.Interrupt:
 		slog.Info("Received interrupt signal, shutting down...")
 		if err := containers.StopAllContainers(ctx); err != nil {
