@@ -6,6 +6,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
 	"log/slog"
 	"net/http"
+	"strings"
 )
 
 type Handler struct {
@@ -57,6 +58,10 @@ func (h *Handler) handleAssets(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
+	}
+
+	if strings.HasSuffix(path, ".js") {
+		w.Header().Set("Content-Type", "application/javascript")
 	}
 
 	if !featureflags.EndToEndEnvironment.IsEnabled() {
