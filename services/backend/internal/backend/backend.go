@@ -2,7 +2,6 @@ package backend
 
 import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend/handler"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/openapi"
 	"net/http"
 )
@@ -14,7 +13,7 @@ type Configuration struct {
 }
 
 func Start(cfg Configuration) {
-	frontendHandler := handler.NewHandler(handler.Configuration{
+	frontendHandler := frontend.NewHandler(frontend.Configuration{
 		Files: frontend.Files,
 	})
 	frontendHandler.Register(cfg.Mux, "")
