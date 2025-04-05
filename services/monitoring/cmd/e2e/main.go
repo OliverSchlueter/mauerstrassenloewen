@@ -1,9 +1,12 @@
 package main
 
 import (
+	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/backend"
 	"github.com/nats-io/nats.go"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -15,5 +18,15 @@ func main() {
 		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
-	_ = natsClient.Publish("foo", []byte("bar"))
+
+	backend.Start(backend.Configuration{
+		NatsClient: natsClient,
+	})
+
+	slog.Info("NATS logging handler started")
+
+	// Wait for a signal to exit
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	<-sig
 }
