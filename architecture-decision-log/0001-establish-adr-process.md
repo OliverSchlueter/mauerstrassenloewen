@@ -1,10 +1,10 @@
-# 1. Record architecture decisions
+# 1. Establish ADR Process
 
 ---
 
 Date: 2025-04-05
 
-Status: draft
+Status: proposed
 
 Author: Oliver Schlüter
 
@@ -16,15 +16,17 @@ This ADR aims to establish a structured approach to record architecture decision
 
 **Alternatives:**
 
-* Use the architecture decision record framework for documenting architecture decisions
-* Do not record architecture decisions: This would lead to a lack of documentation and understanding of the system's architecture
-* Use a different format for recording decisions: This could lead to inconsistencies and difficulties in finding relevant information
-* Use a different location for the ADRL: This could lead to confusion and make it harder for stakeholders to find the information they need
+- Do not record architecture decisions
+- Use a different format (e.g., plain text, PDF)
+- Store ADRs in a different location
+- Use a different framework or template for ADRs
 
 ## Decision
 
-Whenever an architecture decision is made, we will store it in an architecture decision record log in the `architecture-decision-log` directory of the project repository. 
-The content will be in Markdown format and follows this naming convention: `XXXX-new-decision.md`. Example: `0001-record-architecture-decisions.md`.
+All architectural decisions must be recorded using Markdown-based ADRs following the template defined in this document.
+ADRs will be stored in the `architecture-decision-log/` directory.
+Filenames will use the format: `XXXX-title.md`, where `XXXX` is a zero-padded index (e.g., `0001-record-architecture-decisions.md`).
+Related resources will go into `architecture-decision-log/resources/`, prefixed with the ADR number.
 
 Each ADR must include the following sections:
 
@@ -40,12 +42,12 @@ This ensures that resources are easily identifiable and associated with the corr
 
 ## Consequences
 
-* Every time an architecture decision is made, there is a need to create a new ADR entry in the log
-* Every architecture decision must be reviewed and accepted by all team members
-* We do not modify existing ADR entries, but we can add new ones to clarify or update previous decisions
+- Every time an architecture decision is made, there is a need to create a new ADR entry in the log
+- Every architecture decision must be reviewed and accepted by all team members
+- We do not modify existing ADR entries, but we can add new ones to clarify or update previous decisions
 
 ## References
 
-* [The Architecture Decision Record Homepage](https://adr.github.io/)
-* [Basics of Architecture Decision Records (ADR)](https://medium.com/@nolomokgosi/basics-of-architecture-decision-records-adr-e09e00c636c6)
+- [The Architecture Decision Record Homepage](https://adr.github.io/)
+- [Basics of Architecture Decision Records (ADR)](https://medium.com/@nolomokgosi/basics-of-architecture-decision-records-adr-e09e00c636c6)
 
