@@ -15,13 +15,27 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=mongo_pass
     restart: always
 
+  msl_nats:
+    image: nats:latest
+    container_name: msl_nats
+    networks:
+      msl_network:
+        aliases:
+          - nats
+    volumes:
+      - msl_nats_data:/data/db
+    ports:
+      - "4222:4222"
+    restart: always
+
   msl_backend:
     image: oliverschlueter/msl-backend:latest
     container_name: msl_backend
     ports:
       - "8080:8080"
     depends_on:
-      - mongo
+      - msl_mongo
+      - msl_nats
     environment:
       # Credentials
       - MONGODB_HOST=mongo
@@ -35,6 +49,7 @@ services:
     image: oliverschlueter/msl-ai-worker:latest
     container_name: msl_ai-worker
     depends_on:
+      - msl_nats
       - msl_backend
     networks:
       msl_network:
@@ -44,7 +59,8 @@ services:
     image: oliverschlueter/msl_monitoring:latest
     container_name: msl_monitoring
     depends_on:
-      - msl_backend
+      - msl_mongo
+      - msl_nats
     networks:
       msl_network:
     restart: always
@@ -55,3 +71,4 @@ networks:
 
 volumes:
   msl_mongo_data:
+  msl_nats_data:
