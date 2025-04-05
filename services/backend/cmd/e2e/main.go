@@ -69,7 +69,7 @@ func main() {
 	go func() {
 		err := http.ListenAndServe(":"+port, middleware.Logging(middleware.RecoveryMiddleware(mux)))
 		if err != nil {
-			slog.Error("Could not start server", slog.Any("port", port), slog.Any("err", err.Error()))
+			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
 			os.Exit(1)
 		}
 	}()

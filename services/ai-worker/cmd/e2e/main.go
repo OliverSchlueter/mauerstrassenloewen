@@ -41,7 +41,7 @@ func askChatGPT(ctx context.Context) {
 
 	resp, err := client.Chat(ctx, "Schreibe ein Gedicht in 100 Wörtern über Softwareentwicklung.")
 	if err != nil {
-		slog.Error("failed to get response", "error", err)
+		slog.Error("failed to get response", slog.Any("err", err.Error()))
 		return
 	}
 
@@ -54,13 +54,13 @@ func askOllama(ctx context.Context) {
 		Model:   "deepseek-r1:14b",
 	})
 	if err != nil {
-		slog.Error("failed to create ollama client", "error", err)
+		slog.Error("failed to create ollama client", slog.Any("err", err.Error()))
 		return
 	}
 
 	resp, err := client.Chat(ctx, "Schreibe ein Gedicht in 100 Wörtern über Softwareentwicklung.")
 	if err != nil {
-		slog.Error("failed to get response", "error", err)
+		slog.Error("failed to get response", slog.Any("err", err.Error()))
 		return
 	}
 	fmt.Println(resp)

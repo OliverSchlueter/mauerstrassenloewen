@@ -58,7 +58,7 @@ func (c *Client) Chat(ctx context.Context, message string) (string, error) {
 		return nil
 	}
 
-	slog.Info("Generating response", "model", c.model, "prompt", message)
+	slog.Info("Generating response", slog.String("model", c.model))
 
 	err := c.ollama.Generate(ctx, &req, respFunc)
 	if err != nil {

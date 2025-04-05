@@ -34,7 +34,7 @@ func StartMongoDB(ctx context.Context) (string, error) {
 		return "", fmt.Errorf("could not get port: %w", err)
 	}
 
-	slog.Info("Started MongoDB test container", slog.Any("port", port))
+	slog.Info("Started MongoDB test container on port: " + port.Port())
 
 	return port.Port(), nil
 }
@@ -71,7 +71,7 @@ func StartNATS(ctx context.Context) (string, error) {
 		return "", fmt.Errorf("could not get port: %w", err)
 	}
 
-	slog.Info("Started NATS test container", slog.Any("port", port))
+	slog.Info("Started NATS test container on port: " + port.Port())
 
 	return port.Port(), nil
 }
