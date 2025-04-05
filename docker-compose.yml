@@ -1,5 +1,5 @@
 services:
-  mongo:
+  msl_mongo:
     image: mongo:latest
     container_name: msl_mongo
     networks:
@@ -15,7 +15,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=mongo_pass
     restart: always
 
-  fa_backend:
+  msl_backend:
     image: oliverschlueter/msl-backend:latest
     container_name: msl_backend
     ports:
@@ -29,8 +29,15 @@ services:
       - MONGODB_PASSWORD=mongo_pass
     networks:
       msl_network:
-    volumes:
-      - msl_backend_data:/app/data
+    restart: always
+
+  msl_ai-worker:
+    image: oliverschlueter/msl-ai-worker:latest
+    container_name: msl_ai-worker
+    depends_on:
+      - msl_backend
+    networks:
+      msl_network:
     restart: always
 
 networks:
@@ -39,4 +46,3 @@ networks:
 
 volumes:
   msl_mongo_data:
-  msl_backend_data:
