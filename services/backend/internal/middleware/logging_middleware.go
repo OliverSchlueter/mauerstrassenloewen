@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
 	"log/slog"
 	"net/http"
 	"time"
@@ -29,10 +28,6 @@ func Logging(next http.Handler) http.HandlerFunc {
 		next.ServeHTTP(sr, r)
 
 		elapsedTime := time.Since(startTime)
-
-		if sr.Status < 400 && !featureflags.EndToEndEnvironment.IsEnabled() {
-			return
-		}
 
 		slog.Info(
 			"Request received",

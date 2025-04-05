@@ -7,6 +7,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
+	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
 	"net/http"
@@ -17,10 +18,24 @@ import (
 )
 
 func main() {
-	featureflags.EndToEndEnvironment.Enable()
-	slog.SetLogLoggerLevel(slog.LevelDebug)
-
 	ctx := context.Background()
+
+	// Setup feature flags
+	featureflags.EndToEndEnvironment.Enable()
+	featureflags.SendLogsToLoki.Enable()
+
+	// Setup logging
+	lokiLevel := slog.LevelInfo
+	if !featureflags.SendLogsToLoki.IsEnabled() {
+		lokiLevel = 100_0000
+	}
+	lokiService := sloki.NewService(sloki.Configuration{
+		URL:          "http://localhost:3100/loki/api/v1/push",
+		Service:      "backend",
+		ConsoleLevel: slog.LevelDebug,
+		LokiLevel:    lokiLevel,
+	})
+	slog.SetDefault(slog.New(lokiService))
 
 	// Start test containers
 	_, err := containers.StartMongoDB(ctx)

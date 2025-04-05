@@ -5,7 +5,8 @@ import "os"
 type FeatureFlag string
 
 var (
-	EndToEndEnvironment FeatureFlag = register("FEATURE_FLAGS_END_TO_END_ENVIRONMENT")
+	EndToEndEnvironment = register("FEATURE_FLAGS_END_TO_END_ENVIRONMENT")
+	SendLogsToLoki      = register("FEATURE_FLAGS_SEND_LOGS_TO_LOKI")
 )
 
 var flags = make(map[FeatureFlag]bool)
