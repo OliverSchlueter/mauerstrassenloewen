@@ -1,0 +1,79 @@
+services:
+  msl_mongo:
+    image: mongo:latest
+    container_name: msl_mongo
+    networks:
+      msl_network:
+        aliases:
+          - mongo
+    ports:
+      - "27017:27017"
+
+  msl_redis:
+    image: redis:latest
+    container_name: msl_redis
+    networks:
+      msl_network:
+        aliases:
+          - redis
+    ports:
+      - "6379:6379"
+
+  msl_minio:
+    image: minio/minio:latest
+    container_name: msl_minio
+    networks:
+      msl_network:
+        aliases:
+          - minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+
+  msl_questdb:
+    image: questdb/questdb:latest
+    container_name: msl_questdb
+    networks:
+      msl_network:
+        aliases:
+          - questdb
+    ports:
+        - "9005:9000"
+        - "9009:9009"
+        - "8812:8812"
+        - "9003:9003"
+
+  msl_qdrant:
+    image: qdrant/qdrant:latest
+    container_name: msl_qdrant
+    networks:
+      msl_network:
+        aliases:
+          - qdrant
+    ports:
+        - "6333:6333"
+
+  msl_vault:
+    image: hashicorp/vault:latest
+    container_name: msl_vault
+    networks:
+      msl_network:
+        aliases:
+          - vault
+    ports:
+      - "8200:8200"
+
+  msl_nats:
+    image: nats:latest
+    container_name: msl_nats
+    networks:
+      msl_network:
+        aliases:
+          - nats
+    ports:
+      - "4222:4222"
+
+networks:
+  msl_network:
+    driver: bridge
