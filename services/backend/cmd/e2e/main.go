@@ -52,7 +52,7 @@ func main() {
 	}
 
 	// Setup NATS
-	_, err = nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
 		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
@@ -63,7 +63,8 @@ func main() {
 	port := "8080"
 
 	appCfg := backend.Configuration{
-		Mux: mux,
+		Mux:  mux,
+		Nats: nc,
 	}
 	backend.Start(appCfg)
 
