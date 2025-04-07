@@ -7,6 +7,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware/metricshandler"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
@@ -22,7 +23,7 @@ func main() {
 
 	// Setup feature flags
 	featureflags.EndToEndEnvironment.Enable()
-	//featureflags.SendLogsToLoki.Enable()
+	featureflags.SendLogsToLoki.Enable()
 
 	// Setup logging
 	lokiLevel := slog.LevelInfo
@@ -65,6 +66,9 @@ func main() {
 		Mux: mux,
 	}
 	backend.Start(appCfg)
+
+	metricshandler.Register(mux, "")
+	middleware.RegisterPrometheusHttpLogging()
 
 	go func() {
 		err := http.ListenAndServe(":"+port, middleware.Logging(middleware.RecoveryMiddleware(mux)))
