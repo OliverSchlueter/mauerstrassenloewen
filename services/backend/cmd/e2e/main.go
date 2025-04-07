@@ -23,7 +23,7 @@ func main() {
 
 	// Setup feature flags
 	featureflags.EndToEndEnvironment.Enable()
-	featureflags.SendLogsToLoki.Enable()
+	//featureflags.SendLogsToLoki.Enable()
 
 	// Setup logging
 	lokiLevel := slog.LevelInfo
