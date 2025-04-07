@@ -4,6 +4,7 @@ go 1.24.2
 
 require (
 	github.com/OliverSchlueter/sloki v0.0.1
+	github.com/google/uuid v1.6.0
 	github.com/nats-io/nats.go v1.41.0
 	github.com/ollama/ollama v0.6.4
 	github.com/sashabaranov/go-openai v1.38.1

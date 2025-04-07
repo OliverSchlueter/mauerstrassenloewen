@@ -1,14 +1,14 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatgpt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -22,35 +22,15 @@ func main() {
 	})
 	slog.SetDefault(slog.New(lokiService))
 
-	ctx := context.Background()
-
 	// Setup NATS
-	natsClient, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
 		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
-	_ = natsClient.Publish("foo", []byte("bar"))
 
-	askOllama(ctx)
-}
-
-func askChatGPT(ctx context.Context) {
-	client := chatgpt.NewClient(chatgpt.Configuration{
-		AuthToken: "",
-	})
-
-	resp, err := client.Chat(ctx, "Schreibe ein Gedicht in 100 Wörtern über Softwareentwicklung.")
-	if err != nil {
-		slog.Error("failed to get response", slog.Any("err", err.Error()))
-		return
-	}
-
-	fmt.Println(resp)
-}
-
-func askOllama(ctx context.Context) {
-	client, err := ollama.NewClient(ollama.Configuration{
+	// Setup ollama client
+	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL: "http://localhost:11434",
 		Model:   "deepseek-r1:14b",
 	})
@@ -59,10 +39,17 @@ func askOllama(ctx context.Context) {
 		return
 	}
 
-	resp, err := client.Chat(ctx, "Schreibe ein Gedicht in 100 Wörtern über Softwareentwicklung.")
-	if err != nil {
-		slog.Error("failed to get response", slog.Any("err", err.Error()))
+	chatbotService := chatbot.NewService(chatbot.Configuration{
+		Nats:   nc,
+		Ollama: oc,
+	})
+	if err := chatbotService.Register(); err != nil {
+		slog.Error("failed to register chatbot service", slog.Any("err", err.Error()))
 		return
 	}
-	fmt.Println(resp)
+
+	// Wait for a signal to exit
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	<-sig
 }
