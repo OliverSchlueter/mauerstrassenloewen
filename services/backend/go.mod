@@ -10,6 +10,7 @@ require (
 	github.com/nats-io/nats.go v1.41.0
 	github.com/prometheus/client_golang v1.21.1
 	github.com/testcontainers/testcontainers-go v0.36.0
+	common v0.0.0
 )
 
 require (
@@ -72,3 +73,5 @@ require (
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace common => ../common

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware/metricshandler"
 	"github.com/OliverSchlueter/sloki/sloki"
@@ -22,13 +22,13 @@ func main() {
 	ctx := context.Background()
 
 	// Setup feature flags
-	featureflags.EndToEndEnvironment.Enable()
-	//featureflags.StartTestContainers.Enable()
-	//featureflags.SendLogsToLoki.Enable()
+	fflags.EndToEndEnvironment.Enable()
+	//fflags.StartTestContainers.Enable()
+	//fflags.SendLogsToLoki.Enable()
 
 	// Setup logging
 	lokiLevel := slog.LevelInfo
-	if !featureflags.SendLogsToLoki.IsEnabled() {
+	if !fflags.SendLogsToLoki.IsEnabled() {
 		lokiLevel = 100_0000
 	}
 	lokiService := sloki.NewService(sloki.Configuration{
@@ -40,7 +40,7 @@ func main() {
 	slog.SetDefault(slog.New(lokiService))
 
 	// Start test containers
-	if featureflags.StartTestContainers.IsEnabled() {
+	if fflags.StartTestContainers.IsEnabled() {
 		_, err := containers.StartMongoDB(ctx)
 		if err != nil {
 			slog.Error("Could not start MongoDB", slog.Any("err", err.Error()))
@@ -90,7 +90,7 @@ func main() {
 	switch <-sig {
 	case os.Interrupt:
 		slog.Info("Received interrupt signal, shutting down...")
-		if featureflags.StartTestContainers.IsEnabled() {
+		if fflags.StartTestContainers.IsEnabled() {
 			if err := containers.StopAllContainers(ctx); err != nil {
 				slog.Error("Could not stop containers", slog.Any("err", err.Error()))
 			}

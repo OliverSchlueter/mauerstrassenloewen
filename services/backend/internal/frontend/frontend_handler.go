@@ -3,7 +3,7 @@ package frontend
 import (
 	"embed"
 	"fmt"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -74,7 +74,7 @@ func (h *Handler) handleIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !featureflags.EndToEndEnvironment.IsEnabled() {
+	if !fflags.EndToEndEnvironment.IsEnabled() {
 		w.Header().Set("Cache-Control", "max-age=3600")
 	}
 	w.Write(file)
@@ -96,7 +96,7 @@ func (h *Handler) handleAssets(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if !featureflags.EndToEndEnvironment.IsEnabled() {
+	if !fflags.EndToEndEnvironment.IsEnabled() {
 		w.Header().Set("Cache-Control", "max-age=3600")
 	}
 	w.Write(file)

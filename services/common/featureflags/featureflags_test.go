@@ -6,7 +6,7 @@ import (
 )
 
 func TestFeatureFlag_Enable(t *testing.T) {
-	flag := register("TEST_FEATURE_FLAG")
+	flag := Register("TEST_FEATURE_FLAG")
 	flag.Enable()
 
 	if !flag.IsEnabled() {
@@ -15,7 +15,7 @@ func TestFeatureFlag_Enable(t *testing.T) {
 }
 
 func TestFeatureFlag_Disable(t *testing.T) {
-	flag := register("TEST_FEATURE_FLAG")
+	flag := Register("TEST_FEATURE_FLAG")
 	flag.Enable()
 	flag.Disable()
 
@@ -25,7 +25,7 @@ func TestFeatureFlag_Disable(t *testing.T) {
 }
 
 func TestFeatureFlag_Reset(t *testing.T) {
-	flag := register("TEST_FEATURE_FLAG")
+	flag := Register("TEST_FEATURE_FLAG")
 	flag.Enable()
 	flag.Reset()
 
@@ -35,7 +35,7 @@ func TestFeatureFlag_Reset(t *testing.T) {
 }
 
 func TestFeatureFlag_IsEnabled(t *testing.T) {
-	flag := register("TEST_FEATURE_FLAG")
+	flag := Register("TEST_FEATURE_FLAG")
 	err := os.Setenv("TEST_FEATURE_FLAG", "true")
 	if err != nil {
 		t.Fatalf("Failed to set environment variable: %v", err)

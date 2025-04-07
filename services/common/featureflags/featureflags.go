@@ -4,15 +4,9 @@ import "os"
 
 type FeatureFlag string
 
-var (
-	EndToEndEnvironment = register("FEATURE_FLAGS_END_TO_END_ENVIRONMENT")
-	StartTestContainers = register("FEATURE_FLAGS_START_TEST_CONTAINERS")
-	SendLogsToLoki      = register("FEATURE_FLAGS_SEND_LOGS_TO_LOKI")
-)
-
 var flags = make(map[FeatureFlag]bool)
 
-func register(flag string) FeatureFlag {
+func Register(flag string) FeatureFlag {
 	return FeatureFlag(flag)
 }
 

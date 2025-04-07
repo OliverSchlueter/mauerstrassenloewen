@@ -2,7 +2,7 @@ package openapi
 
 import (
 	"github.com/MarceloPetrucio/go-scalar-api-reference"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/featureflags"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
 	"log/slog"
 	"net/http"
 )
@@ -21,7 +21,7 @@ func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 
 func (h *Handler) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	if !featureflags.EndToEndEnvironment.IsEnabled() {
+	if !fflags.EndToEndEnvironment.IsEnabled() {
 		w.Header().Set("Cache-Control", "max-age=86400") // 24h
 	}
 	w.WriteHeader(http.StatusOK)
@@ -43,7 +43,7 @@ func (h *Handler) handleScalar(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "text/html")
-	if !featureflags.EndToEndEnvironment.IsEnabled() {
+	if !fflags.EndToEndEnvironment.IsEnabled() {
 		w.Header().Set("Cache-Control", "max-age=86400") // 24h
 	}
 	w.WriteHeader(http.StatusOK)
