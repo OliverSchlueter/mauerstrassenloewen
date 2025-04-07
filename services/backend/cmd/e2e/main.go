@@ -23,6 +23,7 @@ func main() {
 
 	// Setup feature flags
 	featureflags.EndToEndEnvironment.Enable()
+	//featureflags.StartTestContainers.Enable()
 	//featureflags.SendLogsToLoki.Enable()
 
 	// Setup logging
@@ -39,16 +40,18 @@ func main() {
 	slog.SetDefault(slog.New(lokiService))
 
 	// Start test containers
-	_, err := containers.StartMongoDB(ctx)
-	if err != nil {
-		slog.Error("Could not start MongoDB", slog.Any("err", err.Error()))
-		os.Exit(1)
-	}
+	if featureflags.StartTestContainers.IsEnabled() {
+		_, err := containers.StartMongoDB(ctx)
+		if err != nil {
+			slog.Error("Could not start MongoDB", slog.Any("err", err.Error()))
+			os.Exit(1)
+		}
 
-	_, err = containers.StartNATS(ctx)
-	if err != nil {
-		slog.Error("Could not start NATS", slog.Any("err", err.Error()))
-		os.Exit(1)
+		_, err = containers.StartNATS(ctx)
+		if err != nil {
+			slog.Error("Could not start NATS", slog.Any("err", err.Error()))
+			os.Exit(1)
+		}
 	}
 
 	// Setup NATS
