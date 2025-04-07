@@ -25,12 +25,12 @@ func (h *Handler) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "max-age=86400") // 24h
 	}
 	w.WriteHeader(http.StatusOK)
-	w.Write(OpenApiSpec)
+	w.Write(SpecContent)
 }
 
 func (h *Handler) handleScalar(w http.ResponseWriter, r *http.Request) {
 	htmlContent, err := scalar.ApiReferenceHTML(&scalar.Options{
-		SpecContent: string(OpenApiSpec),
+		SpecContent: string(SpecContent),
 		CustomOptions: scalar.CustomOptions{
 			PageTitle: "Mauerstrassenloewen API",
 		},
