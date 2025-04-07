@@ -10,6 +10,9 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware/metricshandler"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
 	"log/slog"
 	"net/http"
 	"os"
@@ -61,13 +64,27 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Setup MongoDB
+	mc, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		slog.Error("Could not connect to MongoDB", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+	err = mc.Ping(ctx, readpref.Primary())
+	if err != nil {
+		slog.Error("Could not ping MongoDB", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+	mdb := mc.Database("mauerstrassenloewen")
+
 	// Start the web server
 	mux := &http.ServeMux{}
 	port := "8080"
 
 	appCfg := backend.Configuration{
-		Mux:  mux,
-		Nats: nc,
+		Mux:     mux,
+		Nats:    nc,
+		MongoDB: mdb,
 	}
 	backend.Start(appCfg)
 

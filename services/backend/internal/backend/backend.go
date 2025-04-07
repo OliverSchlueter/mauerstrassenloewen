@@ -6,14 +6,16 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/openapi"
 	"github.com/nats-io/nats.go"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 	"net/http"
 )
 
 const apiPrefix = "/api/v1"
 
 type Configuration struct {
-	Mux  *http.ServeMux
-	Nats *nats.Conn
+	Mux     *http.ServeMux
+	Nats    *nats.Conn
+	MongoDB *mongo.Database
 }
 
 func Start(cfg Configuration) {

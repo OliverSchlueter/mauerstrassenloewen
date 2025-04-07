@@ -1,14 +1,14 @@
 services:
-#  msl_mongo:
-#    image: mongo:latest
-#    container_name: msl_mongo
-#    networks:
-#      msl_network:
-#        aliases:
-#          - mongo
-#    ports:
-#      - "27017:27017"
-#
+  msl_mongo:
+    image: mongo:latest
+    container_name: msl_mongo
+    networks:
+      msl_network:
+        aliases:
+          - mongo
+    ports:
+      - "27017:27017"
+
 #  msl_redis:
 #    image: redis:latest
 #    container_name: msl_redis
