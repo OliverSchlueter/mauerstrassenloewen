@@ -1,0 +1,55 @@
+openapi: 3.1.1
+info:
+  title: Mauerstrassenloewen API
+  description: API for interacting with the Mauerstrassenloewen platform.
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /api/v1/chatbot/simple-prompt:
+    post:
+      summary: Simple prompt
+      description: Send a simple prompt to the chatbot and receive a response.
+      tags:
+        - Chatbot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePromptRequest'
+      responses:
+        '200':
+          description: Job result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimplePromptJob'
+        '400':
+          description: Bad request
+        '405':
+          description: Method not allowed
+        '415':
+          description: Unnupported media type
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    SimplePromptRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          example: What are the top 10 tech stocks?
+      required:
+        - message
+    SimplePromptJob:
+      type: object
+      properties:
+        job_id:
+          type: string
+          example: 52434ef7-cdb5-4267-9e8b-86eba4e03780
+        result:
+          type: string
+          example: 'The top 10 tech stocks are: ...'
