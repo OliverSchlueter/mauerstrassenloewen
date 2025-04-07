@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
@@ -12,13 +13,19 @@ import (
 )
 
 func main() {
+	fflags.EndToEndEnvironment.Enable()
+	//fflags.SendLogsToLoki.Enable()
+
 	// Setup logging
+	lokiLevel := slog.LevelInfo
+	if !fflags.SendLogsToLoki.IsEnabled() {
+		lokiLevel = 100_0000
+	}
 	lokiService := sloki.NewService(sloki.Configuration{
 		URL:          "http://localhost:3100/loki/api/v1/push",
-		Service:      "ai-worker",
+		Service:      "backend",
 		ConsoleLevel: slog.LevelDebug,
-		//LokiLevel:    slog.LevelInfo,
-		LokiLevel: 100_0000,
+		LokiLevel:    lokiLevel,
 	})
 	slog.SetDefault(slog.New(lokiService))
 
@@ -47,6 +54,8 @@ func main() {
 		slog.Error("failed to register chatbot service", slog.Any("err", err.Error()))
 		return
 	}
+
+	slog.Info("AI worker started")
 
 	// Wait for a signal to exit
 	sig := make(chan os.Signal, 1)
