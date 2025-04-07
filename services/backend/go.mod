@@ -3,6 +3,7 @@ module github.com/OliverSchlueter/mauerstrassenloewen/backend
 go 1.24.2
 
 require (
+	github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2efe0e06
 	github.com/OliverSchlueter/sloki v0.0.1
 	github.com/docker/docker v28.0.4+incompatible
 	github.com/docker/go-connections v0.5.0
@@ -56,7 +57,6 @@ require (
 	go.opentelemetry.io/otel v1.35.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.35.0 // indirect
 	go.opentelemetry.io/otel/metric v1.35.0 // indirect
-	go.opentelemetry.io/otel/sdk v1.35.0 // indirect
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
