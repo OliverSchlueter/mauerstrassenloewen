@@ -23,7 +23,7 @@ func NewHandler(config Configuration) *Handler {
 }
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
-	mux.HandleFunc(prefix+"/simple-prompt", h.handleSimplePrompt)
+	mux.HandleFunc(prefix+"/chatbot/simple-prompt", h.handleSimplePrompt)
 }
 
 func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
