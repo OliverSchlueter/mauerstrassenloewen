@@ -25,6 +25,10 @@ func (h *Handler) Register() error {
 		return fmt.Errorf("could not subscribe to NATS: %w", err)
 	}
 
+	if _, err := h.nats.Subscribe("_INBOX.>", h.handleMessage); err != nil {
+		return fmt.Errorf("could not subscribe to NATS: %w", err)
+	}
+
 	return nil
 }
 
