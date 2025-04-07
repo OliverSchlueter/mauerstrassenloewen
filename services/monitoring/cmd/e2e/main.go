@@ -16,7 +16,8 @@ func main() {
 		URL:          "http://localhost:3100/loki/api/v1/push",
 		Service:      "monitoring",
 		ConsoleLevel: slog.LevelDebug,
-		LokiLevel:    slog.LevelInfo,
+		//LokiLevel:    slog.LevelInfo,
+		LokiLevel: 100_0000,
 	})
 	slog.SetDefault(slog.New(lokiService))
 
