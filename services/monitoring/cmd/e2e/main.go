@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/backend"
+	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/fflags"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
@@ -11,13 +12,19 @@ import (
 )
 
 func main() {
+	fflags.EndToEndEnvironment.Enable()
+	//fflags.SendLogsToLoki.Enable()
+
 	// Setup logging
+	lokiLevel := slog.LevelInfo
+	if !fflags.SendLogsToLoki.IsEnabled() {
+		lokiLevel = 100_0000
+	}
 	lokiService := sloki.NewService(sloki.Configuration{
 		URL:          "http://localhost:3100/loki/api/v1/push",
-		Service:      "monitoring",
+		Service:      "backend",
 		ConsoleLevel: slog.LevelDebug,
-		//LokiLevel:    slog.LevelInfo,
-		LokiLevel: 100_0000,
+		LokiLevel:    lokiLevel,
 	})
 	slog.SetDefault(slog.New(lokiService))
 
