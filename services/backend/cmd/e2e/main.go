@@ -76,7 +76,7 @@ func main() {
 		slog.Error("Could not ping MongoDB", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
-	mdb := mc.Database("mauerstrassenloewen")
+	mdb := mc.Database("msl_backend")
 
 	// Start the web server
 	mux := &http.ServeMux{}
