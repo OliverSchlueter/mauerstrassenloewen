@@ -7,7 +7,7 @@
 > You can find the original version [here](adr-001.md).
 
 **Datum:** 05.04.2025  
-**Status:** Vorgeschlagen  
+**Status:** In Arbeit  
 **Autor:** Oliver Schlüter
 
 ## Problemstellung
