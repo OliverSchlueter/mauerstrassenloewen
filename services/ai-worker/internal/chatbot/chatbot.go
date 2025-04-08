@@ -1,6 +1,7 @@
 package chatbot
 
 import (
+	"common/natsdto"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -35,7 +36,7 @@ func (s *Service) Register() error {
 }
 
 func (s *Service) handleSimplePromptHandler(msg *nats.Msg) {
-	var req SimplePromptRequest
+	var req natsdto.SimplePromptRequest
 	if err := json.Unmarshal(msg.Data, &req); err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to unmarshal request: %v", err)))
 		return
@@ -47,7 +48,7 @@ func (s *Service) handleSimplePromptHandler(msg *nats.Msg) {
 		return
 	}
 
-	resp := SimplePromptJob{
+	resp := natsdto.SimplePromptJob{
 		JobID:  uuid.New().String(),
 		Result: output,
 	}

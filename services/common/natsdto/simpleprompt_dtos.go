@@ -1,4 +1,4 @@
-package chatbot
+package natsdto
 
 type SystemMessage string
 

@@ -1,6 +1,7 @@
 package chatbot
 
 import (
+	"common/natsdto"
 	"encoding/json"
 	"fmt"
 	"github.com/nats-io/nats.go"
@@ -22,8 +23,8 @@ func NewService(config Configuration) *Service {
 }
 
 // NewPromptRequest creates a new prompt request for the chatbot and returns the job.
-func (s *Service) NewPromptRequest(userMsg string, systemMsg SystemMessage) (*SimplePromptJob, error) {
-	req := SimplePromptRequest{
+func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessage) (*natsdto.SimplePromptJob, error) {
+	req := natsdto.SimplePromptRequest{
 		UserMsg:   userMsg,
 		SystemMsg: systemMsg,
 	}
@@ -38,7 +39,7 @@ func (s *Service) NewPromptRequest(userMsg string, systemMsg SystemMessage) (*Si
 		return nil, fmt.Errorf("could not send request: %w", err)
 	}
 
-	var resp SimplePromptJob
+	var resp natsdto.SimplePromptJob
 	if err := json.Unmarshal(cmd.Data, &resp); err != nil {
 		return nil, fmt.Errorf("could not unmarshal response: %w", err)
 	}
