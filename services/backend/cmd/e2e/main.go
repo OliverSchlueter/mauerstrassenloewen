@@ -9,6 +9,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware/metricshandler"
 	"github.com/OliverSchlueter/sloki/sloki"
+	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -92,7 +93,13 @@ func main() {
 	middleware.RegisterPrometheusHttpLogging()
 
 	go func() {
-		err := http.ListenAndServe(":"+port, middleware.Logging(authMiddleware(middleware.RecoveryMiddleware(mux))))
+		chain := alice.New(
+			middleware.Logging,
+			authMiddleware,
+			middleware.RecoveryMiddleware,
+		).Then(mux)
+
+		err := http.ListenAndServe(":"+port, chain)
 		if err != nil {
 			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
 			os.Exit(1)

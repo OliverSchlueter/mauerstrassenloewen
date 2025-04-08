@@ -32,8 +32,8 @@ func RegisterPrometheusHttpLogging() {
 	prometheus.MustRegister(RequestCount)
 }
 
-func Logging(next http.Handler) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func Logging(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
 
 		sr := &StatusRecorder{
@@ -59,5 +59,5 @@ func Logging(next http.Handler) http.HandlerFunc {
 			strconv.Itoa(sr.Status),
 			strconv.FormatInt(elapsedTime.Milliseconds(), 10),
 		).Inc()
-	}
+	})
 }

@@ -8,6 +8,7 @@ require (
 	github.com/OliverSchlueter/sloki v0.0.1
 	github.com/docker/docker v28.0.4+incompatible
 	github.com/docker/go-connections v0.5.0
+	github.com/justinas/alice v1.2.0
 	github.com/nats-io/nats.go v1.41.0
 	github.com/prometheus/client_golang v1.21.1
 	github.com/testcontainers/testcontainers-go v0.36.0
