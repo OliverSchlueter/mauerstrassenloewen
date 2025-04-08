@@ -3,7 +3,7 @@ package authentication
 import (
 	"errors"
 	"net/http"
-	"slices"
+	"strings"
 )
 
 const (
@@ -14,20 +14,18 @@ var (
 	ErrMissingAuthToken = errors.New("missing auth token")
 )
 
-func (s *Store) Middleware(next http.Handler, excluded []string) http.Handler {
+func (s *Store) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
-		if slices.Contains(excluded, path) {
+		if !strings.HasPrefix(path, "/api") {
 			next.ServeHTTP(w, r)
 			return
 		}
 
 		token, err := getAuthTokenFromHeader(&r.Header)
 		if err != nil {
-			if r.Method != http.MethodOptions {
-				http.Error(w, err.Error(), http.StatusUnauthorized)
-				return
-			}
+			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			return
 		}
 
 		if !s.IsAuthTokenValid(token) {

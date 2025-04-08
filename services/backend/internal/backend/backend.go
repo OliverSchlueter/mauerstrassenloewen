@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	ch "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot/handler"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
@@ -18,7 +19,7 @@ type Configuration struct {
 	MongoDB *mongo.Database
 }
 
-func Start(cfg Configuration) {
+func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handler) {
 	frontendHandler := frontend.NewHandler(frontend.Configuration{
 		Files: frontend.Files,
 	})
@@ -34,4 +35,10 @@ func Start(cfg Configuration) {
 		Service: chatbotService,
 	})
 	chatbotHandler.Register(cfg.Mux, apiPrefix)
+
+	authStore := authentication.NewStore(authentication.StoreConfiguration{
+		GlobalToken: "GlobalToken",
+	})
+
+	return authStore.Middleware
 }

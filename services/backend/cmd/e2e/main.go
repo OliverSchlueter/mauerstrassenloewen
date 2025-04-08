@@ -86,13 +86,13 @@ func main() {
 		Nats:    nc,
 		MongoDB: mdb,
 	}
-	backend.Start(appCfg)
+	authMiddleware := backend.Start(appCfg)
 
 	metricshandler.Register(mux, "")
 	middleware.RegisterPrometheusHttpLogging()
 
 	go func() {
-		err := http.ListenAndServe(":"+port, middleware.Logging(middleware.RecoveryMiddleware(mux)))
+		err := http.ListenAndServe(":"+port, middleware.Logging(authMiddleware(middleware.RecoveryMiddleware(mux))))
 		if err != nil {
 			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
 			os.Exit(1)

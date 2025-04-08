@@ -4,14 +4,14 @@ type Store struct {
 	globalToken string
 }
 
-type Configuration struct {
+type StoreConfiguration struct {
 	GlobalToken string
 }
 
-func NewStore(cfg *Configuration) (*Store, error) {
+func NewStore(cfg StoreConfiguration) *Store {
 	return &Store{
 		globalToken: cfg.GlobalToken,
-	}, nil
+	}
 }
 
 func (s *Store) IsAuthTokenValid(token string) bool {
