@@ -2,12 +2,16 @@ package main
 
 import (
 	"common/middleware"
+	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/fflags"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
 	"log/slog"
 	"net/http"
 	"os"
@@ -33,18 +37,32 @@ func main() {
 	slog.SetDefault(slog.New(lokiService))
 
 	// Setup NATS
-	natsClient, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
 		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
 
+	// Setup MongoDB
+	mc, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
+	if err != nil {
+		slog.Error("Could not connect to MongoDB", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+	err = mc.Ping(context.Background(), readpref.Primary())
+	if err != nil {
+		slog.Error("Could not ping MongoDB", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+	mdb := mc.Database("msl_simulation")
+
 	mux := http.NewServeMux()
 	port := "8080"
 
 	backend.Start(backend.Configuration{
-		Mux:  mux,
-		Nats: natsClient,
+		Mux:   mux,
+		Nats:  nc,
+		Mongo: mdb,
 	})
 
 	go func() {

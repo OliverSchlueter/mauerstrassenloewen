@@ -10,7 +10,6 @@ require (
 	github.com/docker/go-connections v0.5.0
 	github.com/justinas/alice v1.2.0
 	github.com/nats-io/nats.go v1.41.0
-	github.com/prometheus/client_golang v1.21.1
 	github.com/testcontainers/testcontainers-go v0.36.0
 	go.mongodb.org/mongo-driver/v2 v2.1.0
 )
@@ -54,9 +53,10 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
+	github.com/prometheus/client_golang v1.22.0 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
-	github.com/prometheus/common v0.62.0 // indirect
-	github.com/prometheus/procfs v0.15.1 // indirect
+	github.com/prometheus/common v0.63.0 // indirect
+	github.com/prometheus/procfs v0.16.0 // indirect
 	github.com/shirou/gopsutil/v4 v4.25.3 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/stretchr/testify v1.10.0 // indirect
