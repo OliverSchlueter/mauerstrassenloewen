@@ -12,6 +12,7 @@ import (
 )
 
 const apiPrefix = "/api/v1"
+const frontendPrefix = ""
 
 type Configuration struct {
 	Mux     *http.ServeMux
@@ -23,10 +24,10 @@ func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handl
 	frontendHandler := frontend.NewHandler(frontend.Configuration{
 		Files: frontend.Files,
 	})
-	frontendHandler.Register(cfg.Mux, "")
+	frontendHandler.Register(cfg.Mux, frontendPrefix)
 
 	openApiHandler := openapi.NewHandler()
-	openApiHandler.Register(cfg.Mux, apiPrefix)
+	openApiHandler.Register(cfg.Mux, frontendPrefix)
 
 	chatbotService := chatbot.NewService(chatbot.Configuration{
 		Nats: cfg.Nats,
