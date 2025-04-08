@@ -1,13 +1,13 @@
 package main
 
 import (
+	"common/middleware"
+	"common/middleware/metricshandler"
 	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/middleware/metricshandler"
 	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
