@@ -2,8 +2,8 @@ package simulation
 
 type Database interface {
 	GetSimulationByID(id string) (*Simulation, error)
-	CreateSimulation(simulation *Simulation) error
-	UpdateSimulation(simulation *Simulation) error
+	CreateSimulation(sim *Simulation) error
+	UpdateSimulation(sim *Simulation) error
 	DeleteSimulation(id string) error
 }
 
@@ -25,12 +25,12 @@ func (s *Store) GetSimulation(id string) (*Simulation, error) {
 	return s.db.GetSimulationByID(id)
 }
 
-func (s *Store) CreateSimulation(simulation *Simulation) error {
-	return s.db.CreateSimulation(simulation)
+func (s *Store) CreateSimulation(sim *Simulation) error {
+	return s.db.CreateSimulation(sim)
 }
 
-func (s *Store) UpdateSimulation(simulation *Simulation) error {
-	return s.db.UpdateSimulation(simulation)
+func (s *Store) UpdateSimulation(sim *Simulation) error {
+	return s.db.UpdateSimulation(sim)
 }
 
 func (s *Store) DeleteSimulation(id string) error {
