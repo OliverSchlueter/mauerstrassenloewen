@@ -7,8 +7,10 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/fflags"
 	"github.com/OliverSchlueter/sloki/sloki"
+	"github.com/go-pg/pg/v10"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
+	"github.com/questdb/go-questdb-client/v3"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
@@ -56,13 +58,38 @@ func main() {
 	}
 	mdb := mc.Database("msl_simulation")
 
+	// Setup QuestDB
+	qdbQ := pg.Connect(&pg.Options{
+		Addr:     "localhost:8812",
+		User:     "admin",
+		Password: "quest",
+	})
+	err = qdbQ.Ping(context.Background())
+	if err != nil {
+		slog.Error("Could not ping QuestDB Query client", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+
+	qdbI, err := questdb.NewLineSender(
+		context.Background(),
+		questdb.WithHttp(),
+		questdb.WithAddress("localhost:9005"),
+		questdb.WithBasicAuth("admin", "quest"),
+	)
+	if err != nil {
+		slog.Error("Could not connect to QuestDB ingestion client", slog.Any("err", err.Error()))
+		os.Exit(1)
+	}
+
 	mux := http.NewServeMux()
 	port := "8080"
 
 	backend.Start(backend.Configuration{
-		Mux:   mux,
-		Nats:  nc,
-		Mongo: mdb,
+		Mux:              mux,
+		Nats:             nc,
+		Mongo:            mdb,
+		QuestDBIngestion: &qdbI,
+		QuestDBQuery:     qdbQ,
 	})
 
 	go func() {
