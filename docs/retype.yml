@@ -13,9 +13,6 @@ links:
   - text: GitHub
     icon: mark-github
     link: https://github.com/OliverSchlueter/mauerstrassenloewen
-  - text: Blog
-    icon: rss
-    link: /blog
 footer:
   copyright: "&copy; Copyright {{ year }}. All rights reserved."
   links:
@@ -25,6 +22,3 @@ footer:
     - text: GitHub
       icon: mark-github
       link: https://github.com/OliverSchlueter/mauerstrassenloewen
-    - text: Blog
-      icon: rss
-      link: /blog
