@@ -4,6 +4,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	ch "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot/handler"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/docs"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/openapi"
 	"github.com/nats-io/nats.go"
@@ -28,6 +29,11 @@ func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handl
 
 	openApiHandler := openapi.NewHandler()
 	openApiHandler.Register(cfg.Mux, frontendPrefix)
+
+	docsHandler := docs.NewHandler(docs.Configuration{
+		Files: docs.Files,
+	})
+	docsHandler.Register(cfg.Mux)
 
 	chatbotService := chatbot.NewService(chatbot.Configuration{
 		Nats: cfg.Nats,
