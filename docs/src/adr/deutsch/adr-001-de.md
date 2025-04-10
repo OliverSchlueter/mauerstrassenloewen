@@ -4,7 +4,7 @@
 > Translated from the original English version using AI.
 > The translation may not be perfect, but it should convey the same meaning and intent as the original text.
 > Please refer to the original English version for the most accurate information.
-> You can find the original version [here](adr-001.md).
+> You can find the original version [here](../english/adr-001.md).
 
 **Datum:** 05.04.2025  
 **Status:** In Arbeit  
