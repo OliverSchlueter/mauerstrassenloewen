@@ -27,7 +27,7 @@ Dieses ADR (Architecture Decision Record) soll einen strukturierten Ansatz zur D
 
 Alle Architekturentscheidungen müssen mithilfe von Markdown-basierten ADRs dokumentiert werden, die dem in diesem Dokument definierten Template folgen.  
 ADRs werden im Verzeichnis `docs/src/adr/` des GitHub-Repositories gespeichert, um die Vorteile von Git-Historie und -Versionierung zu nutzen.  
-Dateinamen folgen dem Format: `XXXX-titel.md`, wobei `XXXX` ein vierstellig mit Nullen aufgefüllter Index ist (z.B. `adr-0001.md`).  
+Dateinamen folgen dem Format: `adr-XXXX.md`, wobei `XXXX` ein vierstellig mit Nullen aufgefüllter Index ist (z.B. `adr-0001.md`).  
 
 **Jedes ADR muss folgende Abschnitte enthalten:**
 
