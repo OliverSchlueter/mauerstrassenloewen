@@ -21,6 +21,11 @@ jobs:
           mkdir -p frontend/dist/frontend/browser
           echo "<h1>Hello World!</h1>" > frontend/dist/frontend/browser/index.html
 
+      - name: Create fake docs files
+        run: |
+          mkdir -p docs/.retype
+          echo "<h1>Hello World!</h1>" > docs/.retype/index.html
+
       - name: Copy frontend files
         run: |
           cd scripts
@@ -46,6 +51,11 @@ jobs:
         run: |
           mkdir -p frontend/dist/frontend/browser
           echo "<h1>Hello World!</h1>" > frontend/dist/frontend/browser/index.html
+
+      - name: Create fake docs files
+        run: |
+          mkdir -p docs/.retype
+          echo "<h1>Hello World!</h1>" > docs/.retype/index.html
 
       - name: Copy frontend files
         run: |
