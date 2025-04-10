@@ -26,9 +26,8 @@ Dieses ADR (Architecture Decision Record) soll einen strukturierten Ansatz zur D
 ## Entscheidung
 
 Alle Architekturentscheidungen müssen mithilfe von Markdown-basierten ADRs dokumentiert werden, die dem in diesem Dokument definierten Template folgen.  
-ADRs werden im Verzeichnis `architecture-decision-log/` des GitHub-Repositories gespeichert, um die Vorteile von Git-Historie und -Versionierung zu nutzen.  
-Dateinamen folgen dem Format: `XXXX-titel.md`, wobei `XXXX` ein vierstellig mit Nullen aufgefüllter Index ist (z.B. `0001-architekturentscheidungen-dokumentieren.md`).  
-Zugehörige Ressourcen werden im Verzeichnis `architecture-decision-log/resources/` gespeichert und mit der ADR-Nummer als Präfix versehen.
+ADRs werden im Verzeichnis `docs/src/adr/` des GitHub-Repositories gespeichert, um die Vorteile von Git-Historie und -Versionierung zu nutzen.  
+Dateinamen folgen dem Format: `XXXX-titel.md`, wobei `XXXX` ein vierstellig mit Nullen aufgefüllter Index ist (z.B. `adr-0001.md`).  
 
 **Jedes ADR muss folgende Abschnitte enthalten:**
 
@@ -44,10 +43,6 @@ Zugehörige Ressourcen werden im Verzeichnis `architecture-decision-log/resource
 - **Angenommen**: Die Entscheidung wurde akzeptiert und umgesetzt
 - **Abgelöst durch XXXX**: Die Entscheidung ist nicht mehr relevant und wurde durch eine neue ersetzt
 - **Ersetzt XXXX**: Die Entscheidung ersetzt eine vorherige
-
-Wenn die Entscheidung zusätzliche Ressourcen (z.B. Bilder) enthält, werden diese im Verzeichnis `architecture-decision-log/resources` gespeichert.  
-Alle Ressourcendateien müssen mit der ADR-Nummer beginnen, z.B. `0001-architekturdiagramm.png`.  
-Dies stellt sicher, dass die Ressourcen leicht zuzuordnen sind und der richtigen Entscheidung zugewiesen werden können.
 
 ## Konsequenzen
 
