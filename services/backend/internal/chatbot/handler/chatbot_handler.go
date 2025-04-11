@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"common/sloki"
 	"encoding/json"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	"io"
@@ -45,7 +46,7 @@ func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
 
 	var req SimplePromptRequest
 	if err := json.Unmarshal(body, &req); err != nil {
-		slog.Error("Could not unmarshal request body", slog.Any("err", err))
+		slog.Error("Could not unmarshal request body", slog.Any("err", err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
@@ -57,14 +58,14 @@ func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
 
 	job, err := h.service.NewPromptRequest(req.Message, chatbot.FinancialAdvisor)
 	if err != nil {
-		slog.Error("Could not create new prompt request", slog.Any("err", err))
+		slog.Error("Could not create new prompt request", slog.Any("err", err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
 
 	jobData, err := json.Marshal(job)
 	if err != nil {
-		slog.Error("Could not marshal job response", slog.Any("err", err))
+		slog.Error("Could not marshal job response", slog.Any("err", err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}

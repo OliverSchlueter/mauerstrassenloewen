@@ -1,6 +1,7 @@
 package openapi
 
 import (
+	"common/sloki"
 	"github.com/MarceloPetrucio/go-scalar-api-reference"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
 	"log/slog"
@@ -37,7 +38,7 @@ func (h *Handler) handleScalar(w http.ResponseWriter, r *http.Request) {
 		DarkMode: true,
 	})
 	if err != nil {
-		slog.Error("Could not generate openapi html", slog.Any("err", err.Error()))
+		slog.Error("Could not generate openapi html", slog.Any("err", err.Error()), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}

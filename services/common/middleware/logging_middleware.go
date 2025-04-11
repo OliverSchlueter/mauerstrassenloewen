@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/prometheus/client_golang/prometheus"
 	"log/slog"
 	"net/http"
@@ -47,8 +48,7 @@ func Logging(next http.Handler) http.Handler {
 
 		slog.Info(
 			"Request received",
-			slog.String("method", r.Method),
-			slog.String("url", r.URL.String()),
+			sloki.WrapRequest(r),
 			slog.Int("status", sr.Status),
 			slog.Int64("elapsed_time", elapsedTime.Milliseconds()),
 		)

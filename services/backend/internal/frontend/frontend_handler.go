@@ -1,6 +1,7 @@
 package frontend
 
 import (
+	"common/sloki"
 	"embed"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
@@ -70,7 +71,7 @@ func (h *Handler) handleIndex(w http.ResponseWriter, r *http.Request) {
 	file, err := h.files.ReadFile("assets/index.html")
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slog.Error("Could not read index.html", slog.Any("err", err.Error()))
+		slog.Error("Could not read index.html", slog.Any("err", err.Error()), sloki.WrapRequest(r))
 		return
 	}
 
