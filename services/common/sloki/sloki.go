@@ -16,6 +16,7 @@ type Service struct {
 	service      string
 	consoleLevel slog.Level
 	lokiLevel    slog.Level
+	enableLoki   bool
 	httpClient   *http.Client
 }
 
@@ -24,6 +25,7 @@ type Configuration struct {
 	Service      string
 	ConsoleLevel slog.Level
 	LokiLevel    slog.Level
+	EnableLoki   bool
 }
 
 func NewService(cfg Configuration) *Service {
@@ -32,6 +34,7 @@ func NewService(cfg Configuration) *Service {
 		service:      cfg.Service,
 		consoleLevel: cfg.ConsoleLevel,
 		lokiLevel:    cfg.LokiLevel,
+		enableLoki:   cfg.EnableLoki,
 		httpClient:   &http.Client{},
 	}
 }
@@ -45,7 +48,7 @@ func (s *Service) printToConsole(level slog.Level) bool {
 }
 
 func (s *Service) sendToLoki(level slog.Level) bool {
-	return level >= s.lokiLevel
+	return s.enableLoki && level >= s.lokiLevel
 }
 
 func (s *Service) Handle(ctx context.Context, r slog.Record) error {

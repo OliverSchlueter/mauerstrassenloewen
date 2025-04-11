@@ -17,15 +17,12 @@ func main() {
 	//fflags.SendLogsToLoki.Enable()
 
 	// Setup logging
-	lokiLevel := slog.LevelInfo
-	if !fflags.SendLogsToLoki.IsEnabled() {
-		lokiLevel = 100_0000
-	}
 	lokiService := sloki.NewService(sloki.Configuration{
 		URL:          "http://localhost:3100/loki/api/v1/push",
-		Service:      "backend",
+		Service:      "ai-worker",
 		ConsoleLevel: slog.LevelDebug,
-		LokiLevel:    lokiLevel,
+		LokiLevel:    slog.LevelInfo,
+		EnableLoki:   fflags.SendLogsToLoki.IsEnabled(),
 	})
 	slog.SetDefault(slog.New(lokiService))
 
