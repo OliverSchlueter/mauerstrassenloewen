@@ -122,5 +122,13 @@ func main() {
 			time.Sleep(5 * time.Second)
 			slog.Info("All test containers stopped")
 		}
+
+		if err := mc.Disconnect(context.Background()); err != nil {
+			slog.Error("Could not disconnect from MongoDB", slog.Any("err", err.Error()))
+		}
+
+		nc.Close()
+
+		slog.Info("Shutdown complete")
 	}
 }
