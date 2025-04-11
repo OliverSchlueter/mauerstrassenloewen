@@ -58,6 +58,14 @@ func (s *Service) Handle(ctx context.Context, r slog.Record) error {
 
 	attrs := map[string]string{}
 	r.Attrs(func(a slog.Attr) bool {
+		if a.Value.Kind() == slog.KindGroup {
+			for _, gAttr := range a.Value.Group() {
+				attrs[a.Key+"__"+gAttr.Key] = fmt.Sprint(gAttr.Value)
+			}
+
+			return true
+		}
+
 		attrs[a.Key] = fmt.Sprint(a.Value)
 		return true
 	})
