@@ -1,6 +1,9 @@
 package simulation
 
-import "context"
+import (
+	"context"
+	"github.com/google/uuid"
+)
 
 type Database interface {
 	GetSimulationByID(ctx context.Context, id string) (*Simulation, error)
@@ -28,7 +31,12 @@ func (s *Store) GetSimulation(ctx context.Context, id string) (*Simulation, erro
 }
 
 func (s *Store) CreateSimulation(ctx context.Context, sim *Simulation) error {
-	return s.db.CreateSimulation(ctx, sim)
+	newSim := &Simulation{
+		ID:   uuid.NewString(),
+		Name: sim.Name,
+	}
+
+	return s.db.CreateSimulation(ctx, newSim)
 }
 
 func (s *Store) UpdateSimulation(ctx context.Context, sim *Simulation) error {
