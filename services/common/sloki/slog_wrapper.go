@@ -2,8 +2,10 @@ package sloki
 
 import (
 	"context"
+	"encoding/json"
 	"log/slog"
 	"net/http"
+	"strings"
 )
 
 var ctxFuncs = map[string]func(context.Context) string{}
@@ -35,9 +37,12 @@ func WrapRequest(r *http.Request) slog.Attr {
 	method := slog.Any("method", r.Method)
 	url := slog.Any("url", r.URL.String())
 	userAgent := slog.Any("userAgent", r.UserAgent())
-	headers := slog.Any("headers", r.Header)
 	referrer := slog.Any("referrer", r.Referer())
 	body := slog.Any("body", r.Body)
+
+	jsonHeaders, _ := json.Marshal(r.Header)
+	jsonHeadersStr := strings.ReplaceAll(string(jsonHeaders), "\"", "")
+	headers := slog.Any("headers", jsonHeadersStr)
 
 	return slog.Group("request", method, url, userAgent, headers, referrer, body)
 }
