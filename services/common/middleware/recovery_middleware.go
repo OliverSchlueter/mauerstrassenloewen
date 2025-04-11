@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"common/sloki"
 	"log/slog"
 	"net/http"
 	"runtime/debug"
@@ -11,7 +12,7 @@ func RecoveryMiddleware(next http.Handler) http.Handler {
 		defer func() {
 			if err := recover(); err != nil {
 				// Log the panic and stack trace
-				slog.Error("Panic recovered", slog.Any("err", err))
+				slog.Error("Panic recovered", sloki.WrapError(err.(error)))
 				debug.PrintStack()
 
 				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)

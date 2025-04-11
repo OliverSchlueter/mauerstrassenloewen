@@ -15,3 +15,7 @@ func WrapRequest(r *http.Request) slog.Attr {
 
 	return slog.Group("request", method, url, userAgent, headers, referrer, body)
 }
+
+func WrapError(err error) slog.Attr {
+	return slog.Any("error", err)
+}
