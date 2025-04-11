@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"common/sloki"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/prometheus/client_golang/prometheus"
 	"log/slog"
 	"net/http"

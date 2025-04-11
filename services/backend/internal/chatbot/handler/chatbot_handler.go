@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"common/sloki"
 	"encoding/json"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"io"
 	"log/slog"
 	"net/http"

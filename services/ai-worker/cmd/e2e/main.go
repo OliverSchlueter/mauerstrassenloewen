@@ -1,10 +1,10 @@
 package main
 
 import (
-	"common/sloki"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
 	"os"

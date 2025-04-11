@@ -1,5 +1,3 @@
-github.com/OliverSchlueter/sloki v0.0.1 h1:cL5Sw/Z9LX1xYJFcOVDlNsA8r/3ihOstBWa5IeIJTG8=
-github.com/OliverSchlueter/sloki v0.0.1/go.mod h1:CCXIaMLBOaBqslN6g0sFolOO7tAbbcU6XhE7MGJx1wo=
 github.com/klauspost/compress v1.18.0 h1:c/Cqfb0r+Yi+JtIEq73FWXVkRonBlf0CRNYc8Zttxdo=
 github.com/klauspost/compress v1.18.0/go.mod h1:2Pp+KzxcywXVXMr50+X0Q/Lsb43OQHYWRCY2AiWywWQ=
 github.com/nats-io/nats.go v1.41.0 h1:PzxEva7fflkd+n87OtQTXqCTyLfIIMFJBpyccHLE2Ko=

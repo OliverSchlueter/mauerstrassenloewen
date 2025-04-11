@@ -1,11 +1,11 @@
 package chatbot
 
 import (
-	"common/natsdto"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
 )

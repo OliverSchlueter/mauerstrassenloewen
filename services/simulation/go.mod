@@ -3,12 +3,12 @@ module github.com/OliverSchlueter/mauerstrassenloewen/simulation
 go 1.24.2
 
 require (
-	common v0.0.0
+	github.com/OliverSchlueter/mauerstrassenloewen/common v0.0.0-00010101000000-000000000000
 	github.com/go-pg/pg/v10 v10.14.0
 	github.com/justinas/alice v1.2.0
-	github.com/nats-io/nats.go v1.41.0
+	github.com/nats-io/nats.go v1.41.1
 	github.com/questdb/go-questdb-client/v3 v3.2.0
-	go.mongodb.org/mongo-driver/v2 v2.1.0
+	go.mongodb.org/mongo-driver/v2 v2.2.0
 )
 
 require (
@@ -22,7 +22,7 @@ require (
 	github.com/nats-io/nkeys v0.4.10 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/prometheus/client_golang v1.22.0 // indirect
-	github.com/prometheus/client_model v0.6.1 // indirect
+	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.16.0 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
@@ -42,4 +42,4 @@ require (
 	mellium.im/sasl v0.3.2 // indirect
 )
 
-replace common => ../common
+replace github.com/OliverSchlueter/mauerstrassenloewen/common => ../common

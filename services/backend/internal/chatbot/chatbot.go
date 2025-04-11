@@ -1,9 +1,9 @@
 package chatbot
 
 import (
-	"common/natsdto"
 	"encoding/json"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/nats-io/nats.go"
 	"time"
 )

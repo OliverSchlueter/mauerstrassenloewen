@@ -1,10 +1,10 @@
 package main
 
 import (
-	"common/middleware"
-	"common/sloki"
 	"context"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/middleware"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/fflags"
 	"github.com/go-pg/pg/v10"

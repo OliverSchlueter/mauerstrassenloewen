@@ -3,7 +3,7 @@ module github.com/OliverSchlueter/mauerstrassenloewen/ai-worker
 go 1.24.2
 
 require (
-	common v0.0.0
+	github.com/OliverSchlueter/mauerstrassenloewen/common v0.0.0-00010101000000-000000000000
 	github.com/google/uuid v1.6.0
 	github.com/nats-io/nats.go v1.41.0
 	github.com/ollama/ollama v0.6.4
@@ -18,4 +18,4 @@ require (
 	golang.org/x/sys v0.32.0 // indirect
 )
 
-replace common => ../common
+replace github.com/OliverSchlueter/mauerstrassenloewen/common => ../common

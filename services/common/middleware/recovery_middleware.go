@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"common/sloki"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"log/slog"
 	"net/http"
 	"runtime/debug"

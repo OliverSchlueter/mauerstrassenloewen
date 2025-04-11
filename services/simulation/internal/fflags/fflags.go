@@ -1,6 +1,6 @@
 package fflags
 
-import "common/featureflags"
+import "github.com/OliverSchlueter/mauerstrassenloewen/common/featureflags"
 
 var (
 	EndToEndEnvironment = featureflags.Register("FEATURE_FLAGS_END_TO_END_ENVIRONMENT")

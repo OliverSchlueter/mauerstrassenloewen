@@ -1,10 +1,10 @@
 package frontend
 
 import (
-	"common/sloki"
 	"embed"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"log/slog"
 	"net/http"
 	"strings"

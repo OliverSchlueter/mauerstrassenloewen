@@ -1,7 +1,7 @@
 package main
 
 import (
-	"common/sloki"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/fflags"
 	"github.com/nats-io/nats.go"
