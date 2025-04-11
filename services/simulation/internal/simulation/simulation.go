@@ -1,10 +1,12 @@
 package simulation
 
+import "context"
+
 type Database interface {
-	GetSimulationByID(id string) (*Simulation, error)
-	CreateSimulation(sim *Simulation) error
-	UpdateSimulation(sim *Simulation) error
-	DeleteSimulation(id string) error
+	GetSimulationByID(ctx context.Context, id string) (*Simulation, error)
+	CreateSimulation(ctx context.Context, sim *Simulation) error
+	UpdateSimulation(ctx context.Context, sim *Simulation) error
+	DeleteSimulation(ctx context.Context, id string) error
 }
 
 type Store struct {
@@ -21,18 +23,18 @@ func NewStore(config *Configuration) *Store {
 	}
 }
 
-func (s *Store) GetSimulation(id string) (*Simulation, error) {
-	return s.db.GetSimulationByID(id)
+func (s *Store) GetSimulation(ctx context.Context, id string) (*Simulation, error) {
+	return s.db.GetSimulationByID(ctx, id)
 }
 
-func (s *Store) CreateSimulation(sim *Simulation) error {
-	return s.db.CreateSimulation(sim)
+func (s *Store) CreateSimulation(ctx context.Context, sim *Simulation) error {
+	return s.db.CreateSimulation(ctx, sim)
 }
 
-func (s *Store) UpdateSimulation(sim *Simulation) error {
-	return s.db.UpdateSimulation(sim)
+func (s *Store) UpdateSimulation(ctx context.Context, sim *Simulation) error {
+	return s.db.UpdateSimulation(ctx, sim)
 }
 
-func (s *Store) DeleteSimulation(id string) error {
-	return s.db.DeleteSimulation(id)
+func (s *Store) DeleteSimulation(ctx context.Context, id string) error {
+	return s.db.DeleteSimulation(ctx, id)
 }

@@ -1,6 +1,7 @@
 package fake
 
 import (
+	"context"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation"
 	"sync"
 )
@@ -17,7 +18,7 @@ func NewDB() *DB {
 	}
 }
 
-func (db *DB) GetSimulationByID(id string) (*simulation.Simulation, error) {
+func (db *DB) GetSimulationByID(ctx context.Context, id string) (*simulation.Simulation, error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -29,7 +30,7 @@ func (db *DB) GetSimulationByID(id string) (*simulation.Simulation, error) {
 	return &s, nil
 }
 
-func (db *DB) CreateSimulation(sim *simulation.Simulation) error {
+func (db *DB) CreateSimulation(ctx context.Context, sim *simulation.Simulation) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -43,7 +44,7 @@ func (db *DB) CreateSimulation(sim *simulation.Simulation) error {
 	return nil
 }
 
-func (db *DB) UpdateSimulation(sim *simulation.Simulation) error {
+func (db *DB) UpdateSimulation(ctx context.Context, sim *simulation.Simulation) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
@@ -57,7 +58,7 @@ func (db *DB) UpdateSimulation(sim *simulation.Simulation) error {
 	return nil
 }
 
-func (db *DB) DeleteSimulation(id string) error {
+func (db *DB) DeleteSimulation(ctx context.Context, id string) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
