@@ -5,6 +5,7 @@ go 1.24.2
 require (
 	github.com/OliverSchlueter/mauerstrassenloewen/common v0.0.0-00010101000000-000000000000
 	github.com/go-pg/pg/v10 v10.14.0
+	github.com/google/uuid v1.6.0
 	github.com/justinas/alice v1.2.0
 	github.com/nats-io/nats.go v1.41.1
 	github.com/questdb/go-questdb-client/v3 v3.2.0

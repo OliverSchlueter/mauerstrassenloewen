@@ -30,16 +30,21 @@ func (s *Store) GetSimulation(ctx context.Context, id string) (*Simulation, erro
 	return s.db.GetSimulationByID(ctx, id)
 }
 
-func (s *Store) CreateSimulation(ctx context.Context, sim *Simulation) error {
-	newSim := &Simulation{
+func (s *Store) CreateSimulation(ctx context.Context, req *CreateOrUpdateSimulationRequest) error {
+	sim := &Simulation{
 		ID:   uuid.NewString(),
-		Name: sim.Name,
+		Name: req.Name,
 	}
 
-	return s.db.CreateSimulation(ctx, newSim)
+	return s.db.CreateSimulation(ctx, sim)
 }
 
-func (s *Store) UpdateSimulation(ctx context.Context, sim *Simulation) error {
+func (s *Store) UpdateSimulation(ctx context.Context, req *CreateOrUpdateSimulationRequest) error {
+	sim := &Simulation{
+		ID:   uuid.NewString(),
+		Name: req.Name,
+	}
+
 	return s.db.UpdateSimulation(ctx, sim)
 }
 
