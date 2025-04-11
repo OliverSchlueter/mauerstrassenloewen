@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/OliverSchlueter/mauerstrassenloewen/common/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/OliverSchlueter/mauerstrassenloewen/reverseproxy/internal/backend"
+	"github.com/OliverSchlueter/mauerstrassenloewen/reverseproxy/internal/endpoint"
 	"github.com/OliverSchlueter/mauerstrassenloewen/reverseproxy/internal/fflags"
-	"github.com/justinas/alice"
 	"log/slog"
 	"net/http"
 	"os"
@@ -33,15 +32,22 @@ func main() {
 
 	backend.Start(backend.Configuration{
 		Mux: mux,
+		Endpoints: []endpoint.Endpoint{
+			{
+				Name:        "Backend",
+				Endpoint:    "",
+				Destination: "http://localhost:8080",
+			},
+			{
+				Name:        "Simulation",
+				Endpoint:    "/simulation",
+				Destination: "http://localhost:8081",
+			},
+		},
 	})
 
 	go func() {
-		chain := alice.New(
-			middleware.Logging,
-			middleware.RecoveryMiddleware,
-		).Then(mux)
-
-		err := http.ListenAndServe(":"+port, chain)
+		err := http.ListenAndServe(":"+port, mux)
 		if err != nil {
 			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
 			os.Exit(1)
