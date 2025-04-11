@@ -8,8 +8,6 @@ github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2ef
 github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2efe0e06/go.mod h1:/wotfjM8I3m8NuIHPz3S8k+CCYH80EqDT8ZeNLqMQm0=
 github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERoyfY=
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
-github.com/OliverSchlueter/sloki v0.0.1 h1:cL5Sw/Z9LX1xYJFcOVDlNsA8r/3ihOstBWa5IeIJTG8=
-github.com/OliverSchlueter/sloki v0.0.1/go.mod h1:CCXIaMLBOaBqslN6g0sFolOO7tAbbcU6XhE7MGJx1wo=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/cenkalti/backoff/v4 v4.3.0 h1:MyRJ/UdXutAwSAT+s3wNd7MfTIcy71VQueUuFK343L8=

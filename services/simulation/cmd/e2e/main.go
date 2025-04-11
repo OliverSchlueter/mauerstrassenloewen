@@ -2,11 +2,11 @@ package main
 
 import (
 	"common/middleware"
+	"common/sloki"
 	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/fflags"
-	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/go-pg/pg/v10"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"

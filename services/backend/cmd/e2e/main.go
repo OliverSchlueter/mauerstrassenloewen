@@ -3,12 +3,12 @@ package main
 import (
 	"common/middleware"
 	"common/middleware/metricshandler"
+	"common/sloki"
 	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/containers"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
-	"github.com/OliverSchlueter/sloki/sloki"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
