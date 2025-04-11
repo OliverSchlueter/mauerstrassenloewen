@@ -109,6 +109,27 @@ func main() {
 
 	// Wait for a signal to exit
 	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-	<-sig
+	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
+	switch <-sig {
+	case os.Interrupt:
+		slog.Info("Received interrupt signal, shutting down...")
+
+		if err := qdbI.Flush(context.Background()); err != nil {
+			slog.Error("Could not flush QuestDB ingestion client", slog.Any("err", err.Error()))
+		}
+		if err := qdbI.Close(context.Background()); err != nil {
+			slog.Error("Could not close QuestDB ingestion client", slog.Any("err", err.Error()))
+		}
+		if err := qdbQ.Close(); err != nil {
+			slog.Error("Could not close QuestDB query client", slog.Any("err", err.Error()))
+		}
+
+		if err := mc.Disconnect(context.Background()); err != nil {
+			slog.Error("Could not disconnect from MongoDB", slog.Any("err", err.Error()))
+		}
+
+		nc.Close()
+
+		slog.Info("Shutdown complete")
+	}
 }
