@@ -7,6 +7,46 @@ servers:
   - url: http://localhost:8080
     description: Local server
 paths:
+  /:
+    get:
+      summary: Web page
+      description: Display the web page.
+      tags:
+        - Frontend
+      responses:
+        '200':
+          description: Web page
+  /docs:
+    get:
+      summary: Documentation web page
+      description: Display the documentation in a web page.
+      tags:
+        - Frontend
+      responses:
+        '200':
+          description: Documentation web page
+  /openapi.json:
+    get:
+      summary: OpenAPI specification
+      description: Returns the OpenAPI specification
+      tags:
+        - Frontend
+      responses:
+        '200':
+          description: OpenAPI specification
+          content:
+            application/json:
+              schema:
+                type: object
+  /openapi:
+    get:
+      summary: OpenAPI web page
+      description: Display the OpenAPI specification in a web page.
+      tags:
+        - Frontend
+      responses:
+        '200':
+          description: OpenAPI web page
   /api/v1/chatbot/simple-prompt:
     post:
       summary: Simple prompt
