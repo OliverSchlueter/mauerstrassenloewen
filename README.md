@@ -1,4 +1,4 @@
-# Digital Personal Learning Coach 📈
+# Mauerstrassenloewen
 
 Ein KI-gestützter, interaktiver Trading Coach für Anfänger und Fortgeschrittene.  
 Lerne das Investieren mit echten Daten, realistischen Simulationen und einem virtuellen Coach an deiner Seite.
@@ -6,7 +6,7 @@ Lerne das Investieren mit echten Daten, realistischen Simulationen und einem vir
 ## 🚀 Zielsetzung
 
 Viele Menschen scheitern beim Einstieg ins Trading – zu komplex, zu emotional, zu undurchsichtig.  
-**Unser Ziel:** Ein digitaler Trading Coach, der individuell, spielerisch und fundiert Wissen vermittelt – durch interaktive Module, Simulationen und KI-gestützte Unterstützung.
+**Unser Ziel:** Ein digitaler Tradingcoach, der individuell, spielerisch und fundiert Wissen vermittelt – durch interaktive Module, Simulationen und KI-gestützte Unterstützung.
 
 ---
 
@@ -31,20 +31,7 @@ Viele Menschen scheitern beim Einstieg ins Trading – zu komplex, zu emotional,
 - Motivierende Gamification-Elemente
 - Kollaboratives Lernen mit Freunden und Community
 
----
+## Dokumentation
 
-## 🛠️ Tech Stack
-
-- **Frontend:** Angular
-- **Backend:** GoLang
-- **API-Kommunikation:** REST, Websockets und CloudEvents
-- **Datenbanken:** MongoDB, Redis
-- **Datenquellen:** Yahoo Finance, TradingView API
-- **KI-Anbindung:** Modelle von OpenAI und ollama
-
----
-
-## Architektur
-
-Alle unsere architektur-relevanten Entscheidungen sind in Form von Architecture-Decision-Records (ADRs) dokumentiert. Diese sind im Ordner `/architecture-decision-log/` zu finden.
+Du findest alle Informationen zur Architektur, den Technologien und dem Projektverlauf in der [Dokumentation](docs/src).
 
