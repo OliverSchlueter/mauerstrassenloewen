@@ -22,12 +22,12 @@ func NewHandler(config Configuration) *Handler {
 }
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
-	mux.HandleFunc(prefix+"/openapi.json", h.handleOpenAPI)
+	mux.HandleFunc(prefix+"/openapi.yml", h.handleOpenAPI)
 	mux.HandleFunc(prefix+"/openapi", h.handleScalar)
 }
 
 func (h *Handler) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/yaml")
 	//if !fflags.EndToEndEnvironment.IsEnabled() {
 	w.Header().Set("Cache-Control", "max-age=86400") // 24h
 	//}
