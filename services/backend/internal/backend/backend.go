@@ -1,12 +1,13 @@
 package backend
 
 import (
+	_ "embed"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	ch "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot/handler"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/docs"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/frontend"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/openapi"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/openapi"
 	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"net/http"
@@ -14,6 +15,9 @@ import (
 
 const apiPrefix = "/api/v1"
 const frontendPrefix = ""
+
+//go:embed openapi.yml
+var openapiSpecContent []byte
 
 type Configuration struct {
 	Mux     *http.ServeMux
@@ -28,7 +32,7 @@ func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handl
 	frontendHandler.Register(cfg.Mux, frontendPrefix)
 
 	openApiHandler := openapi.NewHandler(openapi.Configuration{
-		Specification: openapi.SpecContent,
+		Specification: openapiSpecContent,
 	})
 	openApiHandler.Register(cfg.Mux, frontendPrefix)
 

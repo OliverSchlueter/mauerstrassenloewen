@@ -2,7 +2,10 @@ module github.com/OliverSchlueter/mauerstrassenloewen/common
 
 go 1.24.2
 
-require github.com/prometheus/client_golang v1.22.0
+require (
+	github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2efe0e06
+	github.com/prometheus/client_golang v1.22.0
+)
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
