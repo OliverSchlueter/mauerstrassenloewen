@@ -3,8 +3,8 @@ package frontend
 import (
 	"embed"
 	"fmt"
-	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
+	"github.com/OliverSchlueter/mauerstrassenloewen/frontend/internal/fflags"
 	"log/slog"
 	"net/http"
 	"strings"

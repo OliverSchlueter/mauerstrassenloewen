@@ -3,5 +3,5 @@
 frontend/dist/
 docs/.retype/
 docs/retype.manifest
-services/backend/internal/frontend/assets
-services/backend/internal/docs/assets
+services/frontend/internal/frontend/assets
+services/frontend/internal/docs/assets

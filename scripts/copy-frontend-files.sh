@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir -p ../services/backend/internal/frontend/assets
-cp -r ../frontend/dist/frontend/browser/* ../services/backend/internal/frontend/assets
+mkdir -p ../services/frontend/internal/frontend/assets
+cp -r ../frontend/dist/frontend/browser/* ../services/frontend/internal/frontend/assets
 
-mkdir -p ../services/backend/internal/docs/assets
-cp -r ../docs/.retype/* ../services/backend/internal/docs/assets
+mkdir -p ../services/frontend/internal/docs/assets
+cp -r ../docs/.retype/* ../services/frontend/internal/docs/assets
