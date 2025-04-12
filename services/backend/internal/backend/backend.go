@@ -27,7 +27,9 @@ func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handl
 	})
 	frontendHandler.Register(cfg.Mux, frontendPrefix)
 
-	openApiHandler := openapi.NewHandler()
+	openApiHandler := openapi.NewHandler(openapi.Configuration{
+		Specification: openapi.SpecContent,
+	})
 	openApiHandler.Register(cfg.Mux, frontendPrefix)
 
 	docsHandler := docs.NewHandler(docs.Configuration{

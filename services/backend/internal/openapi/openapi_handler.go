@@ -9,10 +9,17 @@ import (
 )
 
 type Handler struct {
+	specification []byte
 }
 
-func NewHandler() *Handler {
-	return &Handler{}
+type Configuration struct {
+	Specification []byte
+}
+
+func NewHandler(config Configuration) *Handler {
+	return &Handler{
+		specification: config.Specification,
+	}
 }
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
@@ -26,12 +33,12 @@ func (h *Handler) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "max-age=86400") // 24h
 	}
 	w.WriteHeader(http.StatusOK)
-	w.Write(SpecContent)
+	w.Write(h.specification)
 }
 
 func (h *Handler) handleScalar(w http.ResponseWriter, r *http.Request) {
 	htmlContent, err := scalar.ApiReferenceHTML(&scalar.Options{
-		SpecContent: string(SpecContent),
+		SpecContent: string(h.specification),
 		CustomOptions: scalar.CustomOptions{
 			PageTitle: "Mauerstrassenloewen API",
 		},
