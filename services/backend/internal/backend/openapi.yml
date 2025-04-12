@@ -16,6 +16,7 @@ paths:
       responses:
         '200':
           description: Web page
+
   /docs:
     get:
       summary: Documentation web page
@@ -38,6 +39,7 @@ paths:
             application/json:
               schema:
                 type: object
+
   /openapi:
     get:
       summary: OpenAPI web page
@@ -47,6 +49,7 @@ paths:
       responses:
         '200':
           description: OpenAPI web page
+
   /api/v1/chatbot/simple-prompt:
     post:
       summary: Simple prompt
@@ -68,10 +71,8 @@ paths:
                 $ref: '#/components/schemas/SimplePromptJob'
         '400':
           description: Bad request
-        '405':
-          description: Method not allowed
         '415':
-          description: Unnupported media type
+          description: Unsupported media type
         '500':
           description: Internal server error
 components:
@@ -89,7 +90,7 @@ components:
       properties:
         job_id:
           type: string
-          example: 52434ef7-cdb5-4267-9e8b-86eba4e03780
+          example: '52434ef7-cdb5-4267-9e8b-86eba4e03780'
         result:
           type: string
           example: 'The top 10 tech stocks are: ...'
