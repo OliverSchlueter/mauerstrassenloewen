@@ -28,20 +28,25 @@ func main() {
 	slog.SetDefault(slog.New(lokiService))
 
 	mux := http.NewServeMux()
-	port := "8082"
+	port := "8080"
 
 	backend.Start(backend.Configuration{
 		Mux: mux,
 		Endpoints: []endpoint.Endpoint{
 			{
-				Name:        "Backend",
+				Name:        "Frontend",
 				Endpoint:    "",
-				Destination: "http://localhost:8080",
+				Destination: "http://localhost:8081",
+			},
+			{
+				Name:        "Backend",
+				Endpoint:    "/msl",
+				Destination: "http://localhost:8082",
 			},
 			{
 				Name:        "Simulation",
 				Endpoint:    "/simulation",
-				Destination: "http://localhost:8081",
+				Destination: "http://localhost:8083",
 			},
 		},
 	})

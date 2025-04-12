@@ -76,7 +76,7 @@ func main() {
 
 	// Start the web server
 	mux := &http.ServeMux{}
-	port := "8080"
+	port := "8082"
 
 	appCfg := backend.Configuration{
 		Mux:     mux,
