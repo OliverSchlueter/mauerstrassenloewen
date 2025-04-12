@@ -50,7 +50,7 @@ paths:
         '200':
           description: OpenAPI web page
 
-  /api/v1/chatbot/simple-prompt:
+  /msl/api/v1/chatbot/simple-prompt:
     post:
       summary: Simple prompt
       description: Send a simple prompt to the chatbot and receive a response.

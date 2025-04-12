@@ -13,7 +13,7 @@ import (
 	"net/http"
 )
 
-const apiPrefix = "/api/v1"
+const apiPrefix = "/msl/api/v1"
 const frontendPrefix = ""
 
 //go:embed openapi.yml
