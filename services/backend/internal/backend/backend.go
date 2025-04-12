@@ -1,6 +1,7 @@
 package backend
 
 import (
+	_ "embed"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	ch "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot/handler"

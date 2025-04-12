@@ -5,51 +5,12 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost:8080
-    description: Local server
+    description: Reverse proxy server
+  - url: http://localhost:8082
+    description: Backend/msl service
+  - url: http://localhost:8083
+    description: Simulation service
 paths:
-  /:
-    get:
-      summary: Web page
-      description: Display the web page.
-      tags:
-        - Frontend
-      responses:
-        '200':
-          description: Web page
-
-  /docs:
-    get:
-      summary: Documentation web page
-      description: Display the documentation in a web page.
-      tags:
-        - Frontend
-      responses:
-        '200':
-          description: Documentation web page
-  /openapi.json:
-    get:
-      summary: OpenAPI specification
-      description: Returns the OpenAPI specification
-      tags:
-        - Frontend
-      responses:
-        '200':
-          description: OpenAPI specification
-          content:
-            application/json:
-              schema:
-                type: object
-
-  /openapi:
-    get:
-      summary: OpenAPI web page
-      description: Display the OpenAPI specification in a web page.
-      tags:
-        - Frontend
-      responses:
-        '200':
-          description: OpenAPI web page
-
   /msl/api/v1/chatbot/simple-prompt:
     post:
       summary: Simple prompt
@@ -75,6 +36,88 @@ paths:
           description: Unsupported media type
         '500':
           description: Internal server error
+
+  /simulation/api/v1/simulation:
+    post:
+      summary: Create simulation
+      description: Create a new simulation.
+      tags:
+        - Simulation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateSimulationRequest'
+      responses:
+        '201':
+          description: Simulation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Simulation'
+        '400':
+          description: Bad request (invalid request body)
+        '404':
+          description: Simulation not found
+        '500':
+          description: Internal server error
+
+  /simulation/api/v1/simulation/{simulationId}:
+    get:
+      summary: Get simulation
+      description: Get a simulation by its ID.
+      tags:
+        - Simulation
+      responses:
+        '200':
+          description: Found simulation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Simulation'
+        '400':
+          description: Bad request
+        '409':
+          description: Simulation already exists
+        '415':
+          description: Unsupported media type
+        '500':
+          description: Internal server error
+    put:
+      summary: Update simulation
+      description: Update an existing simulation.
+      tags:
+        - Simulation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Simulation'
+      responses:
+        '204':
+          description: Simulation updated successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Simulation not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete simulation
+      description: Delete a simulation by its ID.
+      tags:
+        - Simulation
+      responses:
+        '204':
+          description: Simulation updated successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Simulation not found
+        '500':
+          description: Internal server error
 components:
   schemas:
     SimplePromptRequest:
@@ -94,3 +137,23 @@ components:
         result:
           type: string
           example: 'The top 10 tech stocks are: ...'
+    CreateOrUpdateSimulationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'My Simulation'
+      required:
+        - name
+    Simulation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '52434ef7-cdb5-4267-9e8b-86eba4e03780'
+        name:
+          type: string
+          example: 'My Simulation'
+      required:
+        - id
+        - name
