@@ -2,6 +2,9 @@ package backend
 
 import (
 	_ "embed"
+	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation"
+	simMongo "github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation/database/mongo"
+	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation/handler"
 	"github.com/go-pg/pg/v10"
 	"github.com/nats-io/nats.go"
 	"github.com/questdb/go-questdb-client/v3"
@@ -20,4 +23,14 @@ type Configuration struct {
 }
 
 func Start(cfg Configuration) {
+	simDB := simMongo.NewDB(&simMongo.Configuration{
+		Mongo: cfg.Mongo,
+	})
+	simStore := simulation.NewStore(&simulation.Configuration{
+		DB: simDB,
+	})
+	simHandler := handler.NewHandler(handler.Configuration{
+		Store: simStore,
+	})
+	simHandler.Register(cfg.Mux, apiPrefix)
 }
