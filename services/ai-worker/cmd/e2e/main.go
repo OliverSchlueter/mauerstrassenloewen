@@ -6,6 +6,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/nats-io/nats.go"
+	"github.com/qdrant/go-client/qdrant"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -43,6 +44,16 @@ func main() {
 		return
 	}
 
+	// Setup qdrant client
+	qc, err := qdrant.NewClient(&qdrant.Config{
+		Host: "localhost",
+		Port: 6333,
+	})
+	if err != nil {
+		slog.Error("failed to create qdrant client", slog.Any("err", err.Error()))
+		return
+	}
+
 	chatbotService := chatbot.NewService(chatbot.Configuration{
 		Nats:   nc,
 		Ollama: oc,
@@ -58,4 +69,12 @@ func main() {
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	<-sig
+
+	slog.Info("AI worker shutting down")
+
+	nc.Close()
+
+	if err := qc.Close(); err != nil {
+		slog.Error("failed to close qdrant client", slog.Any("err", err.Error()))
+	}
 }
