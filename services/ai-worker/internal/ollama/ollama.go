@@ -11,6 +11,9 @@ import (
 	"time"
 )
 
+var _false = false
+var _true = true
+
 type Client struct {
 	ollama *api.Client
 	model  string
@@ -40,11 +43,10 @@ func NewClient(cfg Configuration) (*Client, error) {
 }
 
 func (c *Client) Generate(ctx context.Context, message string) (string, error) {
-	stream := true
 	req := api.GenerateRequest{
 		Model:  c.model,
 		Prompt: message,
-		Stream: &stream,
+		Stream: &_true,
 		Raw:    false,
 	}
 
@@ -66,4 +68,89 @@ func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 	}
 
 	return resp.String(), nil
+}
+
+func (c *Client) StartChat(ctx context.Context, systemMsg, msg string) (string, error) {
+	msgs := []api.Message{
+		{
+			Role:    "system",
+			Content: systemMsg,
+		},
+	}
+
+	return c.Chat(ctx, msgs, msg)
+}
+
+func (c *Client) Chat(ctx context.Context, msgs []api.Message, next string) (string, error) {
+	ragRespMsg := c.executeRAG(next)
+	if ragRespMsg != nil {
+		msgs = append(msgs, *ragRespMsg)
+	}
+
+	initialResp, err := c.nextMsg(ctx, msgs, api.Message{
+		Role:    "user",
+		Content: next,
+	})
+	if err != nil {
+		return "", fmt.Errorf("failed to get initial chat response: %w", err)
+	}
+
+	if initialResp.Message.ToolCalls == nil || len(initialResp.Message.ToolCalls) == 0 {
+		return initialResp.Message.Content, nil
+	}
+
+	toolRespMsg := c.executeToolCalls(initialResp.Message.ToolCalls)
+	if toolRespMsg == nil {
+		return initialResp.Message.Content, nil
+	}
+
+	finalResp, err := c.nextMsg(ctx, msgs, *toolRespMsg)
+	if err != nil {
+		return "", fmt.Errorf("failed to get final chat response: %w", err)
+	}
+
+	return finalResp.Message.Content, nil
+}
+
+func (c *Client) nextMsg(ctx context.Context, msgs []api.Message, next api.Message) (*api.ChatResponse, error) {
+	// TODO: register tool calls
+
+	req := api.ChatRequest{
+		Model:    c.model,
+		Stream:   &_false,
+		Messages: append(msgs, next),
+	}
+
+	var resp api.ChatResponse
+	respFunc := func(cr api.ChatResponse) error {
+		resp = cr
+		return nil
+	}
+
+	slog.Info("Generating next chat response", slog.String("model", c.model))
+
+	err := c.ollama.Chat(ctx, &req, respFunc)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get response: %w", err)
+	}
+
+	return &resp, nil
+}
+
+func (c *Client) executeToolCalls(calls []api.ToolCall) *api.Message {
+	// TODO: implement tool call execution
+
+	return &api.Message{
+		Role:    "assistant",
+		Content: "Executed tool calls:",
+	}
+}
+
+func (c *Client) executeRAG(query string) *api.Message {
+	// TODO: implement RAG execution
+
+	return &api.Message{
+		Role:    "system",
+		Content: "Documents found:",
+	}
 }
