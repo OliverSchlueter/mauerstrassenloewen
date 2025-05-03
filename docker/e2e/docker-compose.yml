@@ -53,17 +53,17 @@ services:
       - "9009:9009"
       - "8812:8812"
       - "9003:9003"
-#
-#  msl_qdrant:
-#    image: qdrant/qdrant:latest
-#    container_name: msl_qdrant
-#    networks:
-#      msl_network:
-#        aliases:
-#          - qdrant
-#    ports:
-#      - "6333:6333"
-#
+
+  msl_qdrant:
+    image: qdrant/qdrant:latest
+    container_name: msl_qdrant
+    networks:
+      msl_network:
+        aliases:
+          - qdrant
+    ports:
+      - "6333:6333"
+
 #  msl_vault:
 #    image: hashicorp/vault:latest
 #    container_name: msl_vault
