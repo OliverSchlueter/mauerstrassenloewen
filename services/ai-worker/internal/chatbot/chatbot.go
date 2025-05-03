@@ -42,7 +42,7 @@ func (s *Service) handleSimplePromptHandler(msg *nats.Msg) {
 		return
 	}
 
-	output, err := s.ollama.Chat(context.Background(), req.UserMsg)
+	output, err := s.ollama.Generate(context.Background(), req.UserMsg)
 	if err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to get response from ollama: %v", err)))
 		return

@@ -39,7 +39,7 @@ func NewClient(cfg Configuration) (*Client, error) {
 	}, nil
 }
 
-func (c *Client) Chat(ctx context.Context, message string) (string, error) {
+func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 	stream := true
 	req := api.GenerateRequest{
 		Model:  c.model,
