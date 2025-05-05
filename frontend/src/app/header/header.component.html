@@ -1,3 +1,4 @@
 <div class="header-container">
-  <h1 (click)="navigate()">Mauerstrassenloewen</h1>
+  <h1 class="header-item" (click)="goHome()">Mauerstrassenloewen</h1>
+  <button *ngIf="isLoggedIn()" class="header-item" (click)="goAccount()" mat-button>Account</button>
 </div>

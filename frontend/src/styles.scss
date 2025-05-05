@@ -18,8 +18,14 @@ html {
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #333333; color: rgba(255, 255, 255, 0.8);}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #151515; color: rgba(255, 255, 255, 0.8);}
 
+.mat-card,
+.mat-toolbar,
+.mat-form-field,
+.mat-dialog-container {
+  background-color: #333333 !important; // ein helles Grau
+}
 
 $costum-green: #4caf50;
 $costum-red: #f44336;

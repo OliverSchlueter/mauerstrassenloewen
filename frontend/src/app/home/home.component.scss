@@ -1,0 +1,39 @@
+@use '../../styles' as *;
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.mat-card {
+  background-color: #333333 !important;
+  width: 512px;
+  margin: 20px;
+}
+
+.small {
+  width: 300px;
+}
+
+.medium {
+  width: 512px;
+}
+
+.large {
+  width: 768px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0 0;
+}
+
+.positive {
+  color: $costum-green
+}
+
+.negative {
+  color: $costum-red
+}
