@@ -17,6 +17,7 @@
           <mat-label>Password</mat-label>
           <input matInput [(ngModel)]="password"/>
         </mat-form-field>
+        <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
       </div>
       <button class="margin" mat-flat-button (click)="login()">Login</button>
       <p>
