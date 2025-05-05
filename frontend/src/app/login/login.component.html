@@ -1,0 +1,27 @@
+<div class="platzhalter">
+
+</div>
+
+
+<div class="flex-container">
+  <mat-card class="login-card">
+    <mat-card-title style="margin-bottom: 20px;">Login</mat-card-title>
+
+    <mat-card-content>
+      <div class="input-container">
+        <mat-form-field style="width: 200px">
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="username"/>
+        </mat-form-field>
+        <mat-form-field style="width: 200px">
+          <mat-label>Password</mat-label>
+          <input matInput [(ngModel)]="password"/>
+        </mat-form-field>
+      </div>
+      <button class="margin" mat-flat-button (click)="login()">Login</button>
+      <p>
+        New here? <a (click)="register()" class="link">Sign up</a> now!
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

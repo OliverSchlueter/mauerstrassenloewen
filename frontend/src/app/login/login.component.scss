@@ -1,0 +1,40 @@
+@use '../../styles' as *;
+
+.platzhalter {
+  margin-bottom: 200px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  padding: 20px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: 0;
+  padding: 0;
+}
+
+.margin {
+  margin-bottom: 20px;;
+}
+
+.mat-icon {
+  color: white !important;
+}
+
+.link {
+  color: #add8e6;
+
+  &:hover {
+    color: #cbe4f1;
+  }
+}
