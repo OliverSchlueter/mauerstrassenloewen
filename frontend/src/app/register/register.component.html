@@ -1,0 +1,23 @@
+<div class="flex-container">
+  <mat-card>
+    <mat-stepper class="stepper">
+      <mat-step>
+        <ng-template matStepLabel>Step 1</ng-template>
+        <p>Step 1 content goes here.</p>
+        <button mat-button matStepperNext>Next</button>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Step 2</ng-template>
+        <p>Step 2 content goes here.</p>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Step 3</ng-template>
+        <p>Step 3 content goes here.</p>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="register()">Register</button>
+      </mat-step>
+    </mat-stepper>
+  </mat-card>
+</div>
