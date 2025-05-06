@@ -1,0 +1,15 @@
+<div class="flex-container">
+  <div class="navigation-bar">
+    <ul>
+      <li><button mat-button (click)="navigate('landing')">Landing</button></li>
+      <li><button mat-button (click)="navigate('settings')">Settings</button></li>
+      <li>test</li>
+      <li>test</li>
+    </ul>
+  </div>
+  <mat-divider vertical></mat-divider>
+  <div class="content-container">
+    <h2>Account Settings {{user?.name}}</h2>
+    <router-outlet></router-outlet>
+  </div>
+</div>

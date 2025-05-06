@@ -2,7 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 0;
+  margin-bottom: 20px;
   color: white;
+  background-color: #333333;
   width: 100%;
+}
+
+.header-item {
+  margin: 20px;
+
 }

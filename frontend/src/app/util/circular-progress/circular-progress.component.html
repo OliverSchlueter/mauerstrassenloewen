@@ -1,0 +1,18 @@
+
+<svg width="120" height="120" viewBox="0 0 120 120">
+  <circle cx="60" cy="60" r="54" fill="none" stroke="#eee" stroke-width="12"/>
+  <circle
+    cx="60"
+    cy="60"
+    r="54"
+    fill="none"
+    stroke="#"
+    stroke-width="12"
+    [attr.stroke-dasharray]="circumference"
+    [attr.stroke-dashoffset]="circumference - progress / 100 * circumference"
+    transform="rotate(-90 60 60)"
+  />
+  <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="20">
+    {{ progress }}%
+  </text>
+</svg>
