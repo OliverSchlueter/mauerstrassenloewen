@@ -7,7 +7,7 @@ html {
   @include mat.theme((
     color: (
       theme-type: dark,
-      primary: mat.$azure-palette,
+      primary: mat.$orange-palette,
       tertiary: mat.$blue-palette,
     ),
     typography: Roboto,
@@ -24,9 +24,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
 .mat-toolbar,
 .mat-form-field,
 .mat-dialog-container {
-  background-color: #333333 !important; // ein helles Grau
+  background-color: #333333 !important;
 }
 
 $costum-green: #4caf50;
 $costum-red: #f44336;
-$global-background: #333333;
+$global-background: #151515;
+$global-surface: #333333;
+$primary-color: #bc5d00;
