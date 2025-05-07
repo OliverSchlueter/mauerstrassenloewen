@@ -37,6 +37,102 @@ paths:
         '500':
           description: Internal server error
 
+  /msl/api/v1/user:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Bad request
+        '409':
+          description: User already exists
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+      tags:
+        - Users
+
+  /msl/api/v1/user/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      tags:
+        - Users
+
+    put:
+      summary: Update user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '204':
+          description: User updated successfully
+        '400':
+          description: Bad request
+        '404':
+          description: User not found
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+      tags:
+        - Users
+
+    delete:
+      summary: Delete user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: User deleted successfully
+        '400':
+          description: Bad request
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+      tags:
+        - Users
+
   /simulation/api/v1/simulation:
     post:
       summary: Create simulation
@@ -137,6 +233,63 @@ components:
         result:
           type: string
           example: 'The top 10 tech stocks are: ...'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        e_mail:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        last_name:
+          type: string
+        first_name:
+          type: string
+        date_of_birth:
+          type: string
+          format: date-time
+        place_of_birth:
+          type: string
+        marital_status:
+          type: string
+        profession:
+          type: string
+        citizenship:
+          type: string
+        degree:
+          type: string
+        salary_per_month:
+          type: number
+          format: float
+        assets:
+          type: string
+        self_employed:
+          type: boolean
+        trading_budget_per_month:
+          type: number
+          format: float
+        has_trading_experience:
+          type: boolean
+        trading_experience:
+          type: string
+        knowledge_in_trading:
+          type: string
+        motivation:
+          type: string
+        exclude_companies:
+          type: string
+        risk_taking:
+          type: integer
+        preferences:
+          type: string
+      required:
+        - e_mail
+        - password
+        - last_name
+        - first_name
     CreateOrUpdateSimulationRequest:
       type: object
       properties:
