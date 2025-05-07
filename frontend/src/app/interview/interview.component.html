@@ -1,0 +1,47 @@
+<mat-card class="mat-card">
+  <mat-vertical-stepper class="stepper">
+    <mat-step>
+      <ng-template matStepLabel>Personal Information</ng-template>
+      <div class="step-container">
+
+        <mat-form-field>
+          <mat-label>Surname</mat-label>
+          <input matInput [(ngModel)]="user!.profile!.surname" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="user!.profile!.name" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Birthdate</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="user!.profile!.birthdate">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Profession</mat-label>
+          <input matInput [(ngModel)]="user!.profile!.profession" required>
+        </mat-form-field>
+        <mat-select>
+          <mat-option value="'Employed'">Employed</mat-option>
+          <mat-option value="'Self-Employed'">Self-Employed</mat-option>
+        </mat-select>
+
+      </div>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Step 2</ng-template>
+      <p>Step 2 content goes here.</p>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Step 7</ng-template>
+      <p>Step 7 content goes here.</p>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="save()">Save</button>
+    </mat-step>
+  </mat-vertical-stepper>
+</mat-card>
