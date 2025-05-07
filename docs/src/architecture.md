@@ -17,6 +17,8 @@ To get the reasons for each decision, please read the [Architecture Decision Rec
 
 ![Architecture Overview](static/architecture_overview.png)
 
+*You can find the exported excalidraw file [here](static/architecture.excalidraw).*
+
 ## Services
 
 Now let's take a look at the services we have in our architecture.
