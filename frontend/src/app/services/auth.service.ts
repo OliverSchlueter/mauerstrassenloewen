@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {User} from '../models/User';
+import {Profile} from '../models/Profile';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
         id: "1",
         name: name,
         email: 'testmail@gmail.com',
-        password: password
+        password: password,
+        profile: new Profile()
       }
       return true;
     }
