@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatCard} from "@angular/material/card";
 import {MatFormField, MatHint, MatInput, MatLabel} from "@angular/material/input";
@@ -7,6 +7,7 @@ import {User} from '../models/User';
 import {FormsModule} from '@angular/forms';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatOption, MatSelect} from '@angular/material/select';
+import {Profile} from '../models/Profile';
 
 @Component({
   selector: 'app-interview',
@@ -33,13 +34,27 @@ import {MatOption, MatSelect} from '@angular/material/select';
   templateUrl: './interview.component.html',
   styleUrl: './interview.component.scss'
 })
-export class InterviewComponent {
-  @Input() user!: User;
+export class InterviewComponent implements OnInit{
+  @Input() user: User | undefined;
+  userprofile: Profile = new Profile()
 
   constructor() {
   }
 
-  save() {
+  ngOnInit() {
+    if(this.user) {
+      this.userprofile = this.user.profile;
+    }
+  }
 
+  save() {
+    if(this.user) {
+      this.user.profile = this.userprofile;
+    }
+    else {
+      this.user = new User();
+      this.user.profile = this.userprofile;
+    }
+    console.log(this.user)
   }
 }
