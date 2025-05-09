@@ -34,8 +34,14 @@ func (s *Store) Middleware(next http.Handler) http.Handler {
 		}
 
 		if len(user) == 0 && len(password) == 0 {
-			if !s.IsAuthUserValid(user, password) {
-				slog.Warn("Auth user is not valid")
+			valid, err := s.IsAuthUserValid(r.Context(), user, password)
+			if err != nil {
+				slog.Warn("Could not check auth user", sloki.WrapError(err))
+				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+				return
+			}
+
+			if !valid {
 				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 				return
 			}
@@ -47,8 +53,16 @@ func (s *Store) Middleware(next http.Handler) http.Handler {
 			return
 		}
 
-		if !s.IsAuthTokenValid(token) {
+		valid, err := s.IsAuthTokenValid(r.Context(), token)
+		if err != nil {
+			slog.Warn("Could not check auth token", sloki.WrapError(err))
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			return
+		}
+
+		if !valid {
+			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			return
 		}
 
 		next.ServeHTTP(w, r)
