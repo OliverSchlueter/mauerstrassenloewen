@@ -16,32 +16,30 @@ export class Profile {
   startingCapital: string = '';
   monthlyInvestment: string = '';
 
-  // Trading Preferences
+  // Commitment and Experience
   preferredMarkets: ('Stocks' | 'ETFs' | 'Crypto' | 'Forex' | 'Commodities' | 'Options' | 'Futures' | 'CFDs')[] = [];
   toolsPlatforms: string = '';
   weeklyTimeCommitment: string = '';
 
-  // Experience and Knowledge
   tradingExperience: 'None' | 'Beginner' | 'Intermediate' | 'Expert' | '' = '';
   chartAnalysisKnowledge: 'None' | 'Basic' | 'Advanced' | 'Expert' | '' = '';
   fundamentalAnalysisKnowledge: 'None' | 'Basic' | 'Advanced' | 'Expert' | '' = '';
   certifications: string = '';
 
   // Psychological Profile
-  riskType: 'Risk-Taking' | 'Balanced' | 'Cautious' | '' = '';
+  riskAffinity: number | null = null;
   lossBehavior: string = '';
-  discipline: string = '';
-  tradingJournal: boolean | null = null;
   stressTolerance: 'High' | 'Medium' | 'Low' | '' = '';
 
   // Ethics and Values
-  esgPreferences: 'Important' | 'Neutral' | 'Unimportant' | '' = '';
+  esgPreferences: 'Important' | 'Medium' | 'Unimportant' | '' = '';
   exclusionCriteria: string = '';
-  politicalInvesting: boolean | null = null;
+  excludePoliticalInvesting: boolean | null = null;
   religiousRestrictions: string = '';
 
   // Technical Setup
-  bookkeeping: 'Excel' | 'Trading Journal Software' | 'None' | '' = '';
+  tradingJournal: boolean | null = null;
+  informationManagement: 'Excel' | 'Trading Journal Software' | 'None' | '' = '';
   availableTech: string = '';
 }
 
