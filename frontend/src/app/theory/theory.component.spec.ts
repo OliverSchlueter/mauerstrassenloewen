@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TheoryComponent } from './theory.component';
+import { OverlayComponent } from './overlay/overlay.component';
 
 describe('TheoryComponent', () => {
   let component: TheoryComponent;
@@ -8,9 +8,8 @@ describe('TheoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TheoryComponent]
-    })
-    .compileComponents();
+      declarations: [TheoryComponent, OverlayComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TheoryComponent);
     component = fixture.componentInstance;

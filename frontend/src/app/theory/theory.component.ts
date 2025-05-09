@@ -1,25 +1,17 @@
+
 import { Component } from '@angular/core';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { OverlayComponent } from './overlay/overlay.component';
+import { MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-theory',
-  templateUrl: './theory.component.html',
-  styleUrl: './theory.component.scss',
-  standalone: true,
+  standalone: true,        
   imports: [
-    MatCard,
-    MatCardContent,
-    MatExpansionModule
+    CommonModule,
+    OverlayComponent,      
   ],
+  templateUrl: './theory.component.html',
+  styleUrls: ['./theory.component.scss']
 })
-
-export class TheoryComponent {
-  constructor(private router: Router) {}
-
-  navigate(path: string) {
-    this.router.navigate([path]);
-  }
-}
+export class TheoryComponent { }
