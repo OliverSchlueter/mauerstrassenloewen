@@ -1,26 +1,25 @@
 import { Component } from '@angular/core';
-import {MatCard, MatCardContent} from '@angular/material/card';
-import {MatButton} from '@angular/material/button';
-import {AuthService} from '../services/auth.service';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-theory',
+  templateUrl: './theory.component.html',
+  styleUrl: './theory.component.scss',
+  standalone: true,
   imports: [
     MatCard,
     MatCardContent,
-    MatButton
+    MatExpansionModule
   ],
-  templateUrl: './theory.component.html',
-  standalone: true,
-  styleUrl: './theory.component.scss'
 })
+
 export class TheoryComponent {
+  constructor(private router: Router) {}
 
-
-  constructor(private authService: AuthService) {
-  }
-
-  doSth() {
-
+  navigate(path: string) {
+    this.router.navigate([path]);
   }
 }

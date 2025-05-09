@@ -1,7 +1,40 @@
 <div class="flex-container">
-    <mat-card class="mat-card">
-      <mat-card-content>
-        <button (click)="doSth()" mat-flat-button>do sth</button>
-      </mat-card-content>
-    </mat-card>
+  <mat-card class="mat-card">
+    <mat-card-content>
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            Anfänger
+          </mat-expansion-panel-header>
+          <div class="button-container">
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/anfanger/lektion1')">Lektion 1</button>
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/anfanger/lektion2')">Lektion 2</button>
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/anfanger/lektion3')">Lektion 3</button>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            Fortgeschritten
+          </mat-expansion-panel-header>
+          <div class="button-container">
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/fortgeschritten/lektion1')">Lektion 1</button>
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/fortgeschritten/lektion2')">Lektion 2</button>
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/fortgeschritten/lektion3')"><div class="test">Lektion</div></button>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            Experte
+          </mat-expansion-panel-header>
+          <div class="button-container">
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/experte/lektion1')">Lektion 1</button>
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/experte/lektion2')">Lektion 2</button>
+            <button mat-stroked-button class="lesson-button" (click)="navigate('/experte/lektion3')">Lektion 3</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
+  </mat-card>
 </div>

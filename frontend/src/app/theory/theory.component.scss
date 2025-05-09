@@ -1,10 +1,31 @@
+
+/* SCSS (theory.component.scss) */
 .flex-container {
   display: flex;
   justify-content: center;
+  padding: 20px;
 }
 
 .mat-card {
-  background-color: #333333;
-  width: 200px;
-  height: 300px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.lesson-button {
+  border-radius: 8px;
+  padding: 8px;
+  text-transform: none;
+  background-color: rgb(52, 63, 63);
+}
+
+.lesson-button:hover {
+  background-color: #3f51b5;
+  color: white;
 }
