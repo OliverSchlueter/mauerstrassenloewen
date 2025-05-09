@@ -66,8 +66,7 @@ func (s *Store) Middleware(next http.Handler) http.Handler {
 			return
 		}
 
-		r.WithContext(writeUser(r.Context(), u))
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(w, r.WithContext(writeUser(r.Context(), u)))
 	})
 }
 
