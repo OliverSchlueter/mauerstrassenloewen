@@ -24,11 +24,11 @@ type Profile struct {
 	PrimaryGoal                  string    `json:"primaryGoal" bson:"primaryGoal"`
 	TimeHorizon                  string    `json:"timeHorizon" bson:"timeHorizon"`
 	StartingCapital              string    `json:"startingCapital" bson:"startingCapital"`
-	MonthlyInvestment            string    `json:"monthlyInvestmentn" bson:"monthlyInvestment"`
+	MonthlyInvestment            string    `json:"monthlyInvestment" bson:"monthlyInvestment"`
 	AnnualProfitTarget           string    `json:"annualProfitTarget" bson:"annualProfitTarget"`
 	PreferredMarkets             string    `json:"preferredMarkets" bson:"preferredMarkets"`
 	ToolsPlatforms               string    `json:"toolsPlatforms" bson:"toolsPlatforms"`
-	WeekyTimeCommitment          string    `json:"weekyTimeCommitment" bson:"weekyTimeCommitmenty"`
+	WeeklyTimeCommitment         string    `json:"weeklyTimeCommitment" bson:"weeklyTimeCommitment"`
 	TradingExperience            string    `json:"tradingExperience" bson:"tradingExperience"`
 	PastPerformance              string    `json:"pastPerformance" bson:"pastPerformance"`
 	ChartAnalysisKnowledge       string    `json:"chartAnalysisKnowledge" bson:"chartAnalysisKnowledge"`
@@ -47,5 +47,5 @@ type Profile struct {
 	TaxSituation                 string    `json:"taxSituation" bson:"taxSituation"`
 	Bookkeeping                  string    `json:"bookkeeping" bson:"bookkeeping"`
 	AutomationInterest           bool      `json:"automationInterest" bson:"automationInterest"`
-	AvailabeTech                 string    `json:"availabeTech" bson:"availabeTech"`
+	AvailableTech                string    `json:"availableTech" bson:"availableTech"`
 }

@@ -133,6 +133,74 @@ paths:
       tags:
         - Users
 
+  /msl/api/v1/auth-token:
+    get:
+      summary: Get auth tokens for current user
+      operationId: getUserTokens
+      responses:
+        '200':
+          description: List of tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Token'
+        '400':
+          description: Bad Request - Accept header must be application/json
+        '500':
+          description: Internal Server Error
+      parameters:
+        - in: header
+          name: Accept
+          required: true
+          schema:
+            type: string
+            enum: [application/json]
+      tags:
+        - Auth
+    post:
+      summary: Create a new auth token for current user
+      responses:
+        '201':
+          description: Token created
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad Request - Accept header must be text/plain
+        '500':
+          description: Internal Server Error
+      parameters:
+        - in: header
+          name: Accept
+          required: true
+          schema:
+            type: string
+            enum: [text/plain]
+      tags:
+        - Auth
+
+  /msl/api/v1/auth-token/{tokenid}:
+    delete:
+      summary: Delete a specific auth token
+      parameters:
+        - name: tokenid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Token deleted
+        '403':
+          description: Forbidden - Token does not belong to the user
+        '500':
+          description: Internal Server Error
+      tags:
+        - Auth
+
   /simulation/api/v1/simulation:
     post:
       summary: Create simulation
@@ -290,6 +358,18 @@ components:
         - password
         - last_name
         - first_name
+    Token:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        hash:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
     CreateOrUpdateSimulationRequest:
       type: object
       properties:

@@ -4,36 +4,56 @@
       <ng-template matStepLabel>Personal Information</ng-template>
       <div class="step-container">
 
-        <mat-form-field>
+        <mat-form-field class="mat-form-field">
           <mat-label>Surname</mat-label>
           <input matInput [(ngModel)]="userprofile.surname" required>
+          <mat-error>required</mat-error>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field class="mat-form-field">
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="userprofile.name" required>
+          <mat-error>required</mat-error>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field class="mat-form-field">
           <mat-label>Birthdate</mat-label>
-          <input matInput [matDatepicker]="picker" [(ngModel)]="userprofile.birthdate">
-          <mat-hint>MM/DD/YYYY</mat-hint>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="userprofile.birthdate" placeholder="MM/DD/YYYY">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Profession</mat-label>
-          <input matInput [(ngModel)]="userprofile.profession" required>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Country</mat-label>
+          <input matInput [(ngModel)]="userprofile.country">
         </mat-form-field>
-        <mat-select [(ngModel)]="userprofile.employmentStatus">
-          <mat-option value="'Employed'">Employed</mat-option>
-          <mat-option value="'Self-Employed'">Self-Employed</mat-option>
-        </mat-select>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Marital Status</mat-label>
+          <input matInput [(ngModel)]="userprofile.maritalStatus">
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>financial Obligations</mat-label>
+          <input matInput [(ngModel)]="userprofile.financialObligations">
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Profession</mat-label>
+          <input matInput [(ngModel)]="userprofile.profession">
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Employment Status</mat-label>
+          <mat-select [(ngModel)]="userprofile.employmentStatus" >
+            <mat-option value="'Employed'">Employed</mat-option>
+            <mat-option value="'Self-Employed'">Self-Employed</mat-option>
+          </mat-select>
+        </mat-form-field>
 
       </div>
       <button mat-button matStepperNext>Next</button>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Step 2</ng-template>
-      <p>Step 2 content goes here.</p>
+      <ng-template matStepLabel>Goals and Objectives</ng-template>
+      <div class="step-container">
+
+
+
+      </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </mat-step>
