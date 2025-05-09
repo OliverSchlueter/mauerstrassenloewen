@@ -37,10 +37,8 @@ func (s *Store) GetUser(ctx context.Context, id string) (*User, error) {
 func (s *Store) CreateUser(ctx context.Context, user *User) error {
 	user.ID = uuid.NewString()
 	//TODO: Mailabfrage implementieren
-	//TODO: Pflichtfelderprüfung implementierern
 
 	if err := validateUser(user); err != nil {
-		//TODO: Ist Userobjekt richtig angelegt?
 		return err
 	}
 
@@ -63,6 +61,14 @@ func (s *Store) DeleteUser(ctx context.Context, id string) error {
 
 func validateUser(user *User) error {
 
+	if user.Name == "" {
+		return errors.New("name is required")
+	}
+
+	if user.Email == "" {
+		return errors.New("email is required")
+	}
+
 	if err := validatePassword(user.Password, user.Name); err != nil {
 		return err
 	}
@@ -71,6 +77,11 @@ func validateUser(user *User) error {
 }
 
 func validatePassword(password string, firstName string) error {
+
+	if strings.TrimSpace(password) == "" {
+		return errors.New("password can't be empty")
+	}
+
 	if len(password) < 8 {
 		return errors.New("password must be at least 8 characters long")
 	}
