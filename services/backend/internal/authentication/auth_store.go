@@ -17,3 +17,7 @@ func NewStore(cfg StoreConfiguration) *Store {
 func (s *Store) IsAuthTokenValid(token string) bool {
 	return token == s.globalToken
 }
+
+func (s *Store) IsAuthUserValid(user, password string) bool {
+	return user == "admin" && password == "admin"
+}
