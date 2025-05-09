@@ -26,10 +26,16 @@
         </mat-form-field>
         <mat-form-field class="mat-form-field">
           <mat-label>Marital Status</mat-label>
-          <input matInput [(ngModel)]="userprofile.maritalStatus">
+          <mat-select [(ngModel)]="userprofile.maritalStatus">
+            <mat-option value="'Single'">Single</mat-option>
+            <mat-option value="'Married'">Married</mat-option>
+            <mat-option value="'With Children'">With Children</mat-option>
+            <mat-option value="'Single Parent'">Single Parent</mat-option>
+            <mat-option value="'Other'">Other</mat-option>
+          </mat-select>
         </mat-form-field>
         <mat-form-field class="mat-form-field">
-          <mat-label>financial Obligations</mat-label>
+          <mat-label>Financial Obligations</mat-label>
           <input matInput [(ngModel)]="userprofile.financialObligations">
         </mat-form-field>
         <mat-form-field class="mat-form-field">
@@ -51,15 +57,123 @@
       <ng-template matStepLabel>Goals and Objectives</ng-template>
       <div class="step-container">
 
-
+        <mat-form-field class="mat-form-field">
+          <mat-label>Primary Goal</mat-label>
+          <mat-select [(ngModel)]="userprofile.primaryGoal" >
+            <mat-option value="'Wealth Building'">Wealth Building</mat-option>
+            <mat-option value="'Side Income'">Side Income</mat-option>
+            <mat-option value="'Financial Freedom'">Financial Freedom</mat-option>
+            <mat-option value="'Retirement Planning'">Retirement Planning</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Time Horizon</mat-label>
+          <mat-select [(ngModel)]="userprofile.timeHorizon" >
+            <mat-option value="'Short Term'">Short Term</mat-option>
+            <mat-option value="'Medium Term'">Medium Term</mat-option>
+            <mat-option value="'Long Term'">Long Term</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Starting Capital</mat-label>
+          <input matInput [(ngModel)]="userprofile.startingCapital" placeholder="00.00">
+          <span matTextSuffix>$</span>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Monthly Investment</mat-label>
+          <input matInput [(ngModel)]="userprofile.monthlyInvestment" placeholder="00.00">
+          <span matTextSuffix>$</span>
+        </mat-form-field>
 
       </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Step 7</ng-template>
-      <p>Step 7 content goes here.</p>
+      <ng-template matStepLabel>Trading Preferences</ng-template>
+      <div class="step-container">
+
+        <mat-form-field class="mat-form-field">
+          <mat-label>Primary Goal</mat-label>
+          <mat-select [(ngModel)]="userprofile.preferredMarkets" multiple>
+            <mat-option value="'Stocks'">Stocks</mat-option>
+            <mat-option value="'ETFs'">ETFs</mat-option>
+            <mat-option value="'Crypto'">Crypto</mat-option>
+            <mat-option value="'Forex'">Forex</mat-option>
+            <mat-option value="'Commodities'">Commodities</mat-option>
+            <mat-option value="'Options'">Options</mat-option>
+            <mat-option value="'Futures'">Futures</mat-option>
+            <mat-option value="'CFDs'">CFDs</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Tools and Platforms</mat-label>
+          <input matInput [(ngModel)]="userprofile.toolsPlatforms">
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Weekly Time Commitment</mat-label>
+          <input matInput [(ngModel)]="userprofile.weeklyTimeCommitment" placeholder="00.00">
+          <span matTextSuffix>h</span>
+        </mat-form-field>
+
+      </div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Experience and Knowledge</ng-template>
+      <div class="step-container">
+        <mat-form-field class="mat-form-field">
+          <mat-label>Trading Experience</mat-label>
+          <mat-select [(ngModel)]="userprofile.tradingExperience">
+            <mat-option value="None">None</mat-option>
+            <mat-option value="Beginner">Beginner</mat-option>
+            <mat-option value="Advanced">Advanced</mat-option>
+            <mat-option value="Expert">Expert</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Chart Analysis Knowledge</mat-label>
+          <mat-select [(ngModel)]="userprofile.chartAnalysisKnowledge">
+            <mat-option value="None">None</mat-option>
+            <mat-option value="Beginner">Beginner</mat-option>
+            <mat-option value="Advanced">Advanced</mat-option>
+            <mat-option value="Expert">Expert</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Fundamental Analysis Knowledge</mat-label>
+          <mat-select [(ngModel)]="userprofile.fundamentalAnalysisKnowledge">
+            <mat-option value="None">None</mat-option>
+            <mat-option value="Beginner">Beginner</mat-option>
+            <mat-option value="Advanced">Advanced</mat-option>
+            <mat-option value="Expert">Expert</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Certifications</mat-label>
+          <input matInput [(ngModel)]="userprofile.certifications">
+        </mat-form-field>
+      </div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel></ng-template>
+      <div class="step-container">
+
+      </div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+
+
+    <mat-step>
+      <ng-template matStepLabel>Final Step</ng-template>
+      <div class="step-container">
+        final step
+      </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="save()">Save</button>
     </mat-step>

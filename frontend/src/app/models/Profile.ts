@@ -11,11 +11,10 @@ export class Profile {
   financialObligations: string = '';
 
   // Goals and Objectives
-  primaryGoal: 'Wealth Building' | 'Side Income' | 'Financial Freedom' | 'Retirement Planning' | 'Speculation' | '' = '';
+  primaryGoal: 'Wealth Building' | 'Side Income' | 'Financial Freedom' | 'Retirement Planning' | '' = '';
   timeHorizon: 'Short-Term' | 'Medium-Term' | 'Long-Term' | '' = '';
   startingCapital: string = '';
   monthlyInvestment: string = '';
-  annualProfitTarget: string = '';
 
   // Trading Preferences
   preferredMarkets: ('Stocks' | 'ETFs' | 'Crypto' | 'Forex' | 'Commodities' | 'Options' | 'Futures' | 'CFDs')[] = [];
@@ -23,8 +22,7 @@ export class Profile {
   weeklyTimeCommitment: string = '';
 
   // Experience and Knowledge
-  tradingExperience: 'Beginner' | 'Intermediate' | 'Expert' | '' = '';
-  pastPerformance: string = '';
+  tradingExperience: 'None' | 'Beginner' | 'Intermediate' | 'Expert' | '' = '';
   chartAnalysisKnowledge: 'None' | 'Basic' | 'Advanced' | 'Expert' | '' = '';
   fundamentalAnalysisKnowledge: 'None' | 'Basic' | 'Advanced' | 'Expert' | '' = '';
   certifications: string = '';
