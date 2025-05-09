@@ -55,22 +55,6 @@ func (db *DB) GetAuthToken(ctx context.Context, tokenID string) (*authentication
 	return &token, nil
 }
 
-func (db *DB) DeleteAuthToken(ctx context.Context, tokenID string) error {
-	filter := bson.D{
-		{"tokenId", tokenID},
-	}
-
-	_, err := db.coll.DeleteOne(ctx, filter)
-	if err != nil {
-		if errors.Is(err, mongo.ErrNoDocuments) {
-			return nil
-		}
-		return fmt.Errorf("could not delete auth token: %w", err)
-	}
-
-	return nil
-}
-
 func (db *DB) GetAuthTokensByUserID(ctx context.Context, userID string) ([]authentication.Token, error) {
 	filter := bson.D{
 		{"userId", userID},
@@ -87,4 +71,41 @@ func (db *DB) GetAuthTokensByUserID(ctx context.Context, userID string) ([]authe
 		return nil, fmt.Errorf("could not decode auth tokens: %w", err)
 	}
 	return tokens, nil
+}
+
+func (db *DB) GetTokenByHash(ctx context.Context, hash string) (*authentication.Token, error) {
+	filter := bson.D{
+		{"hash", hash},
+	}
+
+	res := db.coll.FindOne(ctx, filter)
+	if res.Err() != nil {
+		if errors.Is(res.Err(), mongo.ErrNoDocuments) {
+			return nil, authentication.ErrTokenNotFound
+		}
+		return nil, fmt.Errorf("could not find auth token: %w", res.Err())
+	}
+
+	var token authentication.Token
+	if err := res.Decode(&token); err != nil {
+		return nil, fmt.Errorf("could not decode auth token: %w", err)
+	}
+
+	return &token, nil
+}
+
+func (db *DB) DeleteAuthToken(ctx context.Context, tokenID string) error {
+	filter := bson.D{
+		{"tokenId", tokenID},
+	}
+
+	_, err := db.coll.DeleteOne(ctx, filter)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil
+		}
+		return fmt.Errorf("could not delete auth token: %w", err)
+	}
+
+	return nil
 }
