@@ -137,6 +137,8 @@ func (h *Handler) handleUpdateUser(w http.ResponseWriter, r *http.Request, userI
 		return
 	}
 
+	req.ID = userID
+
 	err := h.store.UpdateUser(r.Context(), &req)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserNotFound) {
