@@ -14,12 +14,14 @@ type DB struct {
 }
 
 type Configuration struct {
-	Coll *mongo.Collection
+	DB *mongo.Database
 }
 
 func NewDB(cfg Configuration) *DB {
+	coll := cfg.DB.Collection("auth_tokens")
+
 	return &DB{
-		coll: cfg.Coll,
+		coll: coll,
 	}
 }
 

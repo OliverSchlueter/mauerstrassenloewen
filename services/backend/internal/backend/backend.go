@@ -3,6 +3,8 @@ package backend
 import (
 	_ "embed"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication/authhandler"
+	amongo "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication/database/mongo"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	ch "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot/handler"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
@@ -22,18 +24,7 @@ type Configuration struct {
 }
 
 func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handler) {
-	chatbotService := chatbot.NewService(chatbot.Configuration{
-		Nats: cfg.Nats,
-	})
-	chatbotHandler := ch.NewHandler(ch.Configuration{
-		Service: chatbotService,
-	})
-	chatbotHandler.Register(cfg.Mux, apiPrefix)
-
-	authStore := authentication.NewStore(authentication.StoreConfiguration{
-		GlobalToken: "GlobalToken",
-	})
-
+	// User Management
 	umdb := ummongo.NewDB(&ummongo.Configuration{
 		Mongo: cfg.MongoDB,
 	})
@@ -45,5 +36,29 @@ func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handl
 	})
 	umh.Register(cfg.Mux, apiPrefix)
 
-	return authStore.Middleware
+	// Authentication
+	adb := amongo.NewDB(amongo.Configuration{
+		DB: cfg.MongoDB,
+	})
+	as := authentication.NewStore(authentication.StoreConfiguration{
+		DB:          adb,
+		UM:          ums,
+		GlobalToken: "GlobalToken",
+	})
+	ah := authhandler.NewHandler(authhandler.Configuration{
+		Store:   as,
+		GetUser: authentication.UserFromCtx,
+	})
+	ah.Register(cfg.Mux, apiPrefix)
+
+	// Chatbot
+	chatbotService := chatbot.NewService(chatbot.Configuration{
+		Nats: cfg.Nats,
+	})
+	chatbotHandler := ch.NewHandler(ch.Configuration{
+		Service: chatbotService,
+	})
+	chatbotHandler.Register(cfg.Mux, apiPrefix)
+
+	return as.Middleware
 }
