@@ -24,7 +24,7 @@ var (
 func (s *Store) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
-		if !strings.HasPrefix(path, "/api") {
+		if !strings.HasPrefix(path, "/api") || strings.HasPrefix(path, "/api/v1/user/register") || strings.HasPrefix(path, "/api/v1/user/login") {
 			next.ServeHTTP(w, r)
 			return
 		}
