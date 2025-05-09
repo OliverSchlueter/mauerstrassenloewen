@@ -6,6 +6,7 @@ import {AuthService} from '../../../services/auth.service';
   selector: 'app-account-landing',
   imports: [],
   templateUrl: './account-landing.component.html',
+  standalone: true,
   styleUrl: './account-landing.component.scss'
 })
 export class AccountLandingComponent implements OnInit{

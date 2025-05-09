@@ -1,4 +1,5 @@
 <div class="header-container">
   <h1 class="header-item" (click)="goHome()">Mauerstrassenloewen</h1>
+  <button *ngIf="isLoggedIn()" class="header-item" (click)="goTheory()" mat-button>Theory</button>
   <button *ngIf="isLoggedIn()" class="header-item" (click)="goAccount()" mat-button>Account</button>
 </div>

@@ -6,8 +6,7 @@ export class Profile {
   birthdate: Date | null = null;
   profession: string = '';
   employmentStatus: 'Employed' | 'Self-Employed' | 'Entrepreneur' | 'Job-Seeking' | 'Student' | 'Retired' | '' = '';
-  workHoursFlexibility: string = '';
-  residence: string = '';
+  country: string = '';
   maritalStatus: 'Single' | 'Married' | 'With Children' | 'Single Parent' | 'Other' | '' = '';
   financialObligations: string = '';
 
@@ -44,10 +43,7 @@ export class Profile {
   religiousRestrictions: string = '';
 
   // Technical Setup
-  brokerFeesModel: string = '';
-  taxSituation: string = '';
   bookkeeping: 'Excel' | 'Trading Journal Software' | 'None' | '' = '';
-  automationInterest: boolean | null = null;
   availableTech: string = '';
 }
 

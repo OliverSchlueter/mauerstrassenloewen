@@ -22,6 +22,7 @@ import {NgIf} from '@angular/common';
     NgIf
   ],
   templateUrl: './login.component.html',
+  standalone: true,
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {

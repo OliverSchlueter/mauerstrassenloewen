@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-account-settings',
   imports: [],
   templateUrl: './account-settings.component.html',
+  standalone: true,
   styleUrl: './account-settings.component.scss'
 })
 export class AccountSettingsComponent {

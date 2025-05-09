@@ -17,6 +17,7 @@ import {CircularProgressComponent} from '../util/circular-progress/circular-prog
     CircularProgressComponent
   ],
   templateUrl: './home.component.html',
+  standalone: true,
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
