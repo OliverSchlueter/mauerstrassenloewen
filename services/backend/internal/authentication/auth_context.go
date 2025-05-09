@@ -1,18 +1,21 @@
 package authentication
 
-import "context"
+import (
+	"context"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
+)
 
-type authenticatedContextKey struct{}
+type userContextKey struct{}
 
-func writeIsAuthenticated(ctx context.Context) context.Context {
-	return context.WithValue(ctx, authenticatedContextKey{}, true)
+func writeUser(ctx context.Context, u *usermanagement.User) context.Context {
+	return context.WithValue(ctx, userContextKey{}, u)
 }
 
-func IsAuthenticated(ctx context.Context) bool {
-	v := ctx.Value(authenticatedContextKey{})
+func UserFromCtx(ctx context.Context) *usermanagement.User {
+	v := ctx.Value(userContextKey{})
 	if v == nil {
-		return false
+		return nil
 	}
 
-	return v.(bool)
+	return v.(*usermanagement.User)
 }

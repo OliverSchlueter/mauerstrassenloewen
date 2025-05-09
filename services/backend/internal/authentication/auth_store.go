@@ -25,23 +25,31 @@ func NewStore(cfg StoreConfiguration) *Store {
 	}
 }
 
-func (s *Store) IsAuthTokenValid(ctx context.Context, token string) (bool, error) {
-	return token == s.globalToken, nil
+func (s *Store) IsAuthTokenValid(ctx context.Context, token string) (*usermanagement.User, error) {
+	if token != s.globalToken {
+		return nil, nil
+	}
+
+	return &usermanagement.User{
+		ID:    "global-user",
+		Name:  "Global User",
+		Email: "globaluser@msl.de",
+	}, nil
 }
 
-func (s *Store) IsAuthUserValid(ctx context.Context, user, password string) (bool, error) {
+func (s *Store) IsAuthUserValid(ctx context.Context, user, password string) (*usermanagement.User, error) {
 	u, err := s.um.GetUser(ctx, user)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserNotFound) {
-			return false, nil
+			return nil, nil
 		}
 
-		return false, fmt.Errorf("could not get user: %w", err)
+		return nil, fmt.Errorf("could not get user: %w", err)
 	}
 
 	if u.Password != hashing.SHA256(password) {
-		return false, nil
+		return nil, nil
 	}
 
-	return user == "admin" && password == "admin", nil
+	return u, nil
 }

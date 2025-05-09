@@ -2,6 +2,7 @@ package authentication
 
 import (
 	"errors"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"log/slog"
 	"net/http"
@@ -10,13 +11,13 @@ import (
 
 const (
 	authTokenHeader    = "X-Auth-Token"
-	authUserHeader     = "X-Auth-User"
+	authUserHeader     = "X-Auth-Username"
 	authPasswordHeader = "X-Auth-Password"
 )
 
 var (
 	ErrMissingAuthToken    = errors.New("missing auth token")
-	ErrMissingAuthUser     = errors.New("missing auth user")
+	ErrMissingAuthUsername = errors.New("missing auth username")
 	ErrMissingAuthPassword = errors.New("missing auth password")
 )
 
@@ -28,54 +29,55 @@ func (s *Store) Middleware(next http.Handler) http.Handler {
 			return
 		}
 
-		user, password, err := getUserAndPassword(&r.Header)
+		// Try username and password from the header
+		username, password, err := getUsernameAndPasswordFromHeader(&r.Header)
 		if err != nil {
 			slog.Warn("Could not get auth user and password from header", sloki.WrapError(err))
 		}
 
-		if len(user) == 0 && len(password) == 0 {
-			valid, err := s.IsAuthUserValid(r.Context(), user, password)
+		var u *usermanagement.User
+		if len(username) > 0 && len(password) > 0 {
+			u, err = s.IsAuthUserValid(r.Context(), username, password)
 			if err != nil {
 				slog.Warn("Could not check auth user", sloki.WrapError(err))
 				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 				return
 			}
+		}
 
-			if !valid {
+		// Try to get the user from the auth token
+		if u == nil {
+			token, err := getAuthTokenFromHeader(&r.Header)
+			if err != nil {
+				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+				return
+			}
+
+			u, err = s.IsAuthTokenValid(r.Context(), token)
+			if err != nil {
+				slog.Warn("Could not check auth token", sloki.WrapError(err))
 				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 				return
 			}
 		}
 
-		token, err := getAuthTokenFromHeader(&r.Header)
-		if err != nil {
+		if u == nil {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
 
-		valid, err := s.IsAuthTokenValid(r.Context(), token)
-		if err != nil {
-			slog.Warn("Could not check auth token", sloki.WrapError(err))
-			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-
-		if !valid {
-			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
-			return
-		}
-
+		r.WithContext(writeUser(r.Context(), u))
 		next.ServeHTTP(w, r)
 	})
 }
 
-func getUserAndPassword(h *http.Header) (user, password string, err error) {
-	user, err = getAuthUserFromHeader(h)
+func getUsernameAndPasswordFromHeader(h *http.Header) (username, password string, err error) {
+	username, err = getAuthUsernameFromHeader(h)
 	if err != nil {
-		if errors.Is(err, ErrMissingAuthUser) {
+		if errors.Is(err, ErrMissingAuthUsername) {
 			return "", "", nil
 		} else {
-			slog.Warn("Could not get auth user from header", sloki.WrapError(err))
+			slog.Warn("Could not get auth username from header", sloki.WrapError(err))
 		}
 	}
 
@@ -88,7 +90,7 @@ func getUserAndPassword(h *http.Header) (user, password string, err error) {
 		}
 	}
 
-	return user, password, nil
+	return username, password, nil
 }
 
 func getAuthTokenFromHeader(h *http.Header) (string, error) {
@@ -100,13 +102,13 @@ func getAuthTokenFromHeader(h *http.Header) (string, error) {
 	return token, nil
 }
 
-func getAuthUserFromHeader(h *http.Header) (string, error) {
-	user := h.Get(authUserHeader)
-	if user == "" {
-		return "", ErrMissingAuthUser
+func getAuthUsernameFromHeader(h *http.Header) (string, error) {
+	username := h.Get(authUserHeader)
+	if username == "" {
+		return "", ErrMissingAuthUsername
 	}
 
-	return user, nil
+	return username, nil
 }
 
 func getAuthPasswordFromHeader(h *http.Header) (string, error) {
