@@ -26,8 +26,8 @@ func NewDB(config *Configuration) *DB {
 }
 
 func (db *DB) GetUserByID(ctx context.Context, id string) (*usermanagement.User, error) {
-	res := db.coll.FindOne(ctx, usermanagement.User{
-		ID: id,
+	res := db.coll.FindOne(ctx, bson.D{
+		{"user_id", id},
 	})
 
 	if res.Err() != nil {
@@ -59,7 +59,7 @@ func (db *DB) CreateUser(ctx context.Context, user *usermanagement.User) error {
 }
 
 func (db *DB) UpdateUser(ctx context.Context, user *usermanagement.User) error {
-	_, err := db.coll.UpdateOne(ctx, usermanagement.User{ID: user.ID}, bson.M{"$set": user})
+	_, err := db.coll.UpdateOne(ctx, bson.D{{"user_id", user.ID}}, bson.M{"$set": user})
 	if err != nil {
 		return fmt.Errorf("could not update user: %w", err)
 	}
@@ -68,7 +68,7 @@ func (db *DB) UpdateUser(ctx context.Context, user *usermanagement.User) error {
 }
 
 func (db *DB) DeleteUser(ctx context.Context, id string) error {
-	_, err := db.coll.DeleteOne(ctx, usermanagement.User{ID: id})
+	_, err := db.coll.DeleteOne(ctx, bson.D{{"user_id", id}})
 	if err != nil {
 		return fmt.Errorf("could not delete user: %w", err)
 	}
