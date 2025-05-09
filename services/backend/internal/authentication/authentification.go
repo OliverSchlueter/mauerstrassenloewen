@@ -8,6 +8,13 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
 )
 
+type DB interface {
+	CreateAuthToken(ctx context.Context, t Token) error
+	GetAuthToken(ctx context.Context, tokenID string) (*Token, error)
+	DeleteAuthToken(ctx context.Context, tokenID string) error
+	GetAuthTokensByUserID(ctx context.Context, userID string) ([]Token, error)
+}
+
 type Store struct {
 	um          *usermanagement.Store
 	globalToken string
