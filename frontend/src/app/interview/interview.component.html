@@ -1,18 +1,16 @@
 <mat-card class="mat-card">
-  <mat-vertical-stepper class="stepper">
+  <mat-vertical-stepper class="stepper" linear>
     <mat-step>
       <ng-template matStepLabel>Personal Information</ng-template>
       <div class="step-container">
 
         <mat-form-field class="mat-form-field">
           <mat-label>Surname</mat-label>
-          <input matInput [(ngModel)]="userprofile.surname" required>
-          <mat-error>required</mat-error>
+          <input matInput [(ngModel)]="userprofile.surname">
         </mat-form-field>
         <mat-form-field class="mat-form-field">
           <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="userprofile.name" required>
-          <mat-error>required</mat-error>
+          <input matInput [(ngModel)]="userprofile.name">
         </mat-form-field>
         <mat-form-field class="mat-form-field">
           <mat-label>Birthdate</mat-label>
