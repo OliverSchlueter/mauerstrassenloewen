@@ -9,11 +9,22 @@
 
 .mat-card {
   background-color: #333333 !important;
-  width: 512px;
+  width: 600px;
 }
 
 .stepper {
   background: #333333 !important;
   margin: 20px;
+}
 
+.step-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  flex-grow: 1
+}
+
+.mat-form-field {
+  margin-right: 20px;
 }

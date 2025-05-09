@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatButton} from "@angular/material/button";
 import {MatCard} from "@angular/material/card";
-import {MatFormField, MatHint, MatInput, MatLabel} from "@angular/material/input";
+import {MatError, MatFormField, MatHint, MatInput, MatLabel} from "@angular/material/input";
 import {MatStep, MatStepLabel, MatStepper, MatStepperNext, MatStepperPrevious} from "@angular/material/stepper";
 import {User} from '../models/User';
 import {FormsModule} from '@angular/forms';
@@ -29,7 +29,7 @@ import {Profile} from '../models/Profile';
     MatSelect,
     MatOption,
     MatHint,
-
+    MatError
   ],
   templateUrl: './interview.component.html',
   standalone: true,
