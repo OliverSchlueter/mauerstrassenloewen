@@ -11,7 +11,7 @@ import (
 )
 
 type Store interface {
-	GetUser(ctx context.Context, id string) (*usermanagement.User, error)
+	GetUserByID(ctx context.Context, id string) (*usermanagement.User, error)
 	CreateUser(ctx context.Context, user *usermanagement.User) error
 	UpdateUser(ctx context.Context, user *usermanagement.User) error
 	DeleteUser(ctx context.Context, id string) error
@@ -95,7 +95,7 @@ func (h *Handler) handleGetUser(w http.ResponseWriter, r *http.Request, userID s
 		return
 	}
 
-	user, err := h.store.GetUser(r.Context(), userID)
+	user, err := h.store.GetUserByID(r.Context(), userID)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserNotFound) {
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
