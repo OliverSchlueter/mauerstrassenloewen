@@ -11,39 +11,35 @@ export class Profile {
   financialObligations: string = '';
 
   // Goals and Objectives
-  primaryGoal: 'Wealth Building' | 'Side Income' | 'Financial Freedom' | 'Retirement Planning' | 'Speculation' | '' = '';
+  primaryGoal: 'Wealth Building' | 'Side Income' | 'Financial Freedom' | 'Retirement Planning' | '' = '';
   timeHorizon: 'Short-Term' | 'Medium-Term' | 'Long-Term' | '' = '';
   startingCapital: string = '';
   monthlyInvestment: string = '';
-  annualProfitTarget: string = '';
 
-  // Trading Preferences
+  // Commitment and Experience
   preferredMarkets: ('Stocks' | 'ETFs' | 'Crypto' | 'Forex' | 'Commodities' | 'Options' | 'Futures' | 'CFDs')[] = [];
   toolsPlatforms: string = '';
   weeklyTimeCommitment: string = '';
 
-  // Experience and Knowledge
-  tradingExperience: 'Beginner' | 'Intermediate' | 'Expert' | '' = '';
-  pastPerformance: string = '';
+  tradingExperience: 'None' | 'Beginner' | 'Intermediate' | 'Expert' | '' = '';
   chartAnalysisKnowledge: 'None' | 'Basic' | 'Advanced' | 'Expert' | '' = '';
   fundamentalAnalysisKnowledge: 'None' | 'Basic' | 'Advanced' | 'Expert' | '' = '';
   certifications: string = '';
 
   // Psychological Profile
-  riskType: 'Risk-Taking' | 'Balanced' | 'Cautious' | '' = '';
+  riskAffinity: number | null = null;
   lossBehavior: string = '';
-  discipline: string = '';
-  tradingJournal: boolean | null = null;
   stressTolerance: 'High' | 'Medium' | 'Low' | '' = '';
 
   // Ethics and Values
-  esgPreferences: 'Important' | 'Neutral' | 'Unimportant' | '' = '';
+  esgPreferences: 'Important' | 'Medium' | 'Unimportant' | '' = '';
   exclusionCriteria: string = '';
-  politicalInvesting: boolean | null = null;
+  excludePoliticalInvesting: boolean | null = null;
   religiousRestrictions: string = '';
 
   // Technical Setup
-  bookkeeping: 'Excel' | 'Trading Journal Software' | 'None' | '' = '';
+  tradingJournal: boolean | null = null;
+  informationManagement: 'Excel' | 'Trading Journal Software' | 'None' | '' = '';
   availableTech: string = '';
 }
 

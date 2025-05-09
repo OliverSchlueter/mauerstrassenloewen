@@ -26,8 +26,28 @@ func NewDB(config *Configuration) *DB {
 }
 
 func (db *DB) GetUserByID(ctx context.Context, id string) (*usermanagement.User, error) {
-	res := db.coll.FindOne(ctx, usermanagement.User{
-		ID: id,
+	res := db.coll.FindOne(ctx, bson.D{
+		{"user_id", id},
+	})
+
+	if res.Err() != nil {
+		if errors.Is(res.Err(), mongo.ErrNoDocuments) {
+			return nil, usermanagement.ErrUserNotFound
+		}
+		return nil, fmt.Errorf("could not find user: %w", res.Err())
+	}
+
+	var user usermanagement.User
+	if err := res.Decode(&user); err != nil {
+		return nil, fmt.Errorf("could not decode user: %w", err)
+	}
+
+	return &user, nil
+}
+
+func (db *DB) GetUserByName(ctx context.Context, name string) (*usermanagement.User, error) {
+	res := db.coll.FindOne(ctx, bson.D{
+		{"name", name},
 	})
 
 	if res.Err() != nil {
@@ -59,7 +79,7 @@ func (db *DB) CreateUser(ctx context.Context, user *usermanagement.User) error {
 }
 
 func (db *DB) UpdateUser(ctx context.Context, user *usermanagement.User) error {
-	_, err := db.coll.UpdateOne(ctx, usermanagement.User{ID: user.ID}, bson.M{"$set": user})
+	_, err := db.coll.UpdateOne(ctx, bson.D{{"user_id", user.ID}}, bson.M{"$set": user})
 	if err != nil {
 		return fmt.Errorf("could not update user: %w", err)
 	}
@@ -68,7 +88,7 @@ func (db *DB) UpdateUser(ctx context.Context, user *usermanagement.User) error {
 }
 
 func (db *DB) DeleteUser(ctx context.Context, id string) error {
-	_, err := db.coll.DeleteOne(ctx, usermanagement.User{ID: id})
+	_, err := db.coll.DeleteOne(ctx, bson.D{{"user_id", id}})
 	if err != nil {
 		return fmt.Errorf("could not delete user: %w", err)
 	}

@@ -13,8 +13,9 @@ import (
 type DB interface {
 	CreateAuthToken(ctx context.Context, t Token) error
 	GetAuthToken(ctx context.Context, tokenID string) (*Token, error)
-	DeleteAuthToken(ctx context.Context, tokenID string) error
 	GetAuthTokensByUserID(ctx context.Context, userID string) ([]Token, error)
+	GetTokenByHash(ctx context.Context, hash string) (*Token, error)
+	DeleteAuthToken(ctx context.Context, tokenID string) error
 }
 
 type Store struct {
@@ -38,19 +39,35 @@ func NewStore(cfg StoreConfiguration) *Store {
 }
 
 func (s *Store) IsAuthTokenValid(ctx context.Context, token string) (*usermanagement.User, error) {
-	if token != s.globalToken {
+	hash := hashing.SHA256(token)
+	t, err := s.db.GetTokenByHash(ctx, hash)
+	if err != nil {
+		if errors.Is(err, ErrTokenNotFound) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("could not get auth token: %w", err)
+	}
+
+	if t.ExpiresAt.Before(time.Now()) {
+		if err := s.db.DeleteAuthToken(ctx, t.ID); err != nil {
+			return nil, fmt.Errorf("could not delete expired auth token: %w", err)
+		}
 		return nil, nil
 	}
 
-	return &usermanagement.User{
-		ID:    "global-user",
-		Name:  "Global User",
-		Email: "globaluser@msl.de",
-	}, nil
+	u, err := s.um.GetUserByID(ctx, t.UserID)
+	if err != nil {
+		if errors.Is(err, usermanagement.ErrUserNotFound) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("could not get user: %w", err)
+	}
+
+	return u, nil
 }
 
 func (s *Store) IsAuthUserValid(ctx context.Context, user, password string) (*usermanagement.User, error) {
-	u, err := s.um.GetUser(ctx, user)
+	u, err := s.um.GetUserByName(ctx, user)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserNotFound) {
 			return nil, nil
