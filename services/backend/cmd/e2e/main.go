@@ -90,6 +90,7 @@ func main() {
 
 	go func() {
 		chain := alice.New(
+			middleware.CORS,
 			middleware.Logging,
 			authMiddleware,
 			middleware.RecoveryMiddleware,
