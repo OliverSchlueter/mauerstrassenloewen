@@ -13,6 +13,7 @@ import {User} from '../../models/User';
     MatButton
   ],
   templateUrl: './account.component.html',
+  standalone: true,
   styleUrl: './account.component.scss'
 })
 export class AccountComponent implements OnInit{

@@ -7,6 +7,7 @@ import {Profile} from '../models/Profile';
 })
 export class AuthService {
   user: User | undefined;
+  token: string = "GlobalToken"
 
   constructor() { }
 

@@ -7,6 +7,7 @@ import {AccountComponent} from './home/account/account.component';
 import {AccountLandingComponent} from './home/account/account-landing/account-landing.component';
 import {AccountSettingsComponent} from './home/account/account-settings/account-settings.component';
 import {AccountProfileComponent} from './home/account/account-profile/account-profile.component';
+import {TheoryComponent} from './theory/theory.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,10 @@ export const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     canActivate: [authGuard]
+  },
+  {
+    path: 'theory',
+    component: TheoryComponent,
   },
   {
     path: 'login',

@@ -11,6 +11,7 @@ import {NgIf} from '@angular/common';
     NgIf
   ],
   templateUrl: './header.component.html',
+  standalone: true,
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
@@ -32,5 +33,9 @@ export class HeaderComponent {
 
   isLoggedIn() {
     return !!this.authService.user;
+  }
+
+  goTheory() {
+    this.router.navigate(['/theory']);
   }
 }

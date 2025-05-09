@@ -32,6 +32,7 @@ import {Profile} from '../models/Profile';
 
   ],
   templateUrl: './interview.component.html',
+  standalone: true,
   styleUrl: './interview.component.scss'
 })
 export class InterviewComponent implements OnInit{
