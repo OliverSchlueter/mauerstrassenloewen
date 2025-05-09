@@ -2,8 +2,11 @@ package usermanagement
 
 import (
 	"context"
+	"errors"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/hashing"
 	"github.com/google/uuid"
+	"strings"
+	"unicode"
 )
 
 type Database interface {
@@ -37,6 +40,7 @@ func (s *Store) CreateUser(ctx context.Context, user *User) error {
 	//TODO: Pflichtfelderprüfung implementierern
 
 	if err := validateUser(user); err != nil {
+		//TODO: Ist Userobjekt richtig angelegt?
 		return err
 	}
 
@@ -58,6 +62,41 @@ func (s *Store) DeleteUser(ctx context.Context, id string) error {
 }
 
 func validateUser(user *User) error {
-	//TODO: Passwortanforderung implementieren
+
+	if err := validatePassword(user.Password, user.Name); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func validatePassword(password string, firstName string) error {
+	if len(password) < 8 {
+		return errors.New("password must be at least 8 characters long")
+	}
+
+	var hasNumber bool
+	var hasSpecial bool
+
+	for _, ch := range password {
+		switch {
+		case unicode.IsNumber(ch):
+			hasNumber = true
+		case unicode.IsSymbol(ch) || unicode.IsPunct(ch):
+			hasSpecial = true
+		}
+	}
+
+	if !hasNumber {
+		return errors.New("password must contain at least one number")
+	}
+	if !hasSpecial {
+		return errors.New("password must include at least one special character")
+	}
+
+	if strings.EqualFold(password, firstName) {
+		return errors.New("password must not match the name")
+	}
+
 	return nil
 }
