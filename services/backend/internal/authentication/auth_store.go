@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/hashing"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
 )
 
@@ -38,8 +39,7 @@ func (s *Store) IsAuthUserValid(ctx context.Context, user, password string) (boo
 		return false, fmt.Errorf("could not get user: %w", err)
 	}
 
-	// TODO: Password hashing
-	if u.Password != password {
+	if u.Password != hashing.SHA256(password) {
 		return false, nil
 	}
 

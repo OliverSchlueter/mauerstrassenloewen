@@ -2,6 +2,7 @@ package usermanagement
 
 import (
 	"context"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/hashing"
 	"github.com/google/uuid"
 )
 
@@ -38,6 +39,8 @@ func (s *Store) CreateUser(ctx context.Context, user *User) error {
 	if err := validateUser(user); err != nil {
 		return err
 	}
+
+	user.Password = hashing.SHA256(user.Password)
 
 	return s.db.CreateUser(ctx, user)
 }
