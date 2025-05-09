@@ -13,6 +13,7 @@ import {MatDivider} from '@angular/material/divider';
 import {MatSlider, MatSliderThumb} from '@angular/material/slider';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-interview',
@@ -52,7 +53,7 @@ export class InterviewComponent implements OnInit{
   userprofile: Profile = new Profile()
 
 
-  constructor() {
+  constructor(private userService: UserService) {
   }
 
   ngOnInit() {
@@ -74,5 +75,8 @@ export class InterviewComponent implements OnInit{
       this.user.profile = this.userprofile;
     }
     console.log(this.user)
+    this.userService.updateUser(this.user).subscribe(response => {
+      console.log("response: " + response);
+    })
   }
 }
