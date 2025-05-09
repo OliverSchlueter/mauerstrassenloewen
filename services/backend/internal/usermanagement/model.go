@@ -29,9 +29,9 @@ type Profile struct {
 	MonthlyInvestment string `json:"monthlyInvestment" bson:"monthlyInvestment"`
 
 	// Commitment and Experience
-	PreferredMarkets     string `json:"preferredMarkets" bson:"preferredMarkets"`
-	ToolsPlatforms       string `json:"toolsPlatforms" bson:"toolsPlatforms"`
-	WeeklyTimeCommitment string `json:"weeklyTimeCommitment" bson:"weeklyTimeCommitment"`
+	PreferredMarkets     []string `json:"preferredMarkets" bson:"preferredMarkets"`
+	ToolsPlatforms       string   `json:"toolsPlatforms" bson:"toolsPlatforms"`
+	WeeklyTimeCommitment string   `json:"weeklyTimeCommitment" bson:"weeklyTimeCommitment"`
 
 	TradingExperience            string `json:"tradingExperience" bson:"tradingExperience"`
 	ChartAnalysisKnowledge       string `json:"chartAnalysisKnowledge" bson:"chartAnalysisKnowledge"`
