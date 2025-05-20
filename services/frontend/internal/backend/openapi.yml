@@ -201,6 +201,36 @@ paths:
       tags:
         - Auth
 
+  /msl/api/v1/lesson:
+    get:
+      summary: Get existent lessons for user
+      responses:
+        '200':
+          description: Lesson found
+        '400':
+          description: Bad request
+        '404':
+          description: Lesson not found
+        '500':
+          description: Internal Server Error
+      tags:
+        - Lesson
+
+  /msl/api/v1/lesson/{lesson_id}:
+    put:
+      summary: Create or Update lesson
+      responses:
+        '200':
+          description: Lesson found
+        '400':
+          description: Bad request
+        '404':
+          description: Lesson not found
+        '500':
+          description: Internal Server Error
+      tags:
+        - Lesson
+
   /simulation/api/v1/simulation:
     post:
       summary: Create simulation

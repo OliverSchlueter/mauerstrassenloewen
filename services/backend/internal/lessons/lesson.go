@@ -2,6 +2,7 @@ package lessons
 
 import (
 	"context"
+	"errors"
 )
 
 type Database interface {
@@ -28,7 +29,20 @@ func (s *Store) GetLesson(ctx context.Context, id string) (*Lesson, error) {
 }
 
 func (s *Store) UpsertLesson(ctx context.Context, userID string, lessonID string) error {
-	return s.db.UpsertLesson(ctx, lesson)
-}
+	l, err := s.GetLesson(ctx, userID)
+	if err != nil {
+		if errors.Is(err, ErrLessonNotFound) {
+			l = &Lesson{
+				UserID: userID,
+				Done: map[string]bool{
+					lessonID: true,
+				},
+			}
+		}
+		return err
+	}
 
-// TODO: LessonID zusammenbauen
+	l.Done[lessonID] = true
+
+	return s.db.UpsertLesson(ctx, l)
+}
