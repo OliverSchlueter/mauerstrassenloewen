@@ -22,4 +22,8 @@ export class UserService {
 
     return this.http.put<User>(this.url + "/user", user, {headers});
   }
+
+  register(user: User) {
+    return this.http.put(this.url + "/register", user)
+  }
 }
