@@ -9,6 +9,11 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/m
 import {MatOption, MatSelect} from '@angular/material/select';
 import {Profile} from '../models/Profile';
 import {MatIcon} from '@angular/material/icon';
+import {MatDivider} from '@angular/material/divider';
+import {MatSlider, MatSliderThumb} from '@angular/material/slider';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-interview',
@@ -32,7 +37,12 @@ import {MatIcon} from '@angular/material/icon';
     MatHint,
     MatError,
     MatIcon,
-    MatSuffix
+    MatSuffix,
+    MatDivider,
+    MatSlider,
+    MatSliderThumb,
+    MatCheckbox,
+    MatSlideToggle
   ],
   templateUrl: './interview.component.html',
   standalone: true,
@@ -42,13 +52,18 @@ export class InterviewComponent implements OnInit{
   @Input() user: User | undefined;
   userprofile: Profile = new Profile()
 
-  constructor() {
+
+  constructor(private userService: UserService) {
   }
 
   ngOnInit() {
     if(this.user) {
       this.userprofile = this.user.profile;
     }
+  }
+
+  formatRiskAffinity(value: number): string {
+    return value + "%"
   }
 
   save() {
@@ -60,5 +75,8 @@ export class InterviewComponent implements OnInit{
       this.user.profile = this.userprofile;
     }
     console.log(this.user)
+    this.userService.updateUser(this.user).subscribe(response => {
+      console.log("response: " + response);
+    })
   }
 }

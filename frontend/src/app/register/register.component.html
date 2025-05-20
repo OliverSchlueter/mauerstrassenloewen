@@ -1,3 +1,31 @@
 <div class="flex-container">
-  <app-interview></app-interview>
+  <mat-card class="register-card">
+    <mat-card-header>
+      <mat-card-title><button mat-icon-button (click)="navigateLogin()"><mat-icon>close</mat-icon></button>Registration</mat-card-title>
+    </mat-card-header>
+    <div class="whitespace"></div>
+    <mat-card-content>
+      <mat-form-field class="mat-form-field">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="user.name">
+      </mat-form-field>
+      <mat-form-field class="mat-form-field">
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="user.email">
+      </mat-form-field>
+      <mat-form-field class="mat-form-field">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="user.password">
+      </mat-form-field>
+      <mat-form-field class="mat-form-field">
+        <mat-label>Repeat Password</mat-label>
+        <input matInput [(ngModel)]="repeatPassword">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer class="flex-container footer">
+      <button mat-flat-button>Start Your Journey</button>
+    </mat-card-footer>
+  </mat-card>
+
+
 </div>

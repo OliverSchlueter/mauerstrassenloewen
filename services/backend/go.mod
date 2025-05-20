@@ -3,14 +3,14 @@ module github.com/OliverSchlueter/mauerstrassenloewen/backend
 go 1.24.2
 
 require (
-	github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2efe0e06
 	github.com/OliverSchlueter/mauerstrassenloewen/common v0.0.0-00010101000000-000000000000
 	github.com/docker/docker v28.0.4+incompatible
 	github.com/docker/go-connections v0.5.0
+	github.com/google/uuid v1.6.0
 	github.com/justinas/alice v1.2.0
 	github.com/nats-io/nats.go v1.41.1
 	github.com/testcontainers/testcontainers-go v0.36.0
-	go.mongodb.org/mongo-driver/v2 v2.2.0
+	go.mongodb.org/mongo-driver/v2 v2.2.1
 )
 
 require (
@@ -33,7 +33,6 @@ require (
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20250317134145-8bc96cf8fc35 // indirect
 	github.com/magiconair/properties v1.8.10 // indirect
@@ -74,7 +73,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
-	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect

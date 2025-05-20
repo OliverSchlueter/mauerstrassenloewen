@@ -11,6 +11,7 @@ import (
 
 type Database interface {
 	GetUserByID(ctx context.Context, id string) (*User, error)
+	GetUserByName(ctx context.Context, name string) (*User, error)
 	CreateUser(ctx context.Context, user *User) error
 	UpdateUser(ctx context.Context, user *User) error
 	DeleteUser(ctx context.Context, id string) error
@@ -30,8 +31,12 @@ func NewStore(config *Configuration) *Store {
 	}
 }
 
-func (s *Store) GetUser(ctx context.Context, id string) (*User, error) {
+func (s *Store) GetUserByID(ctx context.Context, id string) (*User, error) {
 	return s.db.GetUserByID(ctx, id)
+}
+
+func (s *Store) GetUserByName(ctx context.Context, name string) (*User, error) {
+	return s.db.GetUserByName(ctx, name)
 }
 
 func (s *Store) CreateUser(ctx context.Context, user *User) error {

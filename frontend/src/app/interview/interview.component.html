@@ -1,18 +1,16 @@
 <mat-card class="mat-card">
-  <mat-vertical-stepper class="stepper">
+  <mat-vertical-stepper class="stepper" linear>
     <mat-step>
       <ng-template matStepLabel>Personal Information</ng-template>
       <div class="step-container">
 
         <mat-form-field class="mat-form-field">
           <mat-label>Surname</mat-label>
-          <input matInput [(ngModel)]="userprofile.surname" required>
-          <mat-error>required</mat-error>
+          <input matInput [(ngModel)]="userprofile.surname">
         </mat-form-field>
         <mat-form-field class="mat-form-field">
           <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="userprofile.name" required>
-          <mat-error>required</mat-error>
+          <input matInput [(ngModel)]="userprofile.name">
         </mat-form-field>
         <mat-form-field class="mat-form-field">
           <mat-label>Birthdate</mat-label>
@@ -90,11 +88,11 @@
       <button mat-button matStepperNext>Next</button>
     </mat-step>
     <mat-step>
-      <ng-template matStepLabel>Trading Preferences</ng-template>
+      <ng-template matStepLabel>Commitment and Experience</ng-template>
       <div class="step-container">
 
         <mat-form-field class="mat-form-field">
-          <mat-label>Primary Goal</mat-label>
+          <mat-label>Preferred Markets</mat-label>
           <mat-select [(ngModel)]="userprofile.preferredMarkets" multiple>
             <mat-option value="'Stocks'">Stocks</mat-option>
             <mat-option value="'ETFs'">ETFs</mat-option>
@@ -117,12 +115,8 @@
         </mat-form-field>
 
       </div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Experience and Knowledge</ng-template>
       <div class="step-container">
+
         <mat-form-field class="mat-form-field">
           <mat-label>Trading Experience</mat-label>
           <mat-select [(ngModel)]="userprofile.tradingExperience">
@@ -154,25 +148,90 @@
           <mat-label>Certifications</mat-label>
           <input matInput [(ngModel)]="userprofile.certifications">
         </mat-form-field>
+
+      </div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Psychological Profile</ng-template>
+      <div class="step-container">
+
+
+        <mat-form-field class="mat-form-field">
+          <mat-label>Loss Behavior</mat-label>
+          <input matInput [(ngModel)]="userprofile.lossBehavior">
+        </mat-form-field>
+
+        <mat-form-field class="mat-form-field">
+          <mat-label>Stress Tolerance</mat-label>
+          <mat-select [(ngModel)]="userprofile.stressTolerance">
+            <mat-option value="Low">Low</mat-option>
+            <mat-option value="Medium">Medium</mat-option>
+            <mat-option value="High">High</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="down">
+          <mat-label>Risk Affinity</mat-label>
+          <mat-slider min="0" max="100" step="1" discrete [displayWith]="formatRiskAffinity">
+            <input matSliderThumb [(ngModel)]="userprofile.riskAffinity">
+          </mat-slider>
+        </div>
       </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </mat-step>
 
     <mat-step>
-      <ng-template matStepLabel></ng-template>
+      <ng-template matStepLabel>Ethics and Values</ng-template>
       <div class="step-container">
+
+        <mat-form-field class="mat-form-field">
+          <mat-label>ESG Preferences</mat-label>
+          <mat-select [(ngModel)]="userprofile.esgPreferences">
+            <mat-option value="None">None</mat-option>
+            <mat-option value="Beginner">Unimportant</mat-option>
+            <mat-option value="Advanced">Medium</mat-option>
+            <mat-option value="Expert">Important</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Religious Restrictions</mat-label>
+          <input matInput [(ngModel)]="userprofile.religiousRestrictions">
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Exclusion Criteria</mat-label>
+          <input matInput [(ngModel)]="userprofile.exclusionCriteria">
+        </mat-form-field>
+        <div class="checkbox-container">
+          <mat-slide-toggle [(ngModel)]="userprofile.excludePoliticalInvesting">Exclude Political Investing</mat-slide-toggle>
+        </div>
 
       </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
     </mat-step>
-
-
     <mat-step>
-      <ng-template matStepLabel>Final Step</ng-template>
+      <ng-template matStepLabel>Setup</ng-template>
       <div class="step-container">
-        final step
+
+        <div class="checkbox-container">
+          <mat-checkbox [(ngModel)]="userprofile.tradingJournal">Trading Journal</mat-checkbox>
+        </div>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Information Management</mat-label>
+          <mat-select [(ngModel)]="userprofile.informationManagement">
+            <mat-option value="None">None</mat-option>
+            <mat-option value="Excel">Excel</mat-option>
+            <mat-option value="Trading Journal Software">Trading Journal Software</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field">
+          <mat-label>Available Tech</mat-label>
+          <input matInput [(ngModel)]="userprofile.availableTech">
+        </mat-form-field>
+
       </div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="save()">Save</button>

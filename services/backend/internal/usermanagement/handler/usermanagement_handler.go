@@ -11,7 +11,7 @@ import (
 )
 
 type Store interface {
-	GetUser(ctx context.Context, id string) (*usermanagement.User, error)
+	GetUserByID(ctx context.Context, id string) (*usermanagement.User, error)
 	CreateUser(ctx context.Context, user *usermanagement.User) error
 	UpdateUser(ctx context.Context, user *usermanagement.User) error
 	DeleteUser(ctx context.Context, id string) error
@@ -32,18 +32,8 @@ func NewHandler(config Configuration) *Handler {
 }
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
-	mux.HandleFunc(prefix+"/user", h.handleUserCollection)
+	mux.HandleFunc(prefix+"/user/register", h.handleRegisterUser)
 	mux.HandleFunc(prefix+"/user/{id}", h.handleUser)
-}
-
-func (h *Handler) handleUserCollection(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodPost:
-		h.handleCreateUser(w, r)
-	default:
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		return
-	}
 }
 
 func (h *Handler) handleUser(w http.ResponseWriter, r *http.Request) {
@@ -66,37 +56,7 @@ func (h *Handler) handleUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) handleGetUser(w http.ResponseWriter, r *http.Request, userID string) {
-	if r.Header.Get("Accept") != "application/json" {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-		return
-	}
-
-	user, err := h.store.GetUser(r.Context(), userID)
-	if err != nil {
-		if errors.Is(err, usermanagement.ErrUserNotFound) {
-			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-			return
-		}
-
-		slog.Error("Could not get user with id: "+userID, sloki.WrapError(err), sloki.WrapRequest(r))
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-
-	userData, err := json.Marshal(user)
-	if err != nil {
-		slog.Error("Could not marshal user response", sloki.WrapError(err), sloki.WrapRequest(r))
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(userData)
-}
-
-func (h *Handler) handleCreateUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) handleRegisterUser(w http.ResponseWriter, r *http.Request) {
 	if r.Header.Get("Content-Type") != "application/json" {
 		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
 		return
@@ -129,6 +89,36 @@ func (h *Handler) handleCreateUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+func (h *Handler) handleGetUser(w http.ResponseWriter, r *http.Request, userID string) {
+	if r.Header.Get("Accept") != "application/json" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	user, err := h.store.GetUserByID(r.Context(), userID)
+	if err != nil {
+		if errors.Is(err, usermanagement.ErrUserNotFound) {
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+
+		slog.Error("Could not get user with id: "+userID, sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	userData, err := json.Marshal(user)
+	if err != nil {
+		slog.Error("Could not marshal user response", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(userData)
+}
+
 func (h *Handler) handleUpdateUser(w http.ResponseWriter, r *http.Request, userID string) {
 	if r.Header.Get("Content-Type") != "application/json" {
 		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
@@ -146,6 +136,8 @@ func (h *Handler) handleUpdateUser(w http.ResponseWriter, r *http.Request, userI
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
+
+	req.ID = userID
 
 	err := h.store.UpdateUser(r.Context(), &req)
 	if err != nil {

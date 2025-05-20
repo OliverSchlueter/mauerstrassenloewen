@@ -55,7 +55,7 @@ func (s *Store) IsAuthTokenValid(ctx context.Context, token string) (*usermanage
 		return nil, nil
 	}
 
-	u, err := s.um.GetUser(ctx, t.UserID)
+	u, err := s.um.GetUserByID(ctx, t.UserID)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserNotFound) {
 			return nil, nil
@@ -67,7 +67,7 @@ func (s *Store) IsAuthTokenValid(ctx context.Context, token string) (*usermanage
 }
 
 func (s *Store) IsAuthUserValid(ctx context.Context, user, password string) (*usermanagement.User, error) {
-	u, err := s.um.GetUser(ctx, user)
+	u, err := s.um.GetUserByName(ctx, user)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserNotFound) {
 			return nil, nil

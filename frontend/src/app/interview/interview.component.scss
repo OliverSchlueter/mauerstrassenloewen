@@ -30,3 +30,18 @@
   margin-right: 20px;
   width: 300px;
 }
+
+.checkbox-container {
+  margin-right: 20px;
+  width: 300px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.down {
+  margin-right: 20px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
