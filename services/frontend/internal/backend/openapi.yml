@@ -60,6 +60,8 @@ paths:
           description: Unsupported Media Type
         '500':
           description: Internal Server Error
+      tags:
+        - Chatbot
 
   /msl/api/v1/chatbot/send-message:
     post:
@@ -84,6 +86,8 @@ paths:
           description: Unsupported Media Type
         '500':
           description: Internal Server Error
+      tags:
+        - Chatbot
 
   /msl/api/v1/user:
     post:
