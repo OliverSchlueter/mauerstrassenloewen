@@ -3,6 +3,8 @@ package ollama
 import (
 	"context"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
+	"github.com/google/uuid"
 	"github.com/ollama/ollama/api"
 	"log/slog"
 	"net/http"
@@ -70,55 +72,89 @@ func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 	return resp.String(), nil
 }
 
-func (c *Client) StartChat(ctx context.Context, systemMsg, msg string) (string, error) {
-	msgs := []api.Message{
-		{
-			Role:    "system",
-			Content: systemMsg,
+func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*natsdto.Chat, error) {
+	chat := &natsdto.Chat{
+		ChatID: uuid.New().String(),
+		Messages: []natsdto.Message{
+			{
+				Role:    "system",
+				Content: string(req.SystemMsg),
+				SentAt:  time.Now(),
+			},
 		},
 	}
 
-	return c.Chat(ctx, msgs, msg)
-}
+	err := c.Chat(ctx, chat, req.UserMsg)
+	if err != nil {
 
-func (c *Client) Chat(ctx context.Context, msgs []api.Message, next string) (string, error) {
-	ragRespMsg := c.executeRAG(next)
-	if ragRespMsg != nil {
-		msgs = append(msgs, *ragRespMsg)
 	}
 
-	initialResp, err := c.nextMsg(ctx, msgs, api.Message{
+	return chat, nil
+}
+
+func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) error {
+	ragResp, err := c.executeRAG(next)
+	if err != nil {
+		return fmt.Errorf("failed to execute RAG: %w", err)
+	}
+
+	chat.AppendMsg(natsdto.Message{
+		Role:    "system",
+		Content: ragResp,
+		SentAt:  time.Now(),
+	})
+
+	chat.AppendMsg(natsdto.Message{
 		Role:    "user",
 		Content: next,
+		SentAt:  time.Now(),
 	})
+	initialResp, err := c.nextMsg(ctx, toOllamaMsgs(chat))
 	if err != nil {
-		return "", fmt.Errorf("failed to get initial chat response: %w", err)
+		return fmt.Errorf("failed to get initial chat response: %w", err)
 	}
 
 	if initialResp.Message.ToolCalls == nil || len(initialResp.Message.ToolCalls) == 0 {
-		return initialResp.Message.Content, nil
+		chat.AppendMsg(natsdto.Message{
+			Role:    "assistant",
+			Content: initialResp.Message.Content,
+			SentAt:  time.Now(),
+		})
+		return nil
 	}
 
-	toolRespMsg := c.executeToolCalls(initialResp.Message.ToolCalls)
-	if toolRespMsg == nil {
-		return initialResp.Message.Content, nil
-	}
-
-	finalResp, err := c.nextMsg(ctx, msgs, *toolRespMsg)
+	toolResp, err := c.executeToolCalls(initialResp.Message.ToolCalls)
 	if err != nil {
-		return "", fmt.Errorf("failed to get final chat response: %w", err)
+		return fmt.Errorf("failed to execute tool calls: %w", err)
 	}
 
-	return finalResp.Message.Content, nil
+	chat.AppendMsg(natsdto.Message{
+		Role:    "assistant",
+		Content: toolResp,
+		SentAt:  time.Now(),
+	})
+
+	finalResp, err := c.nextMsg(ctx, toOllamaMsgs(chat))
+	if err != nil {
+		return fmt.Errorf("failed to get final chat response: %w", err)
+	}
+
+	chat.AppendMsg(natsdto.Message{
+		Role:    "assistant",
+		Content: finalResp.Message.Content,
+		SentAt:  time.Now(),
+	})
+
+	return nil
 }
 
-func (c *Client) nextMsg(ctx context.Context, msgs []api.Message, next api.Message) (*api.ChatResponse, error) {
+func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResponse, error) {
 	// TODO: register tool calls
 
 	req := api.ChatRequest{
 		Model:    c.model,
 		Stream:   &_false,
-		Messages: append(msgs, next),
+		Messages: msgs,
 	}
 
 	var resp api.ChatResponse
@@ -137,20 +173,12 @@ func (c *Client) nextMsg(ctx context.Context, msgs []api.Message, next api.Messa
 	return &resp, nil
 }
 
-func (c *Client) executeToolCalls(calls []api.ToolCall) *api.Message {
+func (c *Client) executeToolCalls(calls []api.ToolCall) (string, error) {
 	// TODO: implement tool call execution
-
-	return &api.Message{
-		Role:    "assistant",
-		Content: "Executed tool calls:",
-	}
+	return "Executed tool calls:", nil
 }
 
-func (c *Client) executeRAG(query string) *api.Message {
+func (c *Client) executeRAG(query string) (string, error) {
 	// TODO: implement RAG execution
-
-	return &api.Message{
-		Role:    "system",
-		Content: "Documents found:",
-	}
+	return "Found relevant documents:", nil
 }

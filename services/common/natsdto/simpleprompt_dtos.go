@@ -14,6 +14,10 @@ type Chat struct {
 	Messages []Message `json:"messages"`
 }
 
+func (c *Chat) AppendMsg(m Message) {
+	c.Messages = append(c.Messages, m)
+}
+
 type Message struct {
 	Role    string    `json:"role"`
 	Content string    `json:"content"`
