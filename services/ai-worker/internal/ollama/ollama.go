@@ -173,6 +173,18 @@ func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResp
 	return &resp, nil
 }
 
+func (c *Client) CreateEmbedding(ctx context.Context, input string) ([][]float32, error) {
+	resp, err := c.ollama.Embed(ctx, &api.EmbedRequest{
+		Model: "TODO",
+		Input: input,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get embedding: %w", err)
+	}
+
+	return resp.Embeddings, nil
+}
+
 func (c *Client) executeToolCalls(calls []api.ToolCall) (string, error) {
 	// TODO: implement tool call execution
 	return "Executed tool calls:", nil
