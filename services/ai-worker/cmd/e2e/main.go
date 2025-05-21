@@ -5,6 +5,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot/store"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/nats-io/nats.go"
 	"github.com/qdrant/go-client/qdrant"
@@ -35,11 +36,15 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Setup tool service
+	tc := tools.NewService()
+
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL:        "http://localhost:11434",
 		Model:          "deepseek-r1:14b",
 		EmbeddingModel: "TOOD",
+		Tools:          *tc,
 	})
 	if err != nil {
 		slog.Error("failed to create ollama client", slog.Any("err", err.Error()))

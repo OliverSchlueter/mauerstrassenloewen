@@ -23,7 +23,7 @@ type Parameters struct {
 	} `json:"properties"`
 }
 
-func (t *Tool) toOllama() api.Tool {
+func (t *Tool) ToOllama() api.Tool {
 	return api.Tool{
 		Type: t.Type,
 		Function: api.ToolFunction{
@@ -44,4 +44,13 @@ func (t *Tool) toOllama() api.Tool {
 			},
 		},
 	}
+}
+
+func ToOllama(tools []Tool) []api.Tool {
+	ollamaTools := make([]api.Tool, len(tools))
+	for i, tool := range tools {
+		ollamaTools[i] = tool.ToOllama()
+	}
+
+	return ollamaTools
 }

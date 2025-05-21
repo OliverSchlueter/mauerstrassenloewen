@@ -3,6 +3,7 @@ package ollama
 import (
 	"context"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/google/uuid"
 	"github.com/ollama/ollama/api"
@@ -20,12 +21,14 @@ type Client struct {
 	ollama         *api.Client
 	model          string
 	embeddingModel string
+	tools          tools.Service
 }
 
 type Configuration struct {
 	BaseURL        string
 	Model          string
 	EmbeddingModel string
+	Tools          tools.Service
 }
 
 func NewClient(cfg Configuration) (*Client, error) {
@@ -44,6 +47,7 @@ func NewClient(cfg Configuration) (*Client, error) {
 		ollama:         ollama,
 		model:          cfg.Model,
 		embeddingModel: cfg.EmbeddingModel,
+		tools:          cfg.Tools,
 	}, nil
 }
 
@@ -126,7 +130,7 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) erro
 		return nil
 	}
 
-	toolResp, err := c.executeToolCalls(initialResp.Message.ToolCalls)
+	toolResp, err := c.executeToolCalls(ctx, initialResp.Message.ToolCalls)
 	if err != nil {
 		return fmt.Errorf("failed to execute tool calls: %w", err)
 	}
@@ -152,12 +156,11 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) erro
 }
 
 func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResponse, error) {
-	// TODO: register tool calls
-
 	req := api.ChatRequest{
 		Model:    c.model,
 		Stream:   &_false,
 		Messages: msgs,
+		Tools:    tools.ToOllama(c.tools.GetTools()),
 	}
 
 	var resp api.ChatResponse
@@ -200,9 +203,25 @@ func (c *Client) CreateEmbedding(ctx context.Context, prompt string) ([]float64,
 	return resp.Embedding, nil
 }
 
-func (c *Client) executeToolCalls(calls []api.ToolCall) (string, error) {
-	// TODO: implement tool call execution
-	return "Executed tool calls:", nil
+func (c *Client) executeToolCalls(ctx context.Context, calls []api.ToolCall) (string, error) {
+	if len(calls) == 0 {
+		return "", nil
+	}
+
+	msg := "Executed the following tool calls:\n"
+
+	for _, tc := range calls {
+		switch tc.Function.Name {
+		case "get_user_info":
+			resp, err := tools.GetUserInfo(ctx)
+			if err != nil {
+				return "", fmt.Errorf("failed to execute tool call: %w", err)
+			}
+			msg += fmt.Sprintf("Tool: %s\nResponse: %s\n\n", tc.Function.Name, resp)
+		}
+	}
+
+	return msg, nil
 }
 
 func (c *Client) executeRAG(query string) (string, error) {
