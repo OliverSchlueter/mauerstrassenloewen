@@ -1,13 +1,21 @@
 package natsdto
 
+import "time"
+
 type SystemMessage string
 
-type SimplePromptRequest struct {
+type StartChatRequest struct {
 	UserMsg   string        `json:"user_msg"`
 	SystemMsg SystemMessage `json:"system_msg"`
 }
 
-type SimplePromptJob struct {
-	JobID  string `json:"job_id"`
-	Result string `json:"result"`
+type Chat struct {
+	ChatID   string    `json:"chat_id"`
+	Messages []Message `json:"messages"`
+}
+
+type Message struct {
+	Role    string    `json:"role"`
+	Content string    `json:"content"`
+	SentAt  time.Time `json:"sent_at"`
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
+	"time"
 )
 
 type Service struct {
@@ -36,7 +37,9 @@ func (s *Service) Register() error {
 }
 
 func (s *Service) handleSimplePromptHandler(msg *nats.Msg) {
-	var req natsdto.SimplePromptRequest
+	receivedAt := time.Now()
+
+	var req natsdto.StartChatRequest
 	if err := json.Unmarshal(msg.Data, &req); err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to unmarshal request: %v", err)))
 		return
@@ -48,9 +51,25 @@ func (s *Service) handleSimplePromptHandler(msg *nats.Msg) {
 		return
 	}
 
-	resp := natsdto.SimplePromptJob{
-		JobID:  uuid.New().String(),
-		Result: output,
+	resp := natsdto.Chat{
+		ChatID: uuid.New().String(),
+		Messages: []natsdto.Message{
+			{
+				Role:    "system",
+				Content: string(req.SystemMsg),
+				SentAt:  receivedAt,
+			},
+			{
+				Role:    "user",
+				Content: req.UserMsg,
+				SentAt:  receivedAt,
+			},
+			{
+				Role:    "assistant",
+				Content: output,
+				SentAt:  time.Now(),
+			},
+		},
 	}
 
 	data, err := json.Marshal(resp)

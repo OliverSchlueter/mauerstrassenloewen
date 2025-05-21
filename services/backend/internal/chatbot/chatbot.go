@@ -23,8 +23,8 @@ func NewService(config Configuration) *Service {
 }
 
 // NewPromptRequest creates a new prompt request for the chatbot and returns the job.
-func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessage) (*natsdto.SimplePromptJob, error) {
-	req := natsdto.SimplePromptRequest{
+func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessage) (*natsdto.Chat, error) {
+	req := natsdto.StartChatRequest{
 		UserMsg:   userMsg,
 		SystemMsg: systemMsg,
 	}
@@ -39,12 +39,12 @@ func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessa
 		return nil, fmt.Errorf("could not send request: %w", err)
 	}
 
-	var resp natsdto.SimplePromptJob
+	var resp natsdto.Chat
 	if err := json.Unmarshal(cmd.Data, &resp); err != nil {
 		return nil, fmt.Errorf("could not unmarshal response: %w", err)
 	}
 
-	if resp.JobID == "" {
+	if resp.ChatID == "" {
 		return nil, fmt.Errorf("empty job ID in response")
 	}
 
