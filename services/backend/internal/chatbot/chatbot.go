@@ -74,3 +74,27 @@ func (s *Service) StartChat(req natsdto.StartChatRequest) (*natsdto.Chat, error)
 
 	return &resp, nil
 }
+
+// SendMessage sends a message to the chatbot and returns the response.
+func (s *Service) SendMessage(req natsdto.SendChatMessageRequest) (*natsdto.Chat, error) {
+	data, err := json.Marshal(req)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal request: %w", err)
+	}
+
+	cmd, err := s.nats.Request("msl.chatbot.send_message", data, time.Second*50)
+	if err != nil {
+		return nil, fmt.Errorf("could not send request: %w", err)
+	}
+
+	var resp natsdto.Chat
+	if err := json.Unmarshal(cmd.Data, &resp); err != nil {
+		return nil, fmt.Errorf("could not unmarshal response: %w", err)
+	}
+
+	if resp.ID == "" {
+		return nil, fmt.Errorf("empty job ID in response")
+	}
+
+	return &resp, nil
+}

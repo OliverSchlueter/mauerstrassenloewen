@@ -27,6 +27,7 @@ func NewHandler(config Configuration) *Handler {
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 	mux.HandleFunc(prefix+"/chatbot/simple-prompt", h.handleSimplePrompt)
 	mux.HandleFunc(prefix+"/chatbot/start-chat", h.handleStartChat)
+	mux.HandleFunc(prefix+"/chatbot/send-message", h.handleSendMessage)
 }
 
 func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
@@ -107,6 +108,54 @@ func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	chat, err := h.service.StartChat(req)
+	if err != nil {
+		slog.Error("Could not create new chat request", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	chatData, err := json.Marshal(chat)
+	if err != nil {
+		slog.Error("Could not marshal chat response", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(chatData)
+}
+
+func (h *Handler) handleSendMessage(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
+	if r.Header.Get("Content-Type") != "application/json" {
+		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
+		return
+	}
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	var req natsdto.SendChatMessageRequest
+	if err := json.Unmarshal(body, &req); err != nil {
+		slog.Error("Could not unmarshal request body", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	if req.UserMsg == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	chat, err := h.service.SendMessage(req)
 	if err != nil {
 		slog.Error("Could not create new chat request", sloki.WrapError(err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)

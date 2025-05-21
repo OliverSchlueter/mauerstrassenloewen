@@ -61,6 +61,30 @@ paths:
         '500':
           description: Internal Server Error
 
+  /msl/api/v1/chatbot/send-message:
+    post:
+      summary: Send a message to an existing chat
+      operationId: sendChatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendChatMessageRequest'
+      responses:
+        '200':
+          description: Message sent successfully and chat updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '400':
+          description: Bad Request
+        '415':
+          description: Unsupported Media Type
+        '500':
+          description: Internal Server Error
+
   /msl/api/v1/user:
     post:
       summary: Create a new user
@@ -349,6 +373,19 @@ components:
         system_msg:
           type: string
           description: The system message used to guide the assistant.
+
+    SendChatMessageRequest:
+      type: object
+      required:
+        - chat_id
+        - user_msg
+      properties:
+        chat_id:
+          type: string
+          description: ID of the chat to send the message to.
+        user_msg:
+          type: string
+          description: The message content from the user.
 
     Message:
       type: object
