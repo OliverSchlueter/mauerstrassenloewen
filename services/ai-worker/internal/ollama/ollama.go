@@ -17,13 +17,15 @@ var _false = false
 var _true = true
 
 type Client struct {
-	ollama *api.Client
-	model  string
+	ollama         *api.Client
+	model          string
+	embeddingModel string
 }
 
 type Configuration struct {
-	BaseURL string
-	Model   string
+	BaseURL        string
+	Model          string
+	EmbeddingModel string
 }
 
 func NewClient(cfg Configuration) (*Client, error) {
@@ -39,8 +41,9 @@ func NewClient(cfg Configuration) (*Client, error) {
 	ollama := api.NewClient(baseURL, httpClient)
 
 	return &Client{
-		ollama: ollama,
-		model:  cfg.Model,
+		ollama:         ollama,
+		model:          cfg.Model,
+		embeddingModel: cfg.EmbeddingModel,
 	}, nil
 }
 
@@ -173,9 +176,9 @@ func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResp
 	return &resp, nil
 }
 
-func (c *Client) CreateEmbedding(ctx context.Context, input string) ([][]float32, error) {
+func (c *Client) CreateEmbed(ctx context.Context, input string) ([][]float32, error) {
 	resp, err := c.ollama.Embed(ctx, &api.EmbedRequest{
-		Model: "TODO",
+		Model: c.embeddingModel,
 		Input: input,
 	})
 	if err != nil {
@@ -183,6 +186,18 @@ func (c *Client) CreateEmbedding(ctx context.Context, input string) ([][]float32
 	}
 
 	return resp.Embeddings, nil
+}
+
+func (c *Client) CreateEmbedding(ctx context.Context, prompt string) ([]float64, error) {
+	resp, err := c.ollama.Embeddings(ctx, &api.EmbeddingRequest{
+		Model:  c.embeddingModel,
+		Prompt: prompt,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get embedding: %w", err)
+	}
+
+	return resp.Embedding, nil
 }
 
 func (c *Client) executeToolCalls(calls []api.ToolCall) (string, error) {

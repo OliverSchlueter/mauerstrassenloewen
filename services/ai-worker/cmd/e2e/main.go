@@ -37,8 +37,9 @@ func main() {
 
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
-		BaseURL: "http://localhost:11434",
-		Model:   "deepseek-r1:14b",
+		BaseURL:        "http://localhost:11434",
+		Model:          "deepseek-r1:14b",
+		EmbeddingModel: "TOOD",
 	})
 	if err != nil {
 		slog.Error("failed to create ollama client", slog.Any("err", err.Error()))
