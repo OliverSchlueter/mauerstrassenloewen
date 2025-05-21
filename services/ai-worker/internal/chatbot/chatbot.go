@@ -89,42 +89,19 @@ func (s *Service) handleSimplePrompt(msg *nats.Msg) {
 }
 
 func (s *Service) handleStartChat(msg *nats.Msg) {
-	receivedAt := time.Now()
-
 	var req natsdto.StartChatRequest
 	if err := json.Unmarshal(msg.Data, &req); err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to unmarshal request: %v", err)))
 		return
 	}
 
-	output, err := s.ollama.Generate(context.Background(), req.UserMsg)
+	chat, err := s.ollama.StartChat(context.Background(), req)
 	if err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to get response from ollama: %v", err)))
 		return
 	}
 
-	resp := natsdto.Chat{
-		ChatID: uuid.New().String(),
-		Messages: []natsdto.Message{
-			{
-				Role:    "system",
-				Content: string(req.SystemMsg),
-				SentAt:  receivedAt,
-			},
-			{
-				Role:    "user",
-				Content: req.UserMsg,
-				SentAt:  receivedAt,
-			},
-			{
-				Role:    "assistant",
-				Content: output,
-				SentAt:  time.Now(),
-			},
-		},
-	}
-
-	data, err := json.Marshal(resp)
+	data, err := json.Marshal(chat)
 	if err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to marshal response: %v", err)))
 		return
