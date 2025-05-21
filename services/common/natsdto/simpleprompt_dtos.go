@@ -9,6 +9,11 @@ type StartChatRequest struct {
 	SystemMsg SystemMessage `json:"system_msg"`
 }
 
+type SendChatMessageRequest struct {
+	ChatID  string `json:"chat_id"`
+	UserMsg string `json:"user_msg"`
+}
+
 type Chat struct {
 	ChatID   string    `json:"chat_id"`
 	Messages []Message `json:"messages"`
