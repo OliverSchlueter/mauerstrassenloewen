@@ -50,3 +50,27 @@ func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessa
 
 	return &resp, nil
 }
+
+// StartChat starts a new chat with the given user message and system message.
+func (s *Service) StartChat(req natsdto.StartChatRequest) (*natsdto.Chat, error) {
+	data, err := json.Marshal(req)
+	if err != nil {
+		return nil, fmt.Errorf("could not marshal request: %w", err)
+	}
+
+	cmd, err := s.nats.Request("msl.chatbot.start_chat", data, time.Second*50)
+	if err != nil {
+		return nil, fmt.Errorf("could not send request: %w", err)
+	}
+
+	var resp natsdto.Chat
+	if err := json.Unmarshal(cmd.Data, &resp); err != nil {
+		return nil, fmt.Errorf("could not unmarshal response: %w", err)
+	}
+
+	if resp.ChatID == "" {
+		return nil, fmt.Errorf("empty job ID in response")
+	}
+
+	return &resp, nil
+}

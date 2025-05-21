@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"io"
 	"log/slog"
@@ -25,6 +26,7 @@ func NewHandler(config Configuration) *Handler {
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 	mux.HandleFunc(prefix+"/chatbot/simple-prompt", h.handleSimplePrompt)
+	mux.HandleFunc(prefix+"/chatbot/start-chat", h.handleStartChat)
 }
 
 func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
@@ -73,4 +75,52 @@ func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jobData)
+}
+
+func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return
+	}
+
+	if r.Header.Get("Content-Type") != "application/json" {
+		http.Error(w, http.StatusText(http.StatusUnsupportedMediaType), http.StatusUnsupportedMediaType)
+		return
+	}
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	var req natsdto.StartChatRequest
+	if err := json.Unmarshal(body, &req); err != nil {
+		slog.Error("Could not unmarshal request body", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	if req.SystemMsg == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	chat, err := h.service.StartChat(req)
+	if err != nil {
+		slog.Error("Could not create new chat request", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	chatData, err := json.Marshal(chat)
+	if err != nil {
+		slog.Error("Could not marshal chat response", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(chatData)
 }
