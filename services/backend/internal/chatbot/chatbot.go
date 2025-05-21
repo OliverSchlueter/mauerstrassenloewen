@@ -44,7 +44,7 @@ func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessa
 		return nil, fmt.Errorf("could not unmarshal response: %w", err)
 	}
 
-	if resp.ChatID == "" {
+	if resp.ID == "" {
 		return nil, fmt.Errorf("empty job ID in response")
 	}
 
@@ -68,7 +68,7 @@ func (s *Service) StartChat(req natsdto.StartChatRequest) (*natsdto.Chat, error)
 		return nil, fmt.Errorf("could not unmarshal response: %w", err)
 	}
 
-	if resp.ChatID == "" {
+	if resp.ID == "" {
 		return nil, fmt.Errorf("empty job ID in response")
 	}
 

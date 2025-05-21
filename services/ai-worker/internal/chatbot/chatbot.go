@@ -68,7 +68,7 @@ func (s *Service) handleSimplePrompt(msg *nats.Msg) {
 	}
 
 	resp := natsdto.Chat{
-		ChatID: uuid.New().String(),
+		ID: uuid.New().String(),
 		Messages: []natsdto.Message{
 			{
 				Role:    "system",

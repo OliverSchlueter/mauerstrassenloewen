@@ -74,7 +74,7 @@ func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 
 func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*natsdto.Chat, error) {
 	chat := &natsdto.Chat{
-		ChatID: uuid.New().String(),
+		ID: uuid.New().String(),
 		Messages: []natsdto.Message{
 			{
 				Role:    "system",

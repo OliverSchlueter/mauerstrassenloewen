@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot/store"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
@@ -54,7 +55,9 @@ func main() {
 		return
 	}
 
+	chatbotStore := store.NewStore(store.Configuration{})
 	chatbotService := chatbot.NewService(chatbot.Configuration{
+		Store:  chatbotStore,
 		Nats:   nc,
 		Ollama: oc,
 	})

@@ -15,7 +15,7 @@ type SendChatMessageRequest struct {
 }
 
 type Chat struct {
-	ChatID   string    `json:"chat_id"`
+	ID       string    `json:"id"`
 	Messages []Message `json:"messages"`
 }
 
