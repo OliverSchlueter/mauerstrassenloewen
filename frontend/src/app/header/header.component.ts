@@ -3,12 +3,14 @@ import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 import {MatButton} from '@angular/material/button';
 import {NgIf} from '@angular/common';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
   imports: [
     MatButton,
-    NgIf
+    NgIf,
+    MatIcon
   ],
   templateUrl: './header.component.html',
   standalone: true,
@@ -28,7 +30,7 @@ export class HeaderComponent {
   }
 
   goAccount() {
-    this.router.navigate(['/account/landing'])
+    this.router.navigate(['/account'])
   }
 
   isLoggedIn() {

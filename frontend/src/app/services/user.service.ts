@@ -24,6 +24,11 @@ export class UserService {
   }
 
   register(user: User) {
-    return this.http.put(this.url + "/register", user)
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    });
+
+    return this.http.post(this.url + "/user/register", user, {headers})
   }
 }

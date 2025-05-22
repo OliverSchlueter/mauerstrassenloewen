@@ -1,15 +1,50 @@
 <div class="flex-container">
-  <div class="navigation-bar">
-    <ul>
-      <li><button mat-button (click)="navigate('landing')">Landing</button></li>
-      <li><button mat-button (click)="navigate('settings')">Settings</button></li>
-      <li>test</li>
-      <li>test</li>
-    </ul>
-  </div>
-  <mat-divider vertical></mat-divider>
   <div class="content-container">
-    <h2>Account Settings {{user?.name}}</h2>
-    <router-outlet></router-outlet>
+    <h2>Profile</h2>
+    <button mat-flat-button (click)="navigate('interview')">Repeat Interview</button>
+    <mat-divider class="mat-divider"></mat-divider>
+    <h2>Security</h2>
+    <h4>Reset Passwort</h4>
+    <mat-form-field class="mat-form-field">
+      <mat-label>Old Password</mat-label>
+      <input matInput [(ngModel)]="oldPassword" [type]="hideOld() ? 'password' : 'text'" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clickOld($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideOld()"
+      >
+        <mat-icon>{{hideOld() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+    <br>
+    <mat-form-field class="mat-form-field">
+      <mat-label>New Password</mat-label>
+      <input matInput [(ngModel)]="newPassword" [type]="hideNew() ? 'password' : 'text'" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clickNew($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideNew()"
+      >
+        <mat-icon>{{hideNew() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field class="mat-form-field">
+      <mat-label>Repeat New Password</mat-label>
+      <input matInput [(ngModel)]="newPasswordRepeat" [type]="hideNewRepeat() ? 'password' : 'text'" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clickNewRepeat($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hideNewRepeat()"
+      >
+        <mat-icon>{{hideNewRepeat() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
 </div>

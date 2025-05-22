@@ -3,7 +3,13 @@
 .welcome {
   text-align: center;
   font-size: 40px;
+}
 
+.gradient-text {
+  background: linear-gradient(to right, #ff4400, orange);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .flex-container {
@@ -12,34 +18,3 @@
   justify-content: flex-start;
 }
 
-.mat-card {
-  background-color: #333333 !important;
-  width: 512px;
-  margin: 20px;
-}
-
-.small {
-  width: 300px;
-}
-
-.medium {
-  width: 512px;
-}
-
-.large {
-  width: 768px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0 0 0;
-}
-
-.positive {
-  color: $costum-green
-}
-
-.negative {
-  color: $costum-red
-}

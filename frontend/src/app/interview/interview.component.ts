@@ -14,6 +14,7 @@ import {MatSlider, MatSliderThumb} from '@angular/material/slider';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {UserService} from '../services/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-interview',
@@ -53,7 +54,7 @@ export class InterviewComponent implements OnInit{
   userprofile: Profile = new Profile()
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit() {
@@ -77,6 +78,8 @@ export class InterviewComponent implements OnInit{
     console.log(this.user)
     this.userService.updateUser(this.user).subscribe(response => {
       console.log("response: " + response);
+
     })
+    this.router.navigate([''])
   }
 }
