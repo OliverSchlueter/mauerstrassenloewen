@@ -16,24 +16,29 @@ jobs:
         with:
           go-version: '1.24.2'
 
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.2.0'
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./frontend/
+
       - name: Build frontend
-        run: |
-          cd frontend/
-          npm run build
-          cd ../
+        run: npm run build
+        working-directory: ./frontend/
 
       - name: Copy frontend files
         run: |
-          cd scripts/
           chmod +x copy-frontend-files.sh
           ./copy-frontend-files.sh
-          cd ../
+        working-directory: ./scripts/
 
       - name: Build Docker image
         run: |
-          cd services/
           docker build -t oliverschlueter/msl-frontend:latest -f DockerfileFrontend .
-          cd ../
+        working-directory: ./services/
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
