@@ -10,6 +10,9 @@ links:
   - text: Website
     icon: globe
     link: https://mauerstrassenloewen.de
+  - text: OpenAPI
+    icon: plug
+    link: https://mauerstrassenloewen.de/openapi
   - text: GitHub
     icon: mark-github
     link: https://github.com/OliverSchlueter/mauerstrassenloewen
@@ -19,6 +22,9 @@ footer:
     - text: Website
       icon: globe
       link: https://mauerstrassenloewen.de
+    - text: OpenAPI
+      icon: plug
+      link: https://mauerstrassenloewen.de/openapi
     - text: GitHub
       icon: mark-github
       link: https://github.com/OliverSchlueter/mauerstrassenloewen

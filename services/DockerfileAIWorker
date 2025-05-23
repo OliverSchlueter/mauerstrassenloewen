@@ -8,17 +8,16 @@ WORKDIR /app
 COPY . .
 
 # Download dependencies
-RUN cd frontend && go mod download
+RUN cd ai-worker && go mod download
 
 # Build the Go application
-RUN go build -C frontend -o main ./cmd/e2e/main.go
+RUN go build -C ai-worker -o main ./cmd/e2e/main.go
 
 FROM ubuntu:22.04
 WORKDIR /root/
 
-COPY --from=builder ./app/frontend/main .
-
-EXPOSE 8081
+# Copy the built binary from the builder stage
+COPY --from=builder ./app/ai-worker/main .
 
 # Run the binary
 CMD ["./main"]

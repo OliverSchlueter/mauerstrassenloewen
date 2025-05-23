@@ -29,6 +29,6 @@ export class UserService {
       "Accept": "application/json",
     });
 
-    return this.http.post(this.url + "/user/register", user, {headers})
+    return this.http.post(this.url + "/user/register", user, {headers, observe: 'response'})
   }
 }
