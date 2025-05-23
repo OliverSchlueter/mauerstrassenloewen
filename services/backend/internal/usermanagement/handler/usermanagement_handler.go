@@ -74,6 +74,11 @@ func (h *Handler) handleRegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Name == "" || req.Email == "" || req.Password == "" {
+		http.Error(w, "username, email and password are required fields", http.StatusBadRequest)
+		return
+	}
+
 	err := h.store.CreateUser(r.Context(), &req)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserAlreadyExists) {
