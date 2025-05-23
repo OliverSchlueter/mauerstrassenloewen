@@ -1,13 +1,59 @@
 services:
+  msl_reverseproxy:
+    image: oliverschlueter/msl-reverseproxy:latest
+    container_name: msl_reverseproxy
+    depends_on:
+      - msl_backend
+      - msl_frontend
+      - msl_aiworker
+    environment:
+      - "LOKI_URL=TODO"
+    networks:
+      msl_network:
+        aliases:
+          - msl_reverseproxy
+    ports:
+      - "9080:8080"
+
   msl_frontend:
     image: oliverschlueter/msl-frontend:latest
     container_name: msl_frontend
+    environment:
+      - "LOKI_URL=TODO"
     networks:
       msl_network:
         aliases:
           - msl_frontend
     ports:
         - "9081:8081"
+
+  msl_backend:
+    image: oliverschlueter/msl-backend:latest
+    container_name: msl_backend
+    environment:
+      - "LOKI_URL=TODO"
+      - "NATS_URL=TODO"
+      - "MONGODB_URL=TODO"
+    networks:
+      msl_network:
+        aliases:
+          - msl_backend
+    ports:
+      - "9082:8082"
+
+  msl_aiworker:
+    image: oliverschlueter/msl-aiworker:latest
+    container_name: msl_aiworker
+    environment:
+      - "LOKI_URL=TODO"
+      - "NATS_URL=TODO"
+      - "OLLAMA_URL=TODO"
+      - "QDRANT_HOST=TODO"
+      - "QDRANT_PORT=TODO"
+    networks:
+      msl_network:
+        aliases:
+          - msl_aiworker
 
 networks:
   msl_network:
