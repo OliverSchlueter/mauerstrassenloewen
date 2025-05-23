@@ -3,6 +3,7 @@ services:
   msl_reverseproxy:
     image: oliverschlueter/msl-reverseproxy:latest
     container_name: msl_reverseproxy
+    restart: unless-stopped
     environment:
       - "LOKI_URL=${LOKI_URL}"
       - "CONFIG_PATH=${REVERSE_PROXY_CONFIG_PATH}"
@@ -16,6 +17,7 @@ services:
 
   msl_frontend:
     image: oliverschlueter/msl-frontend:latest
+    restart: unless-stopped
     environment:
       - "LOKI_URL=${LOKI_URL}"
       - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
@@ -26,6 +28,7 @@ services:
 
   msl_backend:
     image: oliverschlueter/msl-backend:latest
+    restart: unless-stopped
     depends_on:
       - msl_nats
       - msl_mongo
@@ -41,6 +44,7 @@ services:
 
   msl_aiworker:
     image: oliverschlueter/msl-aiworker:latest
+    restart: unless-stopped
     depends_on:
       - msl_nats
       - msl_mongo
@@ -62,6 +66,7 @@ services:
   msl_mongo:
     image: mongo:latest
     container_name: msl_mongo
+    restart: unless-stopped
     environment:
       - "MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}"
       - "MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}"
@@ -75,6 +80,7 @@ services:
   msl_qdrant:
     image: qdrant/qdrant:latest
     container_name: msl_qdrant
+    restart: unless-stopped
     environment:
       - "QDRANT__SERVICE__API_KEY=${QDRANT_API_KEY}"
     networks:
@@ -88,6 +94,7 @@ services:
   msl_nats:
     image: nats:latest
     container_name: msl_nats
+    restart: unless-stopped
     networks:
       msl_network:
         aliases:
