@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Frontend",
+    "endpoint": "",
+    "destination": "http://msl_frontend:9081"
+  },
+  {
+    "name": "Backend",
+    "endpoint": "/msl",
+    "destination": "http://msl_frontend:9082"
+  }
+]

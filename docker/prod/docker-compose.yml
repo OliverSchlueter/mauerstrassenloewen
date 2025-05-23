@@ -5,12 +5,16 @@ services:
     container_name: msl_reverseproxy
     environment:
       - "LOKI_URL=TODO"
+      - "CONFIG_PATH=data/config.json"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
     networks:
       msl_network:
         aliases:
           - msl_reverseproxy
     ports:
       - "9080:8080"
+    volumes:
+      - ./reverseproxy:/app/data
 
   msl_frontend:
     image: oliverschlueter/msl-frontend:latest
