@@ -2,11 +2,11 @@
   {
     "name": "Frontend",
     "endpoint": "",
-    "destination": "http://msl_frontend:9081"
+    "destination": "http://msl_frontend:8081"
   },
   {
     "name": "Backend",
     "endpoint": "/msl",
-    "destination": "http://msl_frontend:9082"
+    "destination": "http://msl_backend:8082"
   }
 ]

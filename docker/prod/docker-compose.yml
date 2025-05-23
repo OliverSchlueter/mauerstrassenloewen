@@ -5,12 +5,10 @@ services:
     container_name: msl_reverseproxy
     environment:
       - "LOKI_URL=TODO"
-      - "CONFIG_PATH=data/config.json"
+      - "CONFIG_PATH=/app/data/config.json"
       - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
     networks:
       msl_network:
-        aliases:
-          - msl_reverseproxy
     ports:
       - "9080:8080"
     volumes:
@@ -18,19 +16,16 @@ services:
 
   msl_frontend:
     image: oliverschlueter/msl-frontend:latest
-    container_name: msl_frontend
     environment:
       - "LOKI_URL=TODO"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
     networks:
       msl_network:
-        aliases:
-          - msl_frontend
-    ports:
-        - "9081:8081"
+    deploy:
+      replicas: 3
 
   msl_backend:
     image: oliverschlueter/msl-backend:latest
-    container_name: msl_backend
     depends_on:
       - msl_nats
       - msl_mongo
@@ -38,16 +33,14 @@ services:
       - "LOKI_URL=TODO"
       - "NATS_URL=TODO"
       - "MONGODB_URL=TODO"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
     networks:
       msl_network:
-        aliases:
-          - msl_backend
-    ports:
-      - "9082:8082"
+    deploy:
+      replicas: 3
 
   msl_aiworker:
     image: oliverschlueter/msl-aiworker:latest
-    container_name: msl_aiworker
     depends_on:
       - msl_nats
       - msl_mongo
@@ -59,10 +52,11 @@ services:
       - "QDRANT_HOST=TODO"
       - "QDRANT_PORT=TODO"
       - "QDRANT_API_KEY=TODO"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
     networks:
       msl_network:
-        aliases:
-          - msl_aiworker
+    deploy:
+      replicas: 3
 
   # Databases
   msl_mongo:
