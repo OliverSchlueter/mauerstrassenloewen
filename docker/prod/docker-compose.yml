@@ -1,0 +1,14 @@
+services:
+  msl_frontend:
+    image: msl_frontend:latest
+    container_name: msl_frontend
+    networks:
+      msl_network:
+        aliases:
+          - msl_frontend
+    ports:
+        - "8081:8081"
+
+networks:
+  msl_network:
+    driver: bridge
