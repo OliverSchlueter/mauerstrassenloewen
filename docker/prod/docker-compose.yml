@@ -1,11 +1,8 @@
 services:
+  # Our services
   msl_reverseproxy:
     image: oliverschlueter/msl-reverseproxy:latest
     container_name: msl_reverseproxy
-    depends_on:
-      - msl_backend
-      - msl_frontend
-      - msl_aiworker
     environment:
       - "LOKI_URL=TODO"
     networks:
@@ -30,6 +27,9 @@ services:
   msl_backend:
     image: oliverschlueter/msl-backend:latest
     container_name: msl_backend
+    depends_on:
+      - msl_nats
+      - msl_mongo
     environment:
       - "LOKI_URL=TODO"
       - "NATS_URL=TODO"
@@ -44,16 +44,56 @@ services:
   msl_aiworker:
     image: oliverschlueter/msl-aiworker:latest
     container_name: msl_aiworker
+    depends_on:
+      - msl_nats
+      - msl_mongo
+      - msl_qdrant
     environment:
       - "LOKI_URL=TODO"
       - "NATS_URL=TODO"
       - "OLLAMA_URL=TODO"
       - "QDRANT_HOST=TODO"
       - "QDRANT_PORT=TODO"
+      - "QDRANT_API_KEY=TODO"
     networks:
       msl_network:
         aliases:
           - msl_aiworker
+
+  # Databases
+  msl_mongo:
+    image: mongo:latest
+    container_name: msl_mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=YOUR_MONGO_PASSWORD
+    networks:
+      msl_network:
+        aliases:
+          - msl_mongo
+    ports:
+      - "27017:27017"
+
+  msl_qdrant:
+    image: qdrant/qdrant:latest
+    container_name: msl_qdrant
+    environment:
+      - QDRANT__SERVICE__API_KEY=YOUR_API_KEY
+    networks:
+      msl_network:
+        aliases:
+          - msl_qdrant
+    ports:
+      - "6333:6333"
+
+  # Other
+  msl_nats:
+    image: nats:latest
+    container_name: msl_nats
+    networks:
+      msl_network:
+        aliases:
+          - msl_nats
 
 networks:
   msl_network:
