@@ -5,6 +5,8 @@ import {MatProgressBar} from '@angular/material/progress-bar';
 import {CircularProgressComponent} from '../util/circular-progress/circular-progress.component';
 import {AuthService} from '../services/auth.service';
 import {User} from '../models/User';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,9 @@ import {User} from '../models/User';
     MatCardHeader,
     MatProgressSpinner,
     MatProgressBar,
-    CircularProgressComponent
+    CircularProgressComponent,
+    MatButton,
+    MatIcon
   ],
   templateUrl: './home.component.html',
   standalone: true,

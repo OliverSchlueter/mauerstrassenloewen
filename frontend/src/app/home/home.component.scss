@@ -1,6 +1,7 @@
 @use '../../styles' as *;
 
 .welcome {
+  margin-top: 200px;
   text-align: center;
   font-size: 40px;
 }
@@ -14,7 +15,14 @@
 
 .flex-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  margin: 10px;
+}
