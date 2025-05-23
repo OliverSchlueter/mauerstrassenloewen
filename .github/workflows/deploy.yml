@@ -62,9 +62,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.24.2'
+          go-version: 1.24.2
+          check-latest: true
+          cache-dependency-path: "**/*.sum"
 
       - name: Build Docker image
         run: docker build -t oliverschlueter/msl-backend:latest -f DockerfileBackend .
@@ -87,9 +89,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.24.2'
+          go-version: 1.24.2
+          check-latest: true
+          cache-dependency-path: "**/*.sum"
 
       - name: Build Docker image
         run: docker build -t oliverschlueter/msl-reverseproxy:latest -f DockerfileReverseproxy .
@@ -112,9 +116,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.24.2'
+          go-version: 1.24.2
+          check-latest: true
+          cache-dependency-path: "**/*.sum"
 
       - name: Build Docker image
         run: docker build -t oliverschlueter/msl-aiworker:latest -f DockerfileAIWorker .
