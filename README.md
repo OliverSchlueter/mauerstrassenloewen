@@ -1,5 +1,8 @@
 # Mauerstrassenloewen
 
+[![CodeFactor](https://www.codefactor.io/repository/github/oliverschlueter/mauerstrassenloewen/badge)](https://www.codefactor.io/repository/github/oliverschlueter/mauerstrassenloewen)
+[![Lines of Code](https://tokei.rs/b1/github/oliverschlueter/mauerstrassenloewen?category=code)](https://github.com/oliverschlueter/mauerstrassenloewen)
+
 Ein KI-gestützter, interaktiver Trading Coach für Anfänger und Fortgeschrittene.  
 Lerne das Investieren mit echten Daten, realistischen Simulationen und einem virtuellen Coach an deiner Seite.
 
