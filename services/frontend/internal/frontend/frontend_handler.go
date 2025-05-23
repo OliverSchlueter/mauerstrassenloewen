@@ -55,8 +55,13 @@ func NewHandler(cfg Configuration) *Handler {
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 	pages := []string{
+		"home",
+		"theory",
 		"login",
 		"register",
+		"interview",
+		"account",
+		"coach",
 	}
 
 	mux.HandleFunc(prefix+"/{$}", h.handleIndex)
