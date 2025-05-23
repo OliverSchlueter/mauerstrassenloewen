@@ -4,9 +4,9 @@ services:
     image: oliverschlueter/msl-reverseproxy:latest
     container_name: msl_reverseproxy
     environment:
-      - "LOKI_URL=TODO"
-      - "CONFIG_PATH=/app/data/config.json"
-      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
+      - "LOKI_URL=${LOKI_URL}"
+      - "CONFIG_PATH=${REVERSE_PROXY_CONFIG_PATH}"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
       msl_network:
     ports:
@@ -17,8 +17,8 @@ services:
   msl_frontend:
     image: oliverschlueter/msl-frontend:latest
     environment:
-      - "LOKI_URL=TODO"
-      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
+      - "LOKI_URL=${LOKI_URL}"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
       msl_network:
     deploy:
@@ -30,10 +30,10 @@ services:
       - msl_nats
       - msl_mongo
     environment:
-      - "LOKI_URL=TODO"
-      - "NATS_URL=TODO"
-      - "MONGODB_URL=TODO"
-      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
+      - "LOKI_URL=${LOKI_URL}"
+      - "NATS_URL=${NATS_URL}"
+      - "MONGODB_URL=mongodb://${MONGODB_USERNAME}:<MONGODB_PASSWORD>@${MONGODB_HOST}:${MONGODB_PORT}"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
       msl_network:
     deploy:
@@ -46,13 +46,13 @@ services:
       - msl_mongo
       - msl_qdrant
     environment:
-      - "LOKI_URL=TODO"
-      - "NATS_URL=TODO"
-      - "OLLAMA_URL=TODO"
-      - "QDRANT_HOST=TODO"
-      - "QDRANT_PORT=TODO"
-      - "QDRANT_API_KEY=TODO"
-      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=false"
+      - "LOKI_URL=${LOKI_URL}"
+      - "NATS_URL=${NATS_URL}"
+      - "OLLAMA_URL=${OLLAMA_URL}"
+      - "QDRANT_HOST=${QDRANT_HOST}"
+      - "QDRANT_PORT=${QDRANT_PORT}"
+      - "QDRANT_API_KEY=${QDRANT_API_KEY}"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
       msl_network:
     deploy:
@@ -63,8 +63,8 @@ services:
     image: mongo:latest
     container_name: msl_mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=YOUR_MONGO_PASSWORD
+      - "MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}"
+      - "MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}"
     networks:
       msl_network:
         aliases:
@@ -76,7 +76,7 @@ services:
     image: qdrant/qdrant:latest
     container_name: msl_qdrant
     environment:
-      - QDRANT__SERVICE__API_KEY=YOUR_API_KEY
+      - "QDRANT__SERVICE__API_KEY=${QDRANT_API_KEY}"
     networks:
       msl_network:
         aliases:
