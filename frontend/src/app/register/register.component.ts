@@ -13,6 +13,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [
     MatCard,
     MatCardTitle,
@@ -42,7 +43,7 @@ export class RegisterComponent {
   register() {
     this.userService.register(this.user).subscribe((response: any) => {
       console.log(response)
-      if(response) {
+      if(response.status == 201){
         this.openSnackBar("Registration successfull", "close")
       }
       this.router.navigate(['login'])

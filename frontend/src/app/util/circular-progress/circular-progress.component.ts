@@ -4,6 +4,7 @@ import {Component, Input} from '@angular/core';
   selector: 'app-circular-progress',
   imports: [],
   templateUrl: './circular-progress.component.html',
+  standalone: true,
   styleUrl: './circular-progress.component.scss'
 })
 export class CircularProgressComponent {
