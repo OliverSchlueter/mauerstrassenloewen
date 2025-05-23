@@ -7,6 +7,7 @@ import {AuthService} from '../services/auth.service';
 import {User} from '../models/User';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ import {MatIcon} from '@angular/material/icon';
 })
 export class HomeComponent {
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   getUserName(): string {
@@ -37,5 +38,9 @@ export class HomeComponent {
     } else {
       return '';
     }
+  }
+
+  navigate(location: string) {
+    this.router.navigate([location]);
   }
 }
