@@ -16,7 +16,7 @@ jobs:
         with:
           go-version: '1.24.2'
 
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20.2.0'
@@ -28,6 +28,12 @@ jobs:
       - name: Build frontend
         run: npm run build
         working-directory: ./frontend/
+
+      - name: Build docs
+        run: |
+          npm install retypeapp --global
+          retype build
+        working-directory: ./docs/
 
       - name: Copy frontend files
         run: |
