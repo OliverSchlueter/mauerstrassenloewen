@@ -3,6 +3,7 @@ package usermanagement
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/hashing"
 	"github.com/google/uuid"
 	"strings"
@@ -53,9 +54,12 @@ func (s *Store) CreateUser(ctx context.Context, user *User) error {
 }
 
 func (s *Store) UpdateUser(ctx context.Context, user *User) error {
-	if err := validateUser(user); err != nil {
-		return err
+	oldUser, err := s.db.GetUserByID(ctx, user.ID)
+	if err != nil {
+		return fmt.Errorf("user not found: %w", err)
 	}
+
+	user.Password = oldUser.Password
 
 	return s.db.UpdateUser(ctx, user)
 }
