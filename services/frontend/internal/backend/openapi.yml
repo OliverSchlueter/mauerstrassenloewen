@@ -185,6 +185,24 @@ paths:
       tags:
         - Users
 
+  /msl/api/v1/user/me:
+    get:
+      summary: Get current user
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+      tags:
+        - Users
+
+
   /msl/api/v1/auth-token:
     get:
       summary: Get auth tokens for current user
