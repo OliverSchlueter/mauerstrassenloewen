@@ -35,6 +35,7 @@ services:
     environment:
       - "LOKI_URL=${LOKI_URL}"
       - "NATS_URL=${NATS_URL}"
+      - "NATS_AUTH_TOKEN=${NATS_AUTH_TOKEN}"
       - "MONGODB_URL=mongodb://${MONGODB_USERNAME}:<MONGODB_PASSWORD>@${MONGODB_HOST}:${MONGODB_PORT}"
       - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
@@ -52,6 +53,7 @@ services:
     environment:
       - "LOKI_URL=${LOKI_URL}"
       - "NATS_URL=${NATS_URL}"
+      - "NATS_AUTH_TOKEN=${NATS_AUTH_TOKEN}"
       - "OLLAMA_URL=${OLLAMA_URL}"
       - "QDRANT_HOST=${QDRANT_HOST}"
       - "QDRANT_PORT=${QDRANT_PORT}"
@@ -95,10 +97,13 @@ services:
     image: nats:latest
     container_name: msl_nats
     restart: unless-stopped
+    command: "--auth ${NATS_AUTH_TOKEN}"
     networks:
       msl_network:
         aliases:
           - msl_nats
+    ports:
+        - "4222:4222"
 
 networks:
   msl_network:
