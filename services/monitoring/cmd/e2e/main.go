@@ -32,7 +32,7 @@ func main() {
 	// Setup NATS
 	natsClient, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
-		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to NATS", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
@@ -53,7 +53,7 @@ func main() {
 
 		err := http.ListenAndServe(":"+port, chain)
 		if err != nil {
-			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
+			slog.Error("Could not start server on port "+port, sloki.WrapError(err))
 			os.Exit(1)
 		}
 	}()

@@ -38,19 +38,19 @@ func main() {
 	// Setup NATS
 	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
-		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to NATS", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
 	// Setup MongoDB
 	mc, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
-		slog.Error("Could not connect to MongoDB", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to MongoDB", sloki.WrapError(err))
 		os.Exit(1)
 	}
 	err = mc.Ping(context.Background(), readpref.Primary())
 	if err != nil {
-		slog.Error("Could not ping MongoDB", slog.Any("err", err.Error()))
+		slog.Error("Could not ping MongoDB", sloki.WrapError(err))
 		os.Exit(1)
 	}
 	mdb := mc.Database("msl_simulation")
@@ -63,7 +63,7 @@ func main() {
 	})
 	err = qdbQ.Ping(context.Background())
 	if err != nil {
-		slog.Error("Could not ping QuestDB Query client", slog.Any("err", err.Error()))
+		slog.Error("Could not ping QuestDB Query client", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
@@ -74,7 +74,7 @@ func main() {
 		questdb.WithBasicAuth("admin", "quest"),
 	)
 	if err != nil {
-		slog.Error("Could not connect to QuestDB ingestion client", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to QuestDB ingestion client", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
@@ -97,7 +97,7 @@ func main() {
 
 		err := http.ListenAndServe(":"+port, chain)
 		if err != nil {
-			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
+			slog.Error("Could not start server on port "+port, sloki.WrapError(err))
 			os.Exit(1)
 		}
 	}()
@@ -112,17 +112,17 @@ func main() {
 		slog.Info("Received interrupt signal, shutting down...")
 
 		if err := qdbI.Flush(context.Background()); err != nil {
-			slog.Error("Could not flush QuestDB ingestion client", slog.Any("err", err.Error()))
+			slog.Error("Could not flush QuestDB ingestion client", sloki.WrapError(err))
 		}
 		if err := qdbI.Close(context.Background()); err != nil {
-			slog.Error("Could not close QuestDB ingestion client", slog.Any("err", err.Error()))
+			slog.Error("Could not close QuestDB ingestion client", sloki.WrapError(err))
 		}
 		if err := qdbQ.Close(); err != nil {
-			slog.Error("Could not close QuestDB query client", slog.Any("err", err.Error()))
+			slog.Error("Could not close QuestDB query client", sloki.WrapError(err))
 		}
 
 		if err := mc.Disconnect(context.Background()); err != nil {
-			slog.Error("Could not disconnect from MongoDB", slog.Any("err", err.Error()))
+			slog.Error("Could not disconnect from MongoDB", sloki.WrapError(err))
 		}
 
 		nc.Close()

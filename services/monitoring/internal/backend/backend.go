@@ -19,7 +19,7 @@ func Start(cfg Configuration) {
 		Nats: cfg.NatsClient,
 	})
 	if err := natsLoggingHandler.Register(); err != nil {
-		slog.Error("Could not register NATS logging handler", slog.Any("err", err.Error()))
+		slog.Error("Could not register NATS logging handler", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
