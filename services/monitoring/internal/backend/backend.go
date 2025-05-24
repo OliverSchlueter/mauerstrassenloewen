@@ -2,6 +2,7 @@ package backend
 
 import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/healthcheck"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/natslogging"
 	"github.com/nats-io/nats.go"
 	"log/slog"
