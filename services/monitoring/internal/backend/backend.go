@@ -4,10 +4,12 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/natslogging"
 	"github.com/nats-io/nats.go"
 	"log/slog"
+	"net/http"
 	"os"
 )
 
 type Configuration struct {
+	Mux        *http.ServeMux
 	NatsClient *nats.Conn
 }
 
