@@ -10,6 +10,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
 	ummongo "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement/database/mongo"
 	umhandler "github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement/handler"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/healthcheck"
 	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"net/http"
@@ -59,6 +60,9 @@ func Start(cfg Configuration) (authMiddleware func(next http.Handler) http.Handl
 		Service: chatbotService,
 	})
 	chatbotHandler.Register(cfg.Mux, apiPrefix)
+
+	// Healthcheck
+	healthcheck.Register(cfg.Mux)
 
 	return as.Middleware
 }

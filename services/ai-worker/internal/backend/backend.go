@@ -4,6 +4,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot/store"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/healthcheck"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/nats-io/nats.go"
 	"log/slog"
@@ -27,4 +28,6 @@ func Start(cfg Configuration) {
 		slog.Error("failed to register chatbot service", sloki.WrapError(err))
 		return
 	}
+
+	healthcheck.Register(cfg.Mux)
 }

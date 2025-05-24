@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/healthcheck"
 	"github.com/OliverSchlueter/mauerstrassenloewen/monitoring/internal/natslogging"
 	"github.com/nats-io/nats.go"
 	"log/slog"
@@ -21,4 +22,6 @@ func Start(cfg Configuration) {
 		slog.Error("Could not register NATS logging handler", slog.Any("err", err.Error()))
 		os.Exit(1)
 	}
+
+	healthcheck.Register(cfg.Mux)
 }
