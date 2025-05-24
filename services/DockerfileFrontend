@@ -11,7 +11,7 @@ COPY . .
 RUN cd frontend && go mod download
 
 # Build the Go application
-RUN go build -C frontend -o main ./cmd/e2e/main.go
+RUN go build -C frontend -o main ./cmd/prod/main.go
 
 FROM ubuntu:22.04
 WORKDIR /root/
