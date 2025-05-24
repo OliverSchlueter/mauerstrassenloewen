@@ -19,5 +19,7 @@ WORKDIR /root/
 # Copy the built binary from the builder stage
 COPY --from=builder ./app/ai-worker/main .
 
+EXPOSE 8085
+
 # Run the binary
 CMD ["./main"]

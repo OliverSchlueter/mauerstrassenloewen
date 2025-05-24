@@ -1,15 +1,18 @@
 package main
 
 import (
-	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot"
-	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/chatbot/store"
+	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
+	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
 	"github.com/qdrant/go-client/qdrant"
 	"log/slog"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -32,7 +35,7 @@ func main() {
 	// Setup NATS
 	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
-		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to NATS", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
@@ -47,7 +50,7 @@ func main() {
 		Tools:          *tc,
 	})
 	if err != nil {
-		slog.Error("failed to create ollama client", slog.Any("err", err.Error()))
+		slog.Error("failed to create ollama client", sloki.WrapError(err))
 		return
 	}
 
@@ -57,33 +60,48 @@ func main() {
 		Port: 6333,
 	})
 	if err != nil {
-		slog.Error("failed to create qdrant client", slog.Any("err", err.Error()))
+		slog.Error("failed to create qdrant client", sloki.WrapError(err))
 		return
 	}
 
-	chatbotStore := store.NewStore(store.Configuration{})
-	chatbotService := chatbot.NewService(chatbot.Configuration{
-		Store:  chatbotStore,
-		Nats:   nc,
-		Ollama: oc,
+	mux := http.NewServeMux()
+	port := "8085"
+
+	backend.Start(backend.Configuration{
+		Mux:          mux,
+		Nats:         nc,
+		OllamaClient: oc,
 	})
-	if err := chatbotService.Register(); err != nil {
-		slog.Error("failed to register chatbot service", slog.Any("err", err.Error()))
-		return
-	}
 
-	slog.Info("AI worker started")
+	go func() {
+		chain := alice.New(
+			middleware.CORS,
+			middleware.Logging,
+			middleware.RecoveryMiddleware,
+		).Then(mux)
+
+		err := http.ListenAndServe(":"+port, chain)
+		if err != nil {
+			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
+			os.Exit(1)
+		}
+	}()
+
+	slog.Info(fmt.Sprintf("Started server on http://localhost:%s\n", port))
 
 	// Wait for a signal to exit
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-	<-sig
+	switch <-sig {
+	case os.Interrupt:
+		slog.Info("Received interrupt signal, shutting down...")
 
-	slog.Info("AI worker shutting down")
+		nc.Close()
 
-	nc.Close()
+		if err := qc.Close(); err != nil {
+			slog.Error("failed to close qdrant client", sloki.WrapError(err))
+		}
 
-	if err := qc.Close(); err != nil {
-		slog.Error("failed to close qdrant client", slog.Any("err", err.Error()))
+		slog.Info("Shutdown complete")
 	}
 }
