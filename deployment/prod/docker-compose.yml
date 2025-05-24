@@ -88,6 +88,27 @@ services:
       retries: 3
       start_period: 30s
 
+  msl_monitoring:
+    image: oliverschlueter/msl-monitoring:latest
+    restart: unless-stopped
+    depends_on:
+      - msl_nats
+    environment:
+      - "LOKI_URL=${LOKI_URL}"
+      - "NATS_URL=${NATS_URL}"
+      - "NATS_AUTH_TOKEN=${NATS_AUTH_TOKEN}"
+      - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
+    networks:
+      msl_network:
+    deploy:
+      replicas: 3
+    healthcheck:
+      test: "curl --fail http://msl_monitoring:8084/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
   # Databases
   msl_mongo:
     image: mongo:latest
