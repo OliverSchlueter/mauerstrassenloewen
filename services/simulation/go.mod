@@ -7,9 +7,9 @@ require (
 	github.com/go-pg/pg/v10 v10.14.0
 	github.com/google/uuid v1.6.0
 	github.com/justinas/alice v1.2.0
-	github.com/nats-io/nats.go v1.42.0
+	github.com/nats-io/nats.go v1.43.0
 	github.com/questdb/go-questdb-client/v3 v3.2.0
-	go.mongodb.org/mongo-driver/v2 v2.2.1
+	go.mongodb.org/mongo-driver/v2 v2.2.2
 )
 
 require (
