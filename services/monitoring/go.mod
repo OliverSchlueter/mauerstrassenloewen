@@ -5,7 +5,7 @@ go 1.24.2
 require (
 	github.com/OliverSchlueter/mauerstrassenloewen/common v0.0.0-00010101000000-000000000000
 	github.com/justinas/alice v1.2.0
-	github.com/nats-io/nats.go v1.42.0
+	github.com/nats-io/nats.go v1.43.0
 )
 
 require (
