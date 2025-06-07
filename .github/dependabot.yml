@@ -1,10 +1,69 @@
 version: 2
 updates:
+  # npm dependencies
   - package-ecosystem: "npm"
     directory: "frontend"
     schedule:
       interval: "daily"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    open-pull-requests-limit: 20
+    groups:
+      npm-all:
+        patterns:
+          - "*"
+
+  # go dependencies
+  - package-ecosystem: "gomod"
+    directory: "/services/ai-worker"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/services/backend"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/services/common"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/services/frontend"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/services/monitoring"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/services/reverseproxy"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
+  - package-ecosystem: "gomod"
+    directory: "/services/simulation"
+    schedule:
+      interval: "daily"
+    groups:
+      go-all:
+        patterns:
+          - "*"
