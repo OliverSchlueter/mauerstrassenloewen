@@ -6,10 +6,10 @@ require (
 	github.com/OliverSchlueter/mauerstrassenloewen/common v0.0.0-00010101000000-000000000000
 	github.com/google/uuid v1.6.0
 	github.com/justinas/alice v1.2.0
-	github.com/nats-io/nats.go v1.42.0
-	github.com/ollama/ollama v0.7.0
+	github.com/nats-io/nats.go v1.43.0
+	github.com/ollama/ollama v0.9.0
 	github.com/qdrant/go-client v1.14.0
-	github.com/sashabaranov/go-openai v1.40.0
+	github.com/sashabaranov/go-openai v1.40.1
 )
 
 require (
