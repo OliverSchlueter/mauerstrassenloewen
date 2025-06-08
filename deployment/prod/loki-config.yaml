@@ -31,3 +31,8 @@ query_scheduler:
 
 frontend:
   max_outstanding_per_tenant: 4094
+
+limits_config:
+  allow_structured_metadata: true
+  volume_enabled: true
+  retention_period: 672h # 28 days retention
