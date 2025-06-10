@@ -175,7 +175,7 @@
 
           <div class="down">
             <mat-label>Risk Affinity</mat-label>
-            <mat-slider min="0" max="100" step="1" discrete [displayWith]="formatRiskAffinity">
+            <mat-slider min="1" max="100" step="1" discrete [displayWith]="formatRiskAffinity">
               <input matSliderThumb [(ngModel)]="userprofile.riskAffinity">
             </mat-slider>
           </div>
@@ -192,9 +192,9 @@
             <mat-label>ESG Preferences</mat-label>
             <mat-select [(ngModel)]="userprofile.esgPreferences">
               <mat-option value="None">None</mat-option>
-              <mat-option value="Beginner">Unimportant</mat-option>
-              <mat-option value="Advanced">Medium</mat-option>
-              <mat-option value="Expert">Important</mat-option>
+              <mat-option value="Unimportant">Unimportant</mat-option>
+              <mat-option value="Medium">Medium</mat-option>
+              <mat-option value="Important">Important</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="mat-form-field">
