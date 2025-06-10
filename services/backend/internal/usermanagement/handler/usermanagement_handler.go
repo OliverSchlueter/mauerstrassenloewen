@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/usermanagement"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"log/slog"
@@ -33,6 +34,7 @@ func NewHandler(config Configuration) *Handler {
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 	mux.HandleFunc(prefix+"/user/register", h.handleRegisterUser)
+	mux.HandleFunc(prefix+"/user/me", h.handleMe)
 	mux.HandleFunc(prefix+"/user/{id}", h.handleUser)
 }
 
@@ -74,6 +76,11 @@ func (h *Handler) handleRegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Name == "" || req.Email == "" || req.Password == "" {
+		http.Error(w, "username, email and password are required fields", http.StatusBadRequest)
+		return
+	}
+
 	err := h.store.CreateUser(r.Context(), &req)
 	if err != nil {
 		if errors.Is(err, usermanagement.ErrUserAlreadyExists) {
@@ -106,6 +113,26 @@ func (h *Handler) handleGetUser(w http.ResponseWriter, r *http.Request, userID s
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
+
+	userData, err := json.Marshal(user)
+	if err != nil {
+		slog.Error("Could not marshal user response", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(userData)
+}
+
+func (h *Handler) handleMe(w http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("Accept") != "application/json" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	user := authentication.UserFromCtx(r.Context())
 
 	userData, err := json.Marshal(user)
 	if err != nil {

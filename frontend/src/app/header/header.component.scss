@@ -1,6 +1,6 @@
 .header-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 0;
   margin-bottom: 20px;
@@ -10,11 +10,23 @@
 }
 
 .header-item {
-  margin: 20px;
+  margin: 10px;
   cursor: pointer;
 }
 
 .flex {
   display: flex;
   justify-content: center;
+}
+
+.nebeneinander {
+  display: flex;
+  align-items: center;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #ff4400, orange);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }

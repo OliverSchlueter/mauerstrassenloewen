@@ -40,12 +40,14 @@ export class LoginComponent {
   }
 
   login() {
-    if(this.authService.login(this.username, this.password)) {
-      this.router.navigate(['home'])
-    }
-    else {
-      this.errorMessage = "wrong username or password"
-    }
+    this.authService.login(this.username, this.password).subscribe(respone => {
+      if(respone == true) {
+        console.log("success")
+        this.router.navigate(['home'])
+      } else {
+        this.errorMessage = "wrong username or password"
+      }
+    })
   }
 
   register() {

@@ -54,7 +54,7 @@ func main() {
 	go func() {
 		err := http.ListenAndServe(":"+port, mux)
 		if err != nil {
-			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
+			slog.Error("Could not start server on port "+port, sloki.WrapError(err))
 			os.Exit(1)
 		}
 	}()

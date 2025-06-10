@@ -55,8 +55,13 @@ func NewHandler(cfg Configuration) *Handler {
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 	pages := []string{
+		"home",
+		"theory",
 		"login",
 		"register",
+		"interview",
+		"account",
+		"coach",
 	}
 
 	mux.HandleFunc(prefix+"/{$}", h.handleIndex)
@@ -71,7 +76,7 @@ func (h *Handler) handleIndex(w http.ResponseWriter, r *http.Request) {
 	file, err := h.files.ReadFile("assets/index.html")
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		slog.Error("Could not read index.html", slog.Any("err", err.Error()), sloki.WrapRequest(r))
+		slog.Error("Could not read index.html", sloki.WrapError(err), sloki.WrapRequest(r))
 		return
 	}
 

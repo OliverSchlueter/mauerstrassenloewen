@@ -44,7 +44,7 @@ func (h *Handler) handleScalar(w http.ResponseWriter, r *http.Request) {
 		DarkMode: true,
 	})
 	if err != nil {
-		slog.Error("Could not generate openapi html", slog.Any("err", err.Error()), sloki.WrapRequest(r))
+		slog.Error("Could not generate openapi html", sloki.WrapError(err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}

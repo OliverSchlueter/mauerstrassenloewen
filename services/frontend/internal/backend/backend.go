@@ -2,6 +2,7 @@ package backend
 
 import (
 	_ "embed"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/healthcheck"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/openapi"
 	"github.com/OliverSchlueter/mauerstrassenloewen/frontend/internal/docs"
 	"github.com/OliverSchlueter/mauerstrassenloewen/frontend/internal/frontend"
@@ -36,4 +37,7 @@ func Start(cfg Configuration) {
 		Files: docs.Files,
 	})
 	docsHandler.Register(cfg.Mux)
+
+	// Healthcheck
+	healthcheck.Register(cfg.Mux)
 }

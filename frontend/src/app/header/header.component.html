@@ -1,5 +1,9 @@
 <div class="header-container">
+  <div class="nebeneinander header-item">
+    <img src="assets/img.png" height="50" width="50" style="margin: 10px">
+    <h1 class="gradient-text" (click)="goHome()">Mauerstrassenloewen</h1>
+  </div>
+  <button *ngIf="isLoggedIn()" class="header-item" (click)="goCoach()" mat-button><mat-icon>chat</mat-icon>Coach</button>
   <button *ngIf="isLoggedIn()" class="header-item" (click)="goTheory()" mat-button><mat-icon>filter_empty</mat-icon>Theory</button>
-  <h1 class="header-item" (click)="goHome()">Mauerstrassenloewen</h1>
   <button *ngIf="isLoggedIn()" class="header-item" (click)="goAccount()" mat-button><mat-icon>account_circle</mat-icon>Account</button>
 </div>

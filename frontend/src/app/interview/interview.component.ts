@@ -15,6 +15,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {UserService} from '../services/user.service';
 import {Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-interview',
@@ -50,14 +51,15 @@ import {Router} from '@angular/router';
   styleUrl: './interview.component.scss'
 })
 export class InterviewComponent implements OnInit{
-  @Input() user: User | undefined;
+  user: User | undefined;
   userprofile: Profile = new Profile()
 
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) {
   }
 
   ngOnInit() {
+    this.user = this.authService.user;
     if(this.user) {
       this.userprofile = this.user.profile;
     }

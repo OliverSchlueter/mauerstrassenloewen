@@ -40,19 +40,19 @@ services:
 #      - "9000:9000"
 #      - "9001:9001"
 #    command: server /data --console-address ":9001"
-
-  msl_questdb:
-    image: questdb/questdb:latest
-    container_name: msl_questdb
-    networks:
-      msl_network:
-        aliases:
-          - questdb
-    ports:
-      - "9005:9000"
-      - "9009:9009"
-      - "8812:8812"
-      - "9003:9003"
+#
+#  msl_questdb:
+#    image: questdb/questdb:latest
+#    container_name: msl_questdb
+#    networks:
+#      msl_network:
+#        aliases:
+#          - questdb
+#    ports:
+#      - "9005:9000"
+#      - "9009:9009"
+#      - "8812:8812"
+#      - "9003:9003"
 
   msl_qdrant:
     image: qdrant/qdrant:latest

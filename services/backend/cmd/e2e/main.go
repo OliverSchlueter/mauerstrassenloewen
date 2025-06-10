@@ -43,13 +43,13 @@ func main() {
 	if fflags.StartTestContainers.IsEnabled() {
 		_, err := containers.StartMongoDB(ctx)
 		if err != nil {
-			slog.Error("Could not start MongoDB", slog.Any("err", err.Error()))
+			slog.Error("Could not start MongoDB", sloki.WrapError(err))
 			os.Exit(1)
 		}
 
 		_, err = containers.StartNATS(ctx)
 		if err != nil {
-			slog.Error("Could not start NATS", slog.Any("err", err.Error()))
+			slog.Error("Could not start NATS", sloki.WrapError(err))
 			os.Exit(1)
 		}
 	}
@@ -57,19 +57,19 @@ func main() {
 	// Setup NATS
 	nc, err := nats.Connect(nats.DefaultURL)
 	if err != nil {
-		slog.Error("Could not connect to NATS", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to NATS", sloki.WrapError(err))
 		os.Exit(1)
 	}
 
 	// Setup MongoDB
 	mc, err := mongo.Connect(options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
-		slog.Error("Could not connect to MongoDB", slog.Any("err", err.Error()))
+		slog.Error("Could not connect to MongoDB", sloki.WrapError(err))
 		os.Exit(1)
 	}
 	err = mc.Ping(ctx, readpref.Primary())
 	if err != nil {
-		slog.Error("Could not ping MongoDB", slog.Any("err", err.Error()))
+		slog.Error("Could not ping MongoDB", sloki.WrapError(err))
 		os.Exit(1)
 	}
 	mdb := mc.Database("msl_backend")
@@ -98,7 +98,7 @@ func main() {
 
 		err := http.ListenAndServe(":"+port, chain)
 		if err != nil {
-			slog.Error("Could not start server on port "+port, slog.Any("err", err.Error()))
+			slog.Error("Could not start server on port "+port, sloki.WrapError(err))
 			os.Exit(1)
 		}
 	}()
@@ -113,7 +113,7 @@ func main() {
 		slog.Info("Received interrupt signal, shutting down...")
 		if fflags.StartTestContainers.IsEnabled() {
 			if err := containers.StopAllContainers(ctx); err != nil {
-				slog.Error("Could not stop containers", slog.Any("err", err.Error()))
+				slog.Error("Could not stop containers", sloki.WrapError(err))
 			}
 
 			time.Sleep(5 * time.Second)
@@ -121,7 +121,7 @@ func main() {
 		}
 
 		if err := mc.Disconnect(context.Background()); err != nil {
-			slog.Error("Could not disconnect from MongoDB", slog.Any("err", err.Error()))
+			slog.Error("Could not disconnect from MongoDB", sloki.WrapError(err))
 		}
 
 		nc.Close()

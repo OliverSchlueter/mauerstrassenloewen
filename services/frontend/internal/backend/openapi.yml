@@ -89,7 +89,7 @@ paths:
       tags:
         - Chatbot
 
-  /msl/api/v1/user:
+  /msl/api/v1/user/register:
     post:
       summary: Create a new user
       requestBody:
@@ -185,6 +185,24 @@ paths:
       tags:
         - Users
 
+  /msl/api/v1/user/me:
+    get:
+      summary: Get current user
+      responses:
+        '200':
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+      tags:
+        - Users
+
+
   /msl/api/v1/auth-token:
     get:
       summary: Get auth tokens for current user
@@ -258,11 +276,11 @@ paths:
       summary: Get existent lessons for user
       responses:
         '200':
-          description: Lesson found
+          description: Lessons for user found
         '400':
           description: Bad request
         '404':
-          description: Lesson not found
+          description: Lessons for user not found
         '500':
           description: Internal Server Error
       tags:
@@ -270,16 +288,22 @@ paths:
 
   /msl/api/v1/lesson/{lesson_id}:
     put:
-      summary: Create or Update lesson
+      summary: Create or update lessons for user
       responses:
         '200':
-          description: Lesson found
+          description: Lessons created or updated successfully
         '400':
           description: Bad request
         '404':
-          description: Lesson not found
+          description: User not found
         '500':
           description: Internal Server Error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson'
       tags:
         - Lesson
 
@@ -474,6 +498,13 @@ components:
         - password
         - last_name
         - first_name
+    Lesson:
+      type: object
+      properties:
+        user_id:
+          type: string
+        done:
+            type: "map<string, boolean>"
     Token:
       type: object
       properties:

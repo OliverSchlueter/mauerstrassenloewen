@@ -6,6 +6,7 @@ import {authGuard} from './auth.guard';
 import {AccountComponent} from './home/account/account.component';
 import {TheoryComponent} from './theory/theory.component';
 import {InterviewComponent} from './interview/interview.component';
+import {CoachComponent} from './coach/coach.component';
 
 export const routes: Routes = [
   {
@@ -37,5 +38,9 @@ export const routes: Routes = [
   {
     path: 'account',
     component: AccountComponent,
+  },
+  {
+    path: 'coach',
+    component: CoachComponent,
   }
 ];

@@ -2,6 +2,7 @@ package backend
 
 import (
 	_ "embed"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/healthcheck"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation"
 	simMongo "github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation/database/mongo"
 	"github.com/OliverSchlueter/mauerstrassenloewen/simulation/internal/simulation/handler"
@@ -33,4 +34,7 @@ func Start(cfg Configuration) {
 		Store: simStore,
 	})
 	simHandler.Register(cfg.Mux, apiPrefix)
+
+	// Healthcheck
+	healthcheck.Register(cfg.Mux)
 }

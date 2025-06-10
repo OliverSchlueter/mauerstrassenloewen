@@ -1,0 +1,24 @@
+# Use the official Golang image as the base image
+FROM golang:1.24.2 AS builder
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the source code
+COPY . .
+
+# Download dependencies
+RUN cd frontend && go mod download
+
+# Build the Go application
+RUN go build -C frontend -o main ./cmd/prod/main.go
+
+FROM ubuntu:22.04
+WORKDIR /root/
+
+COPY --from=builder ./app/frontend/main .
+
+EXPOSE 8081
+
+# Run the binary
+CMD ["./main"]
