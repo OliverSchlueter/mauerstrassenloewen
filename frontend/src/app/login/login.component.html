@@ -21,7 +21,8 @@
             matSuffix
             (click)="clickPassword($event)"
             [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="'HidePassword()'">
+            [attr.aria-pressed]="hidePassword()"
+          >
             <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
         </mat-form-field>

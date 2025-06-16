@@ -1,8 +1,8 @@
 import {Component, signal} from '@angular/core';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
+import {MatError, MatFormField, MatHint, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {Router} from '@angular/router';
 import {AuthService} from '../services/auth.service';
 import {NgIf} from '@angular/common';
@@ -55,7 +55,7 @@ export class LoginComponent {
   }
 
   clickPassword($event: MouseEvent) {
-    this.hidePassword.set(!this.hidePassword);
+    this.hidePassword.set(!this.hidePassword());
     $event.stopPropagation()
   }
 }
