@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgClass, NgFor, NgIf} from '@angular/common';
 import {Message} from '../models/Message'
 import {MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {AuthService} from '../services/auth.service';
+import {AiService} from '../services/ai.service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-coach',
@@ -11,27 +14,28 @@ import {MatIcon} from '@angular/material/icon';
     NgClass,
     MatIconButton,
     MatIcon,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './coach.component.html',
   standalone: true,
   styleUrl: './coach.component.scss'
 })
-export class CoachComponent {
-  messages: Message[] = [
-    {
-      content: "testesetsetsetsetsetsetsetsetset",
-      fromUser: true,
-    },
-    {
-      content: "loplolololololololololololololol",
-      fromUser: false,
-    },
-    {
-      content: "so uncivilized",
-      fromUser: true,
-    },
-  ]
+export class CoachComponent implements OnInit {
+  messageInput = "";
+  messages: Message[] = [];
+
+  constructor(private aiService: AiService, private authService: AuthService) {}
+
+  ngOnInit() {
+    const user = this.authService.user?.name
+    if(user) {
+      this.aiService.getChatByUser(user, this.messageInput).subscribe(messages => {
+        console.log(messages)
+        this.messages = messages[0]
+      })
+    }
+  }
 
   getClass(message: Message) {
     if(message.fromUser) {
