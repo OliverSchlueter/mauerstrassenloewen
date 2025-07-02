@@ -1,23 +1,31 @@
-.theory-content {
-  padding: 24px;
-  margin-top: 200px;
+.modules-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.content {
-  margin-top: 25px;
-  width: 500px;
-  color: #ff0000;
-  height: 800px
+.card {
+  width: 160px;
+  margin: 20px;
+  background-color: #333333 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
 }
 
-.page {
-  height: 100%;
-  background-color: #333333;
-  margin-left: 500px;
-  margin-right: 200px;
-  border-radius: 20px;
+.card:hover {
+  background-color: #4caf50;
 }
 
-.Überschrift {
-  height: 200px;
+.icon {
+  width: 60px;
+  height: 60px;
+  font-size: 60px;
+  margin: 20px !important;
+}
+
+.footer {
+  margin-bottom: 20px;
 }

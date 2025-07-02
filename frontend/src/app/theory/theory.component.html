@@ -1,8 +1,15 @@
-<div class="page">
-  <app-overlay></app-overlay> 
-  <div class="content"> 
-    <div class="Test">
-    <h1 class="Überschrift">Überschrift</h1> 
-  </div>
-</div>
+<div class="modules-container">
+<mat-card class="card" *ngFor="let module of modules">
+  <mat-card-header>
+    <mat-card-title>
+      {{module.index}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-icon class="icon">library_books</mat-icon>
+  </mat-card-content>
+  <mat-card-footer class="footer">
+    {{module.title}}
+  </mat-card-footer>
+</mat-card>
 </div>

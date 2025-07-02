@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {Message} from '../models/Message';
+import {StartChatDTO} from '../models/StartChatDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AiService {
     return "You are a professional AI Assistent. Please answer the users message."
   }
 
-  getChatByUser(user: string, message: string) {
+  startChat(user: string, message: string) {
     const body = {
       "system_msg": this.createSystemMessage(),
       "user_msg": message
@@ -27,6 +28,6 @@ export class AiService {
       "X-Auth-Token": this.authService.authToken
     });
 
-    return this.http.post<Message[]>(this.url + "/simple-prompt", body, {headers: headers})
+    return this.http.post<StartChatDTO>(this.url + "/start-chat", body, {headers: headers})
   }
 }

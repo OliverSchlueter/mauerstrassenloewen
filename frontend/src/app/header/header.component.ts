@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 import {MatButton} from '@angular/material/button';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
@@ -10,8 +10,7 @@ import {MatIcon} from '@angular/material/icon';
   imports: [
     MatButton,
     NgIf,
-    MatIcon,
-    NgOptimizedImage
+    MatIcon
   ],
   templateUrl: './header.component.html',
   standalone: true,

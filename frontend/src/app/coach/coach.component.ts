@@ -30,9 +30,8 @@ export class CoachComponent implements OnInit {
   ngOnInit() {
     const user = this.authService.user?.name
     if(user) {
-      this.aiService.getChatByUser(user, this.messageInput).subscribe(messages => {
+      this.aiService.startChat(user, this.messageInput).subscribe(messages => {
         console.log(messages)
-        this.messages = messages[0]
       })
     }
   }
