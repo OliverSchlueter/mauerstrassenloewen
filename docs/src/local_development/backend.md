@@ -12,7 +12,7 @@ To set up your local development environment, you need to install the following 
 - Docker
 - Go (1.24.2)
 
-!!! WARNING
+!!!warning
 If you want to work on the AI-Worker, you also need ollama installed.
 !!!
 
