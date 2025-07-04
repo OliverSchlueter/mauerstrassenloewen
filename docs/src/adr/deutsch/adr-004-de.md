@@ -1,10 +1,11 @@
 # 4. MongoDB als primäre Datenbank
 
-> [!NOTE]
-> Translated from the original English version using AI.
-> The translation may not be perfect, but it should convey the same meaning and intent as the original text.
-> Please refer to the original English version for the most accurate information.
-> You can find the original version [here](../english/adr-004.md).
+!!!info Translated using AI
+Translated from the original English version using AI.
+The translation may not be perfect, but it should convey the same meaning and intent as the original text.
+Please refer to the original English version for the most accurate information.
+You can find the original version [here](../english/adr-004.md).
+!!!
 
 **Datum:** 08.04.2025  
 **Status:** In Arbeit  

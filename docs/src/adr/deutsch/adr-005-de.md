@@ -1,10 +1,11 @@
 # 5. Ollama für das Bereitstellen von KI-Modellen
 
-> [!NOTE]
-> Translated from the original English version using AI.
-> The translation may not be perfect, but it should convey the same meaning and intent as the original text.
-> Please refer to the original English version for the most accurate information.
-> You can find the original version [here](../english/adr-005.md).
+!!!info Translated using AI
+Translated from the original English version using AI.
+The translation may not be perfect, but it should convey the same meaning and intent as the original text.
+Please refer to the original English version for the most accurate information.
+You can find the original version [here](../english/adr-005.md).
+!!!
 
 **Datum:** 04.07.2025  
 **Status:** Entwurf  
