@@ -26,8 +26,10 @@ func NewHandler(config Configuration) *Handler {
 
 func (h *Handler) Register(mux *http.ServeMux, prefix string) {
 	mux.HandleFunc(prefix+"/chatbot/simple-prompt", h.handleSimplePrompt)
-	mux.HandleFunc(prefix+"/chatbot/start-chat", h.handleStartChat)
-	mux.HandleFunc(prefix+"/chatbot/send-message", h.handleSendMessage)
+
+	mux.HandleFunc(prefix+"/chatbot/chat", h.handleStartChat)
+	mux.HandleFunc(prefix+"/chatbot/chat/{id}", h.handleGetChat)
+	mux.HandleFunc(prefix+"/chatbot/chat/{id}/new-message", h.handleSendMessage)
 }
 
 func (h *Handler) handleSimplePrompt(w http.ResponseWriter, r *http.Request) {
@@ -126,6 +128,33 @@ func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
 	w.Write(chatData)
 }
 
+func (h *Handler) handleGetChat(w http.ResponseWriter, r *http.Request) {
+	cid := r.PathValue("id")
+	if cid == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
+
+	req := natsdto.GetChatRequest{ChatID: cid}
+	chat, err := h.service.GetChat(req)
+	if err != nil {
+		slog.Error("Could not get chat", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	chatData, err := json.Marshal(chat)
+	if err != nil {
+		slog.Error("Could not marshal chat response", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(chatData)
+}
+
 func (h *Handler) handleSendMessage(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
@@ -149,6 +178,9 @@ func (h *Handler) handleSendMessage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
+
+	cid := r.PathValue("id")
+	req.ChatID = cid
 
 	if req.UserMsg == "" {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
