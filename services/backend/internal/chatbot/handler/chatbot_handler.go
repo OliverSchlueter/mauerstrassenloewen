@@ -2,6 +2,8 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/authentication"
 	"github.com/OliverSchlueter/mauerstrassenloewen/backend/internal/chatbot"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
@@ -108,6 +110,18 @@ func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
+
+	u := authentication.UserFromCtx(r.Context())
+	profileData, err := json.Marshal(u.Profile)
+	if err != nil {
+		slog.Error("Could not marshal user data", sloki.WrapError(err), sloki.WrapRequest(r))
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	req.UserMsg += "\n\nUser Data:\n"
+	req.UserMsg += fmt.Sprintf("I am %s (%s) and my email is %s.\n", u.Name, u.ID, u.Email)
+	req.UserMsg += fmt.Sprintf("My profile data is: %s\n", string(profileData))
 
 	chat, err := h.service.StartChat(req)
 	if err != nil {
