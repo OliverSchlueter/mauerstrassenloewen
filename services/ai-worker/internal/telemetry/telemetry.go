@@ -3,6 +3,8 @@ package telemetry
 import (
 	"github.com/ollama/ollama/api"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"net/http"
 )
 
 type Service struct {
@@ -77,11 +79,15 @@ func NewService() *Service {
 	}
 }
 
-func (s *Service) trackNewChat() {
+func (s *Service) RegisterHandler(mux *http.ServeMux) {
+	mux.Handle("/metrics", promhttp.Handler())
+}
+
+func (s *Service) TrackNewChat() {
 	s.TotalCreatedChats.With(prometheus.Labels{}).Inc()
 }
 
-func (s *Service) trackOllamaResponse(resp *api.ChatResponse) {
+func (s *Service) TrackOllamaResponse(resp *api.ChatResponse) {
 	s.TotalChatMessages.With(prometheus.Labels{"model": resp.Model}).Inc()
 
 	s.OllamaTotalDuration.WithLabelValues(resp.Model).Set(float64(resp.TotalDuration.Milliseconds()))

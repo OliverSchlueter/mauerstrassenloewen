@@ -3,6 +3,7 @@ package ollama
 import (
 	"context"
 	"fmt"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/telemetry"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/google/uuid"
@@ -24,6 +25,7 @@ type Client struct {
 	embeddingModel string
 	tools          *tools.Service
 	rag            *RAGStore
+	telemetry      *telemetry.Service
 }
 
 type Configuration struct {
@@ -32,6 +34,7 @@ type Configuration struct {
 	EmbeddingModel string
 	Tools          *tools.Service
 	QC             *qdrant.Client
+	Telemetry      *telemetry.Service
 }
 
 func NewClient(cfg Configuration) (*Client, error) {
@@ -58,6 +61,7 @@ func NewClient(cfg Configuration) (*Client, error) {
 		embeddingModel: cfg.EmbeddingModel,
 		tools:          cfg.Tools,
 		rag:            rag,
+		telemetry:      cfg.Telemetry,
 	}, nil
 }
 
@@ -91,6 +95,8 @@ func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 
 func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*natsdto.Chat, error) {
 	slog.Debug("Starting new chat", slog.String("userMsg", req.UserMsg), slog.String("systemMsg", string(req.SystemMsg)))
+	c.telemetry.TrackNewChat()
+
 	chat := &natsdto.Chat{
 		ID: uuid.New().String(),
 		Messages: []natsdto.Message{
@@ -138,6 +144,7 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) (*na
 	if err != nil {
 		return nil, fmt.Errorf("failed to get initial chat response: %w", err)
 	}
+	c.telemetry.TrackOllamaResponse(initialResp)
 	slog.Debug("Initial chat response", slog.String("content", initialResp.Message.Content))
 
 	if initialResp.Message.ToolCalls == nil || len(initialResp.Message.ToolCalls) == 0 {
@@ -168,6 +175,7 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) (*na
 	if err != nil {
 		return nil, fmt.Errorf("failed to get final chat response: %w", err)
 	}
+	c.telemetry.TrackOllamaResponse(finalResp)
 	slog.Debug("Final chat response", slog.String("content", finalResp.Message.Content))
 
 	chat.AppendMsg(natsdto.Message{

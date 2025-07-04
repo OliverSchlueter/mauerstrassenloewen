@@ -5,6 +5,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/telemetry"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
@@ -52,6 +53,8 @@ func main() {
 		return
 	}
 
+	tm := telemetry.NewService()
+
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL:        "http://localhost:11434",
@@ -59,6 +62,7 @@ func main() {
 		EmbeddingModel: "nomic-embed-text",
 		Tools:          ts,
 		QC:             qc,
+		Telemetry:      tm,
 	})
 	if err != nil {
 		sloki.WrapError(err)
@@ -68,6 +72,8 @@ func main() {
 
 	mux := http.NewServeMux()
 	port := "8085"
+
+	tm.RegisterHandler(mux)
 
 	backend.Start(backend.Configuration{
 		Mux:          mux,
