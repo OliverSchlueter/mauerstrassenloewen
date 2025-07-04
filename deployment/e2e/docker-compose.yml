@@ -19,6 +19,20 @@ services:
     ports:
       - "27017:27017"
 
+  msl_postgres:
+    image: postgres:latest
+    container_name: msl_postgres
+    networks:
+      msl_network:
+        aliases:
+          - postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: msl_telemetry
+
 #  msl_redis:
 #    image: redis:latest
 #    container_name: msl_redis
@@ -85,7 +99,7 @@ services:
 #    environment:
 #      - GF_SECURITY_ADMIN_PASSWORD=admin
 #    depends_on:
-#      - loki
+#      - msl_loki
 #
 #  msl_loki:
 #    image: grafana/loki:2.9.0
@@ -105,7 +119,7 @@ services:
 #      - /var/lib/docker/containers:/var/lib/docker/containers:ro
 #    command: -config.file=/etc/promtail/promtail.yaml
 #    depends_on:
-#      - loki
+#      - msl_loki
 #
 #  msl_prometheus:
 #    image: prom/prometheus:latest

@@ -108,13 +108,12 @@ func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*
 		},
 	}
 
-	var err error
-	chat, err = c.Chat(ctx, chat, req.UserMsg)
+	newChat, err := c.Chat(ctx, chat, req.UserMsg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to start chat: %w", err)
 	}
 
-	return chat, nil
+	return newChat, nil
 }
 
 func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) (*natsdto.Chat, error) {
@@ -153,7 +152,7 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) (*na
 			Content: initialResp.Message.Content,
 			SentAt:  time.Now(),
 		})
-		return nil, nil
+		return chat, nil
 	}
 	slog.Debug("Chat response", slog.String("content", initialResp.Message.Content))
 
@@ -193,7 +192,7 @@ func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResp
 		Model:    c.model,
 		Stream:   &_false,
 		Messages: msgs,
-		Tools:    tools.ToOllama(c.tools.GetTools()),
+		//Tools:    tools.ToOllama(c.tools.GetTools()),
 	}
 
 	var resp api.ChatResponse

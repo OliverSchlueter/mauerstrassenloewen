@@ -1,99 +1,72 @@
 package telemetry
 
 import (
+	"context"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
+	"github.com/jackc/pgx/v5"
 	"github.com/ollama/ollama/api"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"net/http"
+	"log/slog"
+	"time"
 )
 
 type Service struct {
-	TotalCreatedChats        *prometheus.CounterVec
-	TotalChatMessages        *prometheus.CounterVec
-	OllamaTotalDuration      *prometheus.GaugeVec
-	OllamaLoadDuration       *prometheus.GaugeVec
-	OllamaPromptEvalCount    *prometheus.GaugeVec
-	OllamaPromptEvalDuration *prometheus.GaugeVec
-	OllamaEvalCount          *prometheus.GaugeVec
-	OllamaEvalDuration       *prometheus.GaugeVec
+	postgre *pgx.Conn
 }
 
-func NewService() *Service {
-	createdChats := prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "created_chats",
-		Help: "Total number of created chats",
-	}, []string{})
-	prometheus.MustRegister(createdChats)
-
-	chatMessages := prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "chat_messages",
-		Help: "Total number of chat messages",
-	}, []string{"model"})
-	prometheus.MustRegister(chatMessages)
-
-	ollamaTotalDuration := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "ollama_total_duration",
-		Help: "Total duration of chat operations",
-	}, []string{"model"})
-	prometheus.MustRegister(ollamaTotalDuration)
-
-	ollamaLoadDuration := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "ollama_load_duration",
-		Help: "Duration of loading the Ollama model",
-	}, []string{"model"})
-	prometheus.MustRegister(ollamaLoadDuration)
-
-	ollamaPromptEvalCount := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "ollama_prompt_eval_count",
-		Help: "Count of prompt evaluations in Ollama",
-	}, []string{"model"})
-	prometheus.MustRegister(ollamaPromptEvalCount)
-
-	ollamaPromptEvalDuration := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "ollama_prompt_eval_duration",
-		Help: "Duration of prompt evaluations in Ollama",
-	}, []string{"model"})
-	prometheus.MustRegister(ollamaPromptEvalDuration)
-
-	ollamaEvalCount := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "ollama_eval_count",
-		Help: "Count of evaluations in Ollama",
-	}, []string{"model"})
-	prometheus.MustRegister(ollamaEvalCount)
-
-	ollamaEvalDuration := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "ollama_eval_duration",
-		Help: "Duration of evaluations in Ollama",
-	}, []string{"model"})
-	prometheus.MustRegister(ollamaEvalDuration)
+func NewService(conn *pgx.Conn) (*Service, error) {
+	chatResponsesTable := `
+	CREATE TABLE IF NOT EXISTS chat_responses (
+	    timestamp TIMESTAMP,
+	    model VARCHAR(255),
+	    total_duration BIGINT,
+	    load_duration BIGINT,
+	    prompt_eval_count INT,
+	    prompt_eval_duration BIGINT,
+	    eval_count INT,
+	    eval_duration BIGINT
+    )
+`
+	if _, err := conn.Exec(context.Background(), chatResponsesTable); err != nil {
+		return nil, err
+	}
 
 	return &Service{
-		TotalCreatedChats:        createdChats,
-		TotalChatMessages:        chatMessages,
-		OllamaTotalDuration:      ollamaTotalDuration,
-		OllamaLoadDuration:       ollamaLoadDuration,
-		OllamaPromptEvalCount:    ollamaPromptEvalCount,
-		OllamaPromptEvalDuration: ollamaPromptEvalDuration,
-		OllamaEvalCount:          ollamaEvalCount,
-		OllamaEvalDuration:       ollamaEvalDuration,
-	}
-}
-
-func (s *Service) RegisterHandler(mux *http.ServeMux) {
-	mux.Handle("/metrics", promhttp.Handler())
+		postgre: conn,
+	}, nil
 }
 
 func (s *Service) TrackNewChat() {
-	s.TotalCreatedChats.With(prometheus.Labels{}).Inc()
+
 }
 
 func (s *Service) TrackOllamaResponse(resp *api.ChatResponse) {
-	s.TotalChatMessages.With(prometheus.Labels{"model": resp.Model}).Inc()
+	insert := `
+	INSERT INTO chat_responses VALUES(
+		  @timestamp, 
+		  @model, 
+		  @total_duration, 
+		  @load_duration, 
+		  @prompt_eval_count, 
+		  @prompt_eval_duration, 
+		  @eval_count, 
+		  @eval_duration
+	)
+	`
+	args := pgx.NamedArgs{
+		"timestamp":            time.Now().Format(time.RFC3339),
+		"model":                resp.Model,
+		"total_duration":       resp.TotalDuration.Milliseconds(),
+		"load_duration":        resp.LoadDuration.Milliseconds(),
+		"prompt_eval_count":    resp.PromptEvalCount,
+		"prompt_eval_duration": resp.PromptEvalDuration.Milliseconds(),
+		"eval_count":           resp.EvalCount,
+		"eval_duration":        resp.EvalDuration.Milliseconds(),
+	}
+	if _, err := s.postgre.Exec(context.Background(), insert, args); err != nil {
+		slog.Error("failed to insert telemetry data", sloki.WrapError(err))
+		return
+	}
 
-	s.OllamaTotalDuration.WithLabelValues(resp.Model).Set(float64(resp.TotalDuration.Milliseconds()))
-	s.OllamaLoadDuration.WithLabelValues(resp.Model).Set(float64(resp.LoadDuration.Milliseconds()))
-	s.OllamaPromptEvalCount.WithLabelValues(resp.Model).Set(float64(resp.PromptEvalCount))
-	s.OllamaPromptEvalDuration.WithLabelValues(resp.Model).Set(float64(resp.PromptEvalDuration.Milliseconds()))
-	s.OllamaEvalCount.WithLabelValues(resp.Model).Set(float64(resp.EvalCount))
-	s.OllamaEvalDuration.WithLabelValues(resp.Model).Set(float64(resp.EvalDuration.Milliseconds()))
+	slog.Debug("successfully inserted telemetry data")
+	return
 }

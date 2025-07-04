@@ -5,3 +5,5 @@ docs/.retype/
 docs/retype.manifest
 services/frontend/internal/frontend/assets
 services/frontend/internal/docs/assets
+
+deployment/superset/**

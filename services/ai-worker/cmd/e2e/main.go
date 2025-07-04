@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
@@ -9,6 +10,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
+	"github.com/jackc/pgx/v5"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
 	"github.com/qdrant/go-client/qdrant"
@@ -53,12 +55,24 @@ func main() {
 		return
 	}
 
-	tm := telemetry.NewService()
+	// Setup PostgreSQL client
+	pgc, err := pgx.Connect(context.Background(), "postgres://postgres:postgres@localhost:5432/msl_telemetry?sslmode=disable")
+	if err != nil {
+		slog.Error("failed to connect to PostgreSQL", sloki.WrapError(err))
+		return
+	}
+	defer pgc.Close(context.Background())
+
+	tm, err := telemetry.NewService(pgc)
+	if err != nil {
+		slog.Error("failed to create telemetry service", sloki.WrapError(err))
+		return
+	}
 
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL:        "http://localhost:11434",
-		Model:          "llama3.2:3b",
+		Model:          "deepseek-r1:14b",
 		EmbeddingModel: "nomic-embed-text",
 		Tools:          ts,
 		QC:             qc,
@@ -72,8 +86,6 @@ func main() {
 
 	mux := http.NewServeMux()
 	port := "8085"
-
-	tm.RegisterHandler(mux)
 
 	backend.Start(backend.Configuration{
 		Mux:          mux,
