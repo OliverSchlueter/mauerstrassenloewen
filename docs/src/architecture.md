@@ -69,6 +69,10 @@ The AI worker is responsible for processing the AI tasks and returning the resul
 ### Simulation
 
 The simulation service is responsible for running the simulations. It has an HTTP API to manage simulations.
+ 
+!!!warning Sunset notice
+This service has been sunset to focus on the core features of the application.
+!!!
 
 ### Monitoring
 
