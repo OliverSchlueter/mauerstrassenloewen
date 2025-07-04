@@ -13,8 +13,7 @@ servers:
 paths:
   /msl/api/v1/chatbot/simple-prompt:
     post:
-      summary: Simple prompt
-      description: Send a simple prompt to the chatbot and receive a response.
+      summary: Send a simple prompt to the chatbot
       tags:
         - Chatbot
       requestBody:
@@ -22,7 +21,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StartChatRequest'
+              type: object
+              properties:
+                message:
+                  type: string
+              required:
+                - message
       responses:
         '200':
           description: Successful response
@@ -33,14 +37,15 @@ paths:
         '400':
           description: Bad request
         '415':
-          description: Unsupported media type
+          description: Unsupported Media Type
         '500':
           description: Internal server error
 
-  /msl/api/v1/chatbot/start-chat:
+  /msl/api/v1/chatbot/chat:
     post:
-      summary: Start a new chat
-      operationId: startChat
+      summary: Start a new chat session
+      tags:
+        - Chatbot
       requestBody:
         required: true
         content:
@@ -49,24 +54,52 @@ paths:
               $ref: '#/components/schemas/StartChatRequest'
       responses:
         '200':
-          description: Chat started successfully
+          description: Chat started
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chat'
         '400':
-          description: Bad Request
+          description: Bad request
         '415':
           description: Unsupported Media Type
         '500':
-          description: Internal Server Error
+          description: Internal server error
+
+  /msl/api/v1/chatbot/chat/{id}:
+    get:
+      summary: Get chat history by ID
       tags:
         - Chatbot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Chat retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chat'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
 
-  /msl/api/v1/chatbot/send-message:
+  /msl/api/v1/chatbot/chat/{id}/new-message:
     post:
-      summary: Send a message to an existing chat
-      operationId: sendChatMessage
+      summary: Send a new message in a chat
+      tags:
+        - Chatbot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -75,19 +108,18 @@ paths:
               $ref: '#/components/schemas/SendChatMessageRequest'
       responses:
         '200':
-          description: Message sent successfully and chat updated
+          description: Message sent and response received
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chat'
         '400':
-          description: Bad Request
+          description: Bad request
         '415':
           description: Unsupported Media Type
         '500':
-          description: Internal Server Error
-      tags:
-        - Chatbot
+          description: Internal server error
+
 
   /msl/api/v1/user/register:
     post:
