@@ -8,10 +8,9 @@ require (
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/justinas/alice v1.2.0
 	github.com/nats-io/nats.go v1.43.0
-	github.com/ollama/ollama v0.9.0
-	github.com/prometheus/client_golang v1.22.0
-	github.com/qdrant/go-client v1.14.0
-	github.com/sashabaranov/go-openai v1.40.1
+	github.com/ollama/ollama v0.9.5
+	github.com/qdrant/go-client v1.14.1
+	github.com/sashabaranov/go-openai v1.40.3
 )
 
 require (
@@ -23,6 +22,7 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/nats-io/nkeys v0.4.11 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
+	github.com/prometheus/client_golang v1.22.0 // indirect
 	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.64.0 // indirect
 	github.com/prometheus/procfs v0.16.1 // indirect
