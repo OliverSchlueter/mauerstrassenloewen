@@ -40,14 +40,14 @@ func main() {
 	}
 
 	// Setup tool service
-	tc := tools.NewService()
+	ts := tools.NewService()
 
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL:        "http://localhost:11434",
 		Model:          "deepseek-r1:14b",
 		EmbeddingModel: "TOOD",
-		Tools:          *tc,
+		Tools:          ts,
 	})
 	if err != nil {
 		sloki.WrapError(err)

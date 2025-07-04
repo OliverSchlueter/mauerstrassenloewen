@@ -1,32 +1,35 @@
-package rag
+package ollama
 
 import (
 	"context"
 	"fmt"
-	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/ollama/ollama/api"
 	"github.com/qdrant/go-client/qdrant"
 )
 
 const collectionName = "msl-rag"
 
-type Store struct {
-	qc     *qdrant.Client
-	ollama *ollama.Client
+type RAGStore struct {
+	qc             *qdrant.Client
+	ollama         *api.Client
+	embeddingModel string
 }
 
-type Configuration struct {
-	QC     *qdrant.Client
-	Ollama *ollama.Client
+type RAGConfiguration struct {
+	QC             *qdrant.Client
+	Ollama         *api.Client
+	EmbeddingModel string
 }
 
-func NewStore(cfg Configuration) *Store {
-	return &Store{
-		qc:     cfg.QC,
-		ollama: cfg.Ollama,
+func NewRAGStore(cfg RAGConfiguration) *RAGStore {
+	return &RAGStore{
+		qc:             cfg.QC,
+		ollama:         cfg.Ollama,
+		embeddingModel: cfg.EmbeddingModel,
 	}
 }
 
-func (s *Store) AddDocument(ctx context.Context, docID uint64, content string) error {
+func (s *RAGStore) AddDocument(ctx context.Context, docID uint64, content string) error {
 	exists, err := s.qc.CollectionExists(ctx, collectionName)
 	if err != nil {
 		return fmt.Errorf("failed to check if collection exists: %w", err)
@@ -45,7 +48,7 @@ func (s *Store) AddDocument(ctx context.Context, docID uint64, content string) e
 		}
 	}
 
-	embed, err := s.ollama.CreateEmbed(ctx, content)
+	embed, err := s.CreateEmbed(ctx, content)
 	if err != nil {
 		return fmt.Errorf("failed to create embed: %w", err)
 	}
@@ -69,8 +72,8 @@ func (s *Store) AddDocument(ctx context.Context, docID uint64, content string) e
 	return nil
 }
 
-func (s *Store) Search(ctx context.Context, query string, maxResults int) ([]string, error) {
-	embedding, err := s.ollama.CreateEmbedding(ctx, query)
+func (s *RAGStore) Search(ctx context.Context, query string, maxResults int) ([]string, error) {
+	embedding, err := s.CreateEmbedding(ctx, query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create embedding: %w", err)
 	}
@@ -89,6 +92,30 @@ func (s *Store) Search(ctx context.Context, query string, maxResults int) ([]str
 	}
 
 	return res, nil
+}
+
+func (c *RAGStore) CreateEmbed(ctx context.Context, input string) ([][]float32, error) {
+	resp, err := c.ollama.Embed(ctx, &api.EmbedRequest{
+		Model: c.embeddingModel,
+		Input: input,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get embedding: %w", err)
+	}
+
+	return resp.Embeddings, nil
+}
+
+func (c *RAGStore) CreateEmbedding(ctx context.Context, prompt string) ([]float64, error) {
+	resp, err := c.ollama.Embeddings(ctx, &api.EmbeddingRequest{
+		Model:  c.embeddingModel,
+		Prompt: prompt,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get embedding: %w", err)
+	}
+
+	return resp.Embedding, nil
 }
 
 func f64Tof32(a []float64) []float32 {

@@ -7,6 +7,7 @@ import (
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/google/uuid"
 	"github.com/ollama/ollama/api"
+	"github.com/qdrant/go-client/qdrant"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -21,14 +22,16 @@ type Client struct {
 	ollama         *api.Client
 	model          string
 	embeddingModel string
-	tools          tools.Service
+	tools          *tools.Service
+	rag            *RAGStore
 }
 
 type Configuration struct {
 	BaseURL        string
 	Model          string
 	EmbeddingModel string
-	Tools          tools.Service
+	Tools          *tools.Service
+	QC             *qdrant.Client
 }
 
 func NewClient(cfg Configuration) (*Client, error) {
@@ -43,11 +46,18 @@ func NewClient(cfg Configuration) (*Client, error) {
 
 	ollama := api.NewClient(baseURL, httpClient)
 
+	rag := NewRAGStore(RAGConfiguration{
+		QC:             cfg.QC,
+		Ollama:         ollama,
+		EmbeddingModel: cfg.EmbeddingModel,
+	})
+
 	return &Client{
 		ollama:         ollama,
 		model:          cfg.Model,
 		embeddingModel: cfg.EmbeddingModel,
 		tools:          cfg.Tools,
+		rag:            rag,
 	}, nil
 }
 
@@ -179,30 +189,6 @@ func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResp
 	return &resp, nil
 }
 
-func (c *Client) CreateEmbed(ctx context.Context, input string) ([][]float32, error) {
-	resp, err := c.ollama.Embed(ctx, &api.EmbedRequest{
-		Model: c.embeddingModel,
-		Input: input,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to get embedding: %w", err)
-	}
-
-	return resp.Embeddings, nil
-}
-
-func (c *Client) CreateEmbedding(ctx context.Context, prompt string) ([]float64, error) {
-	resp, err := c.ollama.Embeddings(ctx, &api.EmbeddingRequest{
-		Model:  c.embeddingModel,
-		Prompt: prompt,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to get embedding: %w", err)
-	}
-
-	return resp.Embedding, nil
-}
-
 func (c *Client) executeToolCalls(ctx context.Context, calls []api.ToolCall) (string, error) {
 	if len(calls) == 0 {
 		return "", nil
@@ -225,6 +211,22 @@ func (c *Client) executeToolCalls(ctx context.Context, calls []api.ToolCall) (st
 }
 
 func (c *Client) executeRAG(query string) (string, error) {
-	// TODO: implement RAG execution
-	return "Found relevant documents:", nil
+	res, err := c.rag.Search(context.Background(), query, 5)
+	if err != nil {
+		return "", fmt.Errorf("failed to search RAG: %w", err)
+	}
+
+	var resp string
+	if len(res) == 0 {
+		resp = "No relevant documents found."
+		return resp, nil
+	} else {
+		resp = "Found relevant documents:\n"
+	}
+
+	for _, r := range res {
+		resp += fmt.Sprintf("- %s\n", r)
+	}
+
+	return resp, nil
 }
