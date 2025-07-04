@@ -3,7 +3,7 @@
     <div class="messages-container">
       <div *ngFor="let message of messages">
         <div class="message" [ngClass]="getClass(message)">
-          <img *ngIf="!message.fromUser" src="assets/favicon.ico" height="40" width="40">
+          <img *ngIf="message.role !== 'user'" src="assets/favicon.ico" height="40" width="40">
           <p>{{ message.content }}</p>
         </div>
       </div>
@@ -12,7 +12,7 @@
     <div class="input-container">
       <textarea class="input" placeholder="Ask something about Trading" [(ngModel)]="messageInput"></textarea>
       <div class="flex-row-end">
-        <button mat-icon-button>
+        <button mat-icon-button (click)="sendMessage()">>
           <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>

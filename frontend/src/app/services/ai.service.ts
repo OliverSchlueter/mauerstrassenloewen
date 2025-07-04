@@ -16,7 +16,7 @@ export class AiService {
     return "You are a professional AI Assistent. Please answer the users message."
   }
 
-  startChat(user: string, message: string) {
+  startChat(message: string) {
     const body = {
       "system_msg": this.createSystemMessage(),
       "user_msg": message
@@ -28,6 +28,21 @@ export class AiService {
       "X-Auth-Token": this.authService.authToken
     });
 
-    return this.http.post<StartChatDTO>(this.url + "/start-chat", body, {headers: headers})
+    return this.http.post<StartChatDTO>(this.url + "/chatbot/chat", body, {headers: headers});
+  }
+
+  sendMessage(chatID: string, message: string) {
+    const body = {
+      "chat_id": chatID,
+      "user_msg": message
+    }
+
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "X-Auth-Token": this.authService.authToken
+    });
+
+    return this.http.post<StartChatDTO>(this.url + "/chatbot/chat/"+chatID+"/new-message", body, {headers: headers})
   }
 }

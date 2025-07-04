@@ -90,6 +90,7 @@ func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 }
 
 func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*natsdto.Chat, error) {
+	slog.Debug("Starting new chat", slog.String("userMsg", req.UserMsg), slog.String("systemMsg", string(req.SystemMsg)))
 	chat := &natsdto.Chat{
 		ID: uuid.New().String(),
 		Messages: []natsdto.Message{
@@ -101,19 +102,24 @@ func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*
 		},
 	}
 
-	err := c.Chat(ctx, chat, req.UserMsg)
+	var err error
+	chat, err = c.Chat(ctx, chat, req.UserMsg)
 	if err != nil {
-
+		return nil, fmt.Errorf("failed to start chat: %w", err)
 	}
 
 	return chat, nil
 }
 
-func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) error {
+func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) (*natsdto.Chat, error) {
+	slog.Debug("Continuing chat", slog.String("chatID", chat.ID), slog.String("nextMessage", next))
+
+	slog.Debug("Executing RAG for next message")
 	ragResp, err := c.executeRAG(next)
 	if err != nil {
-		return fmt.Errorf("failed to execute RAG: %w", err)
+		return nil, fmt.Errorf("failed to execute RAG: %w", err)
 	}
+	slog.Debug("RAG response", slog.String("ragResp", ragResp))
 
 	chat.AppendMsg(natsdto.Message{
 		Role:    "system",
@@ -126,10 +132,13 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) erro
 		Content: next,
 		SentAt:  time.Now(),
 	})
+
+	slog.Debug("Chat response")
 	initialResp, err := c.nextMsg(ctx, toOllamaMsgs(chat))
 	if err != nil {
-		return fmt.Errorf("failed to get initial chat response: %w", err)
+		return nil, fmt.Errorf("failed to get initial chat response: %w", err)
 	}
+	slog.Debug("Initial chat response", slog.String("content", initialResp.Message.Content))
 
 	if initialResp.Message.ToolCalls == nil || len(initialResp.Message.ToolCalls) == 0 {
 		chat.AppendMsg(natsdto.Message{
@@ -137,13 +146,16 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) erro
 			Content: initialResp.Message.Content,
 			SentAt:  time.Now(),
 		})
-		return nil
+		return nil, nil
 	}
+	slog.Debug("Chat response", slog.String("content", initialResp.Message.Content))
 
+	slog.Debug("Executing tool calls", slog.Any("toolCalls", initialResp.Message.ToolCalls))
 	toolResp, err := c.executeToolCalls(ctx, initialResp.Message.ToolCalls)
 	if err != nil {
-		return fmt.Errorf("failed to execute tool calls: %w", err)
+		return nil, fmt.Errorf("failed to execute tool calls: %w", err)
 	}
+	slog.Debug("Tool response", slog.String("toolResp", toolResp))
 
 	chat.AppendMsg(natsdto.Message{
 		Role:    "assistant",
@@ -151,10 +163,12 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) erro
 		SentAt:  time.Now(),
 	})
 
+	slog.Debug("Getting final chat response after tool execution")
 	finalResp, err := c.nextMsg(ctx, toOllamaMsgs(chat))
 	if err != nil {
-		return fmt.Errorf("failed to get final chat response: %w", err)
+		return nil, fmt.Errorf("failed to get final chat response: %w", err)
 	}
+	slog.Debug("Final chat response", slog.String("content", finalResp.Message.Content))
 
 	chat.AppendMsg(natsdto.Message{
 		Role:    "assistant",
@@ -162,7 +176,8 @@ func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) erro
 		SentAt:  time.Now(),
 	})
 
-	return nil
+	slog.Debug("Finished chat message", slog.String("chatID", chat.ID))
+	return chat, nil
 }
 
 func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResponse, error) {
@@ -190,43 +205,47 @@ func (c *Client) nextMsg(ctx context.Context, msgs []api.Message) (*api.ChatResp
 }
 
 func (c *Client) executeToolCalls(ctx context.Context, calls []api.ToolCall) (string, error) {
-	if len(calls) == 0 {
-		return "", nil
-	}
+	return "", nil
 
-	msg := "Executed the following tool calls:\n"
-
-	for _, tc := range calls {
-		switch tc.Function.Name {
-		case "get_user_info":
-			resp, err := tools.GetUserInfo(ctx)
-			if err != nil {
-				return "", fmt.Errorf("failed to execute tool call: %w", err)
-			}
-			msg += fmt.Sprintf("Tool: %s\nResponse: %s\n\n", tc.Function.Name, resp)
-		}
-	}
-
-	return msg, nil
+	//if len(calls) == 0 {
+	//	return "", nil
+	//}
+	//
+	//msg := "Executed the following tool calls:\n"
+	//
+	//for _, tc := range calls {
+	//	switch tc.Function.Name {
+	//	case "get_user_info":
+	//		resp, err := tools.GetUserInfo(ctx)
+	//		if err != nil {
+	//			return "", fmt.Errorf("failed to execute tool call: %w", err)
+	//		}
+	//		msg += fmt.Sprintf("Tool: %s\nResponse: %s\n\n", tc.Function.Name, resp)
+	//	}
+	//}
+	//
+	//return msg, nil
 }
 
 func (c *Client) executeRAG(query string) (string, error) {
-	res, err := c.rag.Search(context.Background(), query, 5)
-	if err != nil {
-		return "", fmt.Errorf("failed to search RAG: %w", err)
-	}
+	return "", nil
 
-	var resp string
-	if len(res) == 0 {
-		resp = "No relevant documents found."
-		return resp, nil
-	} else {
-		resp = "Found relevant documents:\n"
-	}
-
-	for _, r := range res {
-		resp += fmt.Sprintf("- %s\n", r)
-	}
-
-	return resp, nil
+	//res, err := c.rag.Search(context.Background(), query, 5)
+	//if err != nil {
+	//	return "", fmt.Errorf("failed to search RAG: %w", err)
+	//}
+	//
+	//var resp string
+	//if len(res) == 0 {
+	//	resp = "No relevant documents found."
+	//	return resp, nil
+	//} else {
+	//	resp = "Found relevant documents:\n"
+	//}
+	//
+	//for _, r := range res {
+	//	resp += fmt.Sprintf("- %s\n", r)
+	//}
+	//
+	//return resp, nil
 }

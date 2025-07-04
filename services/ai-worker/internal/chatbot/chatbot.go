@@ -7,8 +7,10 @@ import (
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
+	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
+	"log/slog"
 	"time"
 )
 
@@ -182,7 +184,7 @@ func (s *Service) handleSendChatMessage(msg *nats.Msg) {
 		return
 	}
 
-	err = s.ollama.Chat(context.Background(), chat, req.UserMsg)
+	chat, err = s.ollama.Chat(context.Background(), chat, req.UserMsg)
 	if err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to get response from ollama: %v", err)))
 		return
@@ -201,7 +203,7 @@ func (s *Service) handleSendChatMessage(msg *nats.Msg) {
 	}
 
 	if err := msg.Respond(data); err != nil {
-		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to respond to request: %v", err)))
+		slog.Error("failed to respond to request", sloki.WrapError(err))
 		return
 	}
 }

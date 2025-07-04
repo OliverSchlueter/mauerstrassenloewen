@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
 	"github.com/nats-io/nats.go"
+	"log/slog"
 	"time"
 )
 
@@ -65,6 +66,7 @@ func (s *Service) StartChat(req natsdto.StartChatRequest) (*natsdto.Chat, error)
 
 	var resp natsdto.Chat
 	if err := json.Unmarshal(cmd.Data, &resp); err != nil {
+		slog.Info("resp", slog.String("data", string(cmd.Data)))
 		return nil, fmt.Errorf("could not unmarshal response: %w", err)
 	}
 
@@ -106,7 +108,7 @@ func (s *Service) SendMessage(req natsdto.SendChatMessageRequest) (*natsdto.Chat
 		return nil, fmt.Errorf("could not marshal request: %w", err)
 	}
 
-	cmd, err := s.nats.Request("msl.chatbot.send_message", data, time.Second*50)
+	cmd, err := s.nats.Request("msl.chatbot.send_chat_message", data, time.Second*50)
 	if err != nil {
 		return nil, fmt.Errorf("could not send request: %w", err)
 	}

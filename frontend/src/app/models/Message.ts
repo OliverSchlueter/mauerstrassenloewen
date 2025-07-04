@@ -1,4 +1,5 @@
 export class Message {
-  content: string = '';
-  fromUser: boolean = true;
+  role: string = ""
+  content: string = ""
+  sent_at: string = ""
 }
