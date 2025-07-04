@@ -3,6 +3,7 @@ package chatbot
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
@@ -49,6 +50,10 @@ func (s *Service) Register() error {
 		return fmt.Errorf("could not subscribe to nats subject: %w", err)
 	}
 
+	if _, err := s.nats.Subscribe("msl.chatbot.get_chat", s.handleGetChat); err != nil {
+		return fmt.Errorf("could not subscribe to nats subject: %w", err)
+	}
+
 	return nil
 }
 
@@ -89,6 +94,39 @@ func (s *Service) handleSimplePrompt(msg *nats.Msg) {
 	}
 
 	data, err := json.Marshal(resp)
+	if err != nil {
+		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to marshal response: %v", err)))
+		return
+	}
+
+	if err := msg.Respond(data); err != nil {
+		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to respond to request: %v", err)))
+		return
+	}
+}
+
+func (s *Service) handleGetChat(msg *nats.Msg) {
+	var req natsdto.GetChatRequest
+	if err := json.Unmarshal(msg.Data, &req); err != nil {
+		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to unmarshal request: %v", err)))
+		return
+	}
+
+	chat, err := s.store.GetChatByID(req.ChatID)
+	if err != nil {
+		if errors.Is(err, ErrChatNotFound) {
+			chat = &natsdto.Chat{
+				ID:       "N/A",
+				Messages: []natsdto.Message{},
+			}
+		} else {
+			s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to get chat by ID: %v", err)))
+			return
+		}
+
+	}
+
+	data, err := json.Marshal(chat)
 	if err != nil {
 		s.nats.Publish(msg.Reply, []byte(fmt.Sprintf("failed to marshal response: %v", err)))
 		return

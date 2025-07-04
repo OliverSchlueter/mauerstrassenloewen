@@ -21,7 +21,7 @@ func NewStore(cfg Configuration) *Store {
 func (s *Store) GetChatByID(id string) (*natsdto.Chat, error) {
 	chat, ok := s.Chats[id]
 	if !ok {
-		return nil, chatbot.ErrChatAlreadyExists
+		return nil, chatbot.ErrChatNotFound
 	}
 
 	return chat, nil
