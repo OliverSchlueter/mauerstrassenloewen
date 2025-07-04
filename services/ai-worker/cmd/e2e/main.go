@@ -42,19 +42,6 @@ func main() {
 	// Setup tool service
 	ts := tools.NewService()
 
-	// Setup ollama client
-	oc, err := ollama.NewClient(ollama.Configuration{
-		BaseURL:        "http://localhost:11434",
-		Model:          "deepseek-r1:14b",
-		EmbeddingModel: "TOOD",
-		Tools:          ts,
-	})
-	if err != nil {
-		sloki.WrapError(err)
-		slog.Error("failed to create ollama client", sloki.WrapError(err))
-		return
-	}
-
 	// Setup qdrant client
 	qc, err := qdrant.NewClient(&qdrant.Config{
 		Host: "localhost",
@@ -62,6 +49,20 @@ func main() {
 	})
 	if err != nil {
 		slog.Error("failed to create qdrant client", sloki.WrapError(err))
+		return
+	}
+
+	// Setup ollama client
+	oc, err := ollama.NewClient(ollama.Configuration{
+		BaseURL:        "http://localhost:11434",
+		Model:          "deepseek-r1:14b",
+		EmbeddingModel: "TOOD",
+		Tools:          ts,
+		QC:             qc,
+	})
+	if err != nil {
+		sloki.WrapError(err)
+		slog.Error("failed to create ollama client", sloki.WrapError(err))
 		return
 	}
 

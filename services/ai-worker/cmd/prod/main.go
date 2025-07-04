@@ -54,19 +54,6 @@ func main() {
 	// Setup tool service
 	tc := tools.NewService()
 
-	// Setup ollama client
-	oc, err := ollama.NewClient(ollama.Configuration{
-		BaseURL:        mustGetEnvStr(ollamaUrlEnv),
-		Model:          mustGetEnvStr(ollamaModelEnv),
-		EmbeddingModel: mustGetEnvStr(ollamaEmbeddingModelEnv),
-		Tools:          *tc,
-	})
-	if err != nil {
-		sloki.WrapError(err)
-		slog.Error("failed to create ollama client", sloki.WrapError(err))
-		return
-	}
-
 	// Setup qdrant client
 	qc, err := qdrant.NewClient(&qdrant.Config{
 		Host:   mustGetEnvStr(qdrantHostEnv),
@@ -75,6 +62,20 @@ func main() {
 	})
 	if err != nil {
 		slog.Error("failed to create qdrant client", sloki.WrapError(err))
+		return
+	}
+
+	// Setup ollama client
+	oc, err := ollama.NewClient(ollama.Configuration{
+		BaseURL:        mustGetEnvStr(ollamaUrlEnv),
+		Model:          mustGetEnvStr(ollamaModelEnv),
+		EmbeddingModel: mustGetEnvStr(ollamaEmbeddingModelEnv),
+		Tools:          tc,
+		QC:             qc,
+	})
+	if err != nil {
+		sloki.WrapError(err)
+		slog.Error("failed to create ollama client", sloki.WrapError(err))
 		return
 	}
 
