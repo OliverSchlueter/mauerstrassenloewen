@@ -72,7 +72,7 @@ func main() {
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL:        "http://localhost:11434",
-		Model:          "deepseek-r1:14b",
+		Model:          "gemma3:12b",
 		EmbeddingModel: "nomic-embed-text",
 		Tools:          ts,
 		QC:             qc,

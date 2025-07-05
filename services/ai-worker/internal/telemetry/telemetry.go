@@ -3,6 +3,7 @@ package telemetry
 import (
 	"context"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/ollama/ollama/api"
 	"log/slog"
@@ -30,13 +31,42 @@ func NewService(conn *pgx.Conn) (*Service, error) {
 		return nil, err
 	}
 
+	chatMessagesTable := `
+	CREATE TABLE IF NOT EXISTS chat_messages (
+	    timestamp TIMESTAMP,
+	    chat_id VARCHAR(255),
+	    message_id VARCHAR(255)
+    )
+`
+	if _, err := conn.Exec(context.Background(), chatMessagesTable); err != nil {
+		return nil, err
+	}
+
 	return &Service{
 		postgre: conn,
 	}, nil
 }
 
-func (s *Service) TrackNewChat() {
+func (s *Service) TrackNewChatMessage(chatId string) {
+	insert := `
+	INSERT INTO chat_messages VALUES(
+		  @timestamp, 
+		  @chat_id, 
+		  @message_id
+	)
+	`
+	args := pgx.NamedArgs{
+		"timestamp":  time.Now().Format(time.RFC3339),
+		"chat_id":    chatId,
+		"message_id": uuid.New().String(),
+	}
+	if _, err := s.postgre.Exec(context.Background(), insert, args); err != nil {
+		slog.Error("failed to insert telemetry data", sloki.WrapError(err))
+		return
+	}
 
+	slog.Debug("successfully inserted telemetry data")
+	return
 }
 
 func (s *Service) TrackOllamaResponse(resp *api.ChatResponse) {

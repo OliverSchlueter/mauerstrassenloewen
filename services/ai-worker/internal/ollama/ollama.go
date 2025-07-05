@@ -95,7 +95,6 @@ func (c *Client) Generate(ctx context.Context, message string) (string, error) {
 
 func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*natsdto.Chat, error) {
 	slog.Debug("Starting new chat", slog.String("userMsg", req.UserMsg), slog.String("systemMsg", string(req.SystemMsg)))
-	c.telemetry.TrackNewChat()
 
 	chat := &natsdto.Chat{
 		ID: uuid.New().String(),
@@ -118,6 +117,7 @@ func (c *Client) StartChat(ctx context.Context, req natsdto.StartChatRequest) (*
 
 func (c *Client) Chat(ctx context.Context, chat *natsdto.Chat, next string) (*natsdto.Chat, error) {
 	slog.Debug("Continuing chat", slog.String("chatID", chat.ID), slog.String("nextMessage", next))
+	c.telemetry.TrackNewChatMessage(chat.ID)
 
 	slog.Debug("Executing RAG for next message")
 	ragResp, err := c.executeRAG(next)
