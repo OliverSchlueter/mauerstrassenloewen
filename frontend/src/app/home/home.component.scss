@@ -21,6 +21,11 @@
 .flex-column {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+}
+
+.small {
+  width: 700px;
 }
 
 button {

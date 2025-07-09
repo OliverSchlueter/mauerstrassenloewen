@@ -1,0 +1,21 @@
+.flex {
+  display: flex;
+}
+
+.center {
+  justify-content: center;
+}
+
+.header-container {
+  justify-content: flex-start;
+}
+
+h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.content-container {
+  width: 800px;
+  background-color: #4caf50;
+}

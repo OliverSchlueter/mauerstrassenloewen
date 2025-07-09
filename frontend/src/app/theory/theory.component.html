@@ -1,8 +1,8 @@
 <div class="modules-container">
-<mat-card class="card" *ngFor="let module of modules">
+<mat-card class="card" *ngFor="let module of modules" (click)="navigate(module.index)">
   <mat-card-header>
     <mat-card-title>
-      {{module.index}}
+      Module {{module.index}}
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>

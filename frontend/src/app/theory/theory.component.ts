@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {MatCard, MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-theory',
@@ -22,35 +23,40 @@ import {MatIcon} from '@angular/material/icon';
 export class TheoryComponent {
   modules = [
     {
-      index: "Module 1",
+      index: "1",
       title: "The Basics"
     },
     {
-      index: "Module 2",
+      index: "2",
       title: "The Market"
     },
     {
-      index: "Module 3",
+      index: "3",
       title: "The First Step"
     },
     {
-      index: "Module 4",
+      index: "4",
       title: "The Choice"
     },
     {
-      index: "Module 5",
+      index: "5",
       title: "The Golden Rule"
     },
     {
-      index: "Module 6",
+      index: "6",
       title: "The Strategy"
     },
     {
-      index: "Module 7",
+      index: "7",
       title: "The Borders"
     },
 
   ]
 
+  constructor(private router: Router) {
+  }
 
+  navigate(index: string) {
+    this.router.navigate(["module/"+index])
+  }
 }
