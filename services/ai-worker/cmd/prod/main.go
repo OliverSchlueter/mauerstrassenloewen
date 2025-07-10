@@ -32,7 +32,7 @@ const (
 	qdrantHostEnv           = "QDRANT_HOST"
 	qdrantPortEnv           = "QDRANT_PORT"
 	qdrantAPIKeyEnv         = "QDRANT_API_KEY"
-	postgresqlConnEnv 		= "POSTGRESQL_CONN"
+	postgresqlConnEnv       = "POSTGRESQL_CONN"
 )
 
 func main() {
