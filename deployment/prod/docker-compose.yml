@@ -52,6 +52,8 @@ services:
       - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
       msl_network:
+    ports:
+      - "8082:8082"
     deploy:
       replicas: 3
     healthcheck:
@@ -78,6 +80,7 @@ services:
       - "QDRANT_HOST=${QDRANT_HOST}"
       - "QDRANT_PORT=${QDRANT_PORT}"
       - "QDRANT_API_KEY=${QDRANT_API_KEY}"
+      - "POSTGRESQL_CONN=${POSTGRESQL_CONN}"
       - "FEATURE_FLAGS_SEND_LOGS_TO_LOKI=${FEATURE_FLAGS_SEND_LOGS_TO_LOKI}"
     networks:
       msl_network:
