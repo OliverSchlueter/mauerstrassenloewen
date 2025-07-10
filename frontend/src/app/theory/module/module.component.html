@@ -6,11 +6,681 @@
       <button mat-icon-button (click)="navigateBack()">
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <h1>Module {{ moduleNo }}</h1>
+      <h1>Module {{ moduleNo }} - {{getHeader(moduleNo)}}</h1>
     </div>
 
     <div *ngIf="moduleNo==='1'">
+      <div>
+        <p>
+          Welcome to our first module! Before we dive into the exciting world of stocks, we’ll cover the most fundamental concepts.
+          Our goal is to give you a clear understanding and a first mental model of the stock market.
+          By the end of this module, you’ll know <b>what a stock is</b>, <b>what opportunities and risks it holds</b>,
+          and <b>who the key players in the market are</b>.
+        </p>
 
+        <mat-divider></mat-divider>
+
+        <h2>1.1: What is a stock? (And why do they exist?)</h2>
+        <p>
+          Imagine you want to start a large company or significantly expand your existing business. You’ll need a lot
+          of capital – money.
+          One way to raise this capital is by issuing shares.
+        </p>
+        <p>
+          <b>Simply put:</b> A <u>stock is a share of ownership in a company</u>. When you buy a stock, you are
+          purchasing a tiny piece of that company.
+          Imagine owning a small part of giants like Apple or VW – that makes you a co-owner.
+        </p>
+
+        <h3>Why do companies issue stocks?</h3>
+        <p>Companies issue shares to raise capital for various purposes:</p>
+        <ul>
+          <li><b>Growth:</b> Financing new products, markets, or production facilities.</li>
+          <li><b>Investments:</b> Machinery, technologies, research and development.</li>
+          <li><b>Debt repayment:</b> Paying off loans to strengthen the balance sheet.</li>
+        </ul>
+        <p>
+          Companies receive capital <u>without having to take on debt</u>. In return, they share <b>profits and
+          decision-making power</b> with shareholders.
+        </p>
+
+        <h3>Why do investors buy stocks?</h3>
+        <ul>
+          <li><b>Participate in company success:</b> Stock value may increase – profit on sale.</li>
+          <li><b>Wealth building:</b> Long-term growth and achieving financial goals.</li>
+          <li><b>Dividends:</b> Profit sharing through regular payouts.</li>
+        </ul>
+
+        <mat-divider class="divider"></mat-divider>
+
+        <h2>1.2: Opportunities vs. Risks – An honest assessment</h2>
+        <p>
+          It’s important to understand right from the start: <b>The stock market offers great opportunities but is not
+          without risk</b>.
+        </p>
+
+        <h3>The Opportunities:</h3>
+        <ul>
+          <li><b>Price gains:</b> Buy for €100, sell for €120 = €20 profit.</li>
+          <li><b>Dividends:</b> Direct payouts from company profits.</li>
+          <li><b>Inflation protection:</b> In the long term, returns often beat inflation.</li>
+        </ul>
+
+        <h3>The Risks:</h3>
+        <ul>
+          <li><b>Price losses up to total loss:</b> Stock value can drop – even to €0.</li>
+          <li><b>Company bankruptcy:</b> Insolvency = total loss of the stock.</li>
+          <li><b>Market volatility:</b> Political crises or economic news can push prices down.</li>
+        </ul>
+
+        <p><b>Bottom line:</b> Stocks are <u>neither gambling</u> nor <u>risk-free savings</u> – they are <b>investments
+          with both risks and opportunities</b>.</p>
+
+        <mat-divider></mat-divider>
+
+        <h2>1.3: The key players in the market</h2>
+        <p>The stock market is a complex ecosystem with many roles:</p>
+
+        <ul>
+          <li><b>Companies (Issuers):</b> Issue shares to raise capital.</li>
+          <li><b>Retail investors:</b> Individuals like you who trade stocks through brokers.</li>
+          <li><b>Institutional investors:</b> Manage large sums on behalf of others:
+            <ul>
+              <li><b>Funds:</b> Invest pooled money from many investors.</li>
+              <li><b>Insurance companies:</b> Use premiums for long-term capital investment.</li>
+              <li><b>Pension funds:</b> Manage retirement savings through stock investments.</li>
+            </ul>
+          </li>
+          <li><b>Stock exchanges:</b> Trading venues like NYSE, NASDAQ, Frankfurt. Ensure order and transparency.</li>
+          <li><b>Brokers:</b> Intermediaries between investors and the exchange. Execute orders.</li>
+        </ul>
+
+        <p>
+          You’ve now learned the <b>fundamental concepts of the stock market</b>. In the next module, you’ll explore
+          <u>types of stocks</u> and the <u>basics of analysis</u>.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="moduleNo==='2'">
+      <div>
+        <p>
+          After learning the basics of what a stock is in the first module, let’s now explore the <b>"playing field"</b>
+          where it all happens:
+          <u>The marketplace of stock trading</u>. You'll learn <b>where stocks are traded</b>, <b>how market sentiment
+          is measured</b>, and <b>what psychological forces</b> can influence the market.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>2.1: The Stock Exchange – More than just numbers on a screen</h2>
+        <p>
+          When you think of the stock exchange, you might picture hectic traders or just numbers flashing across a
+          screen.
+          But the stock exchange is much more than that.
+        </p>
+        <p>
+          Its <b>core function</b> is simple but essential: <u>The stock exchange is an organized marketplace that
+          connects buyers and sellers of stocks</u>.
+          It ensures that trading is <b>fair, transparent, and efficient</b>.
+        </p>
+        <p>
+          Imagine wanting to sell your old bike and buy a new one. Without a marketplace, you'd have to search for
+          every buyer individually.
+          The stock exchange takes care of this – <b>for millions of stocks at once</b>.
+        </p>
+
+        <p><b>Well-known exchanges:</b></p>
+        <ul>
+          <li><b>Frankfurt Stock Exchange</b> – includes the electronic trading system <u>Xetra</u>.</li>
+          <li><b>New York Stock Exchange (NYSE)</b> – the largest physical stock exchange in the world.</li>
+          <li><b>NASDAQ</b> – known for U.S. technology companies.</li>
+        </ul>
+
+        <h3>How is a price formed? Supply and demand</h3>
+        <p>
+          A stock’s price is determined by <b>supply and demand</b> – a core economic principle:
+        </p>
+        <ul>
+          <li><b>Demand:</b> If many investors want to buy a stock, the price rises.</li>
+          <li><b>Supply:</b> If many want to sell, the price falls.</li>
+        </ul>
+        <p>
+          <u>The stock exchange constantly balances these two forces</u> to establish a fair market price.
+        </p>
+
+        <mat-divider class="divider"></mat-divider>
+
+        <h2>2.2: What is an index? (DAX, S&P 500 & Co.)</h2>
+        <p>
+          If you follow financial news, you’ll often hear things like <i>“the DAX is up”</i> or <i>“the S&P 500 fell
+          today”</i>.
+          These refer to what are called <b>stock indices</b>.
+        </p>
+        <p>
+          An <u>index</u> combines the performance of many individual stocks into a single number – <b>like a
+          thermometer for the market</b>.
+          It gives a quick overview of <u>how a sector, region, or the overall market</u> is performing.
+        </p>
+
+        <h3>Why indices matter</h3>
+        <ul>
+          <li><b>Quick overview:</b> How is the market or a sector doing?</li>
+          <li><b>Benchmark:</b> A reference point for comparing individual stocks or funds.</li>
+          <li><b>Economic indicator:</b> Rising indices often suggest growth – and vice versa.</li>
+        </ul>
+
+        <h3>Important indices</h3>
+        <ul>
+          <li><b>DAX (Germany):</b> The 40 largest publicly traded companies – e.g., Siemens, SAP, Mercedes-Benz.</li>
+          <li><b>S&P 500 (USA):</b> 500 large U.S. companies – e.g., Apple, Microsoft, Amazon.</li>
+          <li><b>MSCI World (Global):</b> About 1,500 companies from 23 developed countries – ideal for global
+            diversification.</li>
+        </ul>
+
+        <mat-divider></mat-divider>
+
+        <h2>2.3: Bulls & Bears – The psychology of the market</h2>
+        <p>
+          Terms like <b>“bull market”</b> and <b>“bear market”</b> describe the <u>market mood</u> – and are closely
+          tied to investor psychology.
+        </p>
+
+        <h3>Bull Market</h3>
+        <p>
+          A period of rising prices – driven by <b>optimism</b> and confidence.
+          Investors buy expecting prices to keep rising.
+        </p>
+        <p>
+          <u>Symbolism:</u> The bull thrusts its horns upward – symbolizing rising prices.
+        </p>
+
+        <h3>Bear Market</h3>
+        <p>
+          A period of falling prices – driven by <b>pessimism</b> and uncertainty.
+          Investors sell out of fear of further losses.
+        </p>
+        <p>
+          <u>Symbolism:</u> The bear swipes its paws downward – symbolizing falling prices.
+        </p>
+
+        <h3>Why these terms matter</h3>
+        <p>
+          They help you <b>interpret financial news more clearly</b>:
+          When a <u>bear market</u> is mentioned, uncertainty dominates.
+          A <u>bull market</u>, on the other hand, signals optimism and an upward trend.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <p>
+          Now you’ve learned about the <b>“playing field”</b> of stock trading, understand <u>how prices are formed</u>,
+          <u>what an index tells you</u>, and <u>how market sentiment works</u>.
+          In the next module, we’ll look at <b>different types of stocks</b> and take the first steps toward selecting
+          them.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="moduleNo==='3'">
+      <div>
+        <p>
+          After getting familiar with the basic concepts of the stock market and the playing field, it's time to get practical! This module is designed to ease your fears about the <u>"technical stuff"</u> and give you a clear step-by-step guide on how to take your first steps on the stock exchange. <b>Don’t worry, it’s easier than you might think!</b>
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>3.1: The Depot: Your Personal Account for Securities</h2>
+        <p>
+          To buy and hold stocks, you need a special account: the securities account (or simply depot).
+        </p>
+
+        <h3>What is a Depot and Why Do You Need One?</h3>
+        <p>
+          Think of it like this: Your checking account is for your regular money you use daily. <b>Your depot is your personal account for all your securities</b>—that means your stocks, funds, or ETFs. It’s the place where your purchased shares are safely stored digitally. Without a depot, you can’t buy or own stocks. It’s legally required and serves as proof of your ownership of the securities.
+        </p>
+
+        <h3>Difference Compared to a Checking Account</h3>
+        <p>The main difference lies in their function:</p>
+        <ul>
+          <li><b>Checking Account:</b> This holds your cash for transfers, direct debits, or withdrawals. It’s meant for everyday payments.</li>
+          <li><b>Depot:</b> This holds your securities. You can transfer money from your checking account to your settlement account (usually linked directly to the depot) to buy securities. When you sell securities, the money also lands on this settlement account and can then be transferred back to your checking account.</li>
+        </ul>
+        <p><b>A depot is basically like a digital safe for your stock certificates.</b></p>
+
+        <mat-divider></mat-divider>
+
+        <h2>3.2: How to Choose the Right Broker?</h2>
+        <p>
+          To open a depot and access the stock market, you need an online broker. A broker is a financial service provider that connects you to the stock exchange and executes your buy and sell orders. There are many brokers on the market, and choosing the right one can be crucial for beginners.
+        </p>
+        <p>Here are important criteria to consider as a beginner — <b>without giving a specific recommendation</b>, since the "best" broker is always the one that fits your needs best:</p>
+
+        <ul>
+          <li><b>Costs (order fees, depot maintenance):</b> This is a key point. Pay attention to:
+            <ul>
+              <li>Depot maintenance fees: Many online brokers now offer free depot maintenance.</li>
+              <li>Order fees: These are the fees charged per stock purchase or sale. They can be fixed per trade, a percentage of the order volume, or a combination. For beginners with smaller amounts, brokers with low fixed fees are often more advantageous.</li>
+            </ul>
+          </li>
+          <li><b>Offer of ETF savings plans:</b> If you plan to invest small amounts regularly in ETFs (often recommended for beginners), check whether the broker offers a good selection of low-cost or even free ETF savings plans.</li>
+          <li><b>User-friendliness of the platform/app:</b> Especially in the beginning, it’s important that the trading platform is intuitive. Can you navigate easily? Is the buying process clear? Is there a good mobile app?</li>
+          <li><b>Security & Regulation:</b> Make sure the broker is based in a regulated country (e.g., within the EU) and supervised by a government authority (in Germany, for example, BaFin). Your securities are usually protected as special assets in case the broker goes bankrupt, but good regulation offers additional security.</li>
+        </ul>
+        <p><b>Take your time comparing different brokers.</b> Many offer demo accounts so you can test the platform risk-free.</p>
+
+        <mat-divider></mat-divider>
+
+        <h2>3.3: Your First Order: A Step-by-Step Guide</h2>
+        <p>
+          Once you’ve opened a depot with a broker of your choice and transferred money to it, you’re ready for your first order! Here we explain the most important order types and show you an example process.
+        </p>
+
+        <h3>Explanation of Order Types: Market Order vs. Limit Order (very important for beginners!)</h3>
+        <p>This is a crucial point you need to understand before buying or selling:</p>
+
+        <ul>
+          <li><b>Market Order:</b>
+            <ul>
+              <li><b>What it does:</b> You place an order to buy or sell a stock at the next best available price.</li>
+              <li><b>Advantage:</b> The order is executed immediately. You’re sure to get (or sell) the desired stock.</li>
+              <li><b>Disadvantage:</b> You have no control over the exact price. In very volatile phases or with illiquid stocks (rarely traded), the execution price can differ significantly from the last displayed price. Often not recommended for beginners buying stocks! If the market suddenly swings wildly, you might end up paying much more than expected.</li>
+            </ul>
+          </li>
+
+          <li><b>Limit Order:</b>
+            <ul>
+              <li><b>What it does:</b> You place an order to buy or sell a stock only at a maximum (for buying) or minimum price (for selling) you set, or better.</li>
+              <li><b>Advantage:</b> You have full control over the price. You never pay more than your limit or sell for less than your limit.</li>
+              <li><b>Disadvantage:</b> The order may not be executed immediately. If the price doesn’t reach your limit, your order remains open or expires.</li>
+            </ul>
+          </li>
+        </ul>
+        <p><b>Recommendation for beginners:</b> For buying stocks, a limit order is almost always the better choice as it protects you from unexpectedly high prices.</p>
+
+        <h3>Practical Guide: Buying Your First Stock (fictional example)</h3>
+        <p>The exact steps can vary slightly depending on the broker, but the basic process is always similar:</p>
+
+        <ul>
+          <li><b>Log in and check your funds:</b> Log into your depot and make sure there is enough balance on your settlement account.</li>
+          <li><b>Search for the stock:</b>
+            <ul>
+              <li>Go to the "Trade" or "Place Order" section.</li>
+              <li>Enter the company name, the securities identification number (WKN), or the ISIN (International Securities Identification Number) of the stock you want to buy in the search bar. WKN and ISIN are unique identifiers for securities to avoid confusion (e.g., Apple: ISIN US0378331005).</li>
+            </ul>
+          </li>
+          <li><b>Start the purchase order:</b> Click "Buy" or "Place Order".</li>
+          <li><b>Set quantity:</b> Enter how many shares you want to buy.</li>
+          <li><b>Choose order type (very important!):</b>
+            <ul>
+              <li>Be sure to select <b>"Limit Order"</b>.</li>
+              <li>Enter your limit price. This is the maximum price per share you’re willing to pay. Check the current price and set your limit slightly above if you want the order executed soon, or slightly below if you’re patient and want to wait for a better price.</li>
+            </ul>
+          </li>
+          <li><b>Set order validity:</b> You can often choose how long your order stays valid (e.g., "valid for the day" until the end of the trading day, or "valid until date X", or "valid until revoked"). For beginners, "valid for the day" is often a good choice.</li>
+          <li><b>Choose trading venue (optional but good to know):</b> Some brokers let you choose the trading venue (e.g., Xetra, Tradegate, regional exchanges). Xetra is often the preferred choice for European stocks as it has the highest volume and best prices.</li>
+          <li><b>Review & confirm order:</b> Before clicking "Buy" or "Place Order," you’ll see a summary of your order: which stock, how many shares, which limit price, estimated costs. Check everything carefully!</li>
+          <li><b>Confirm:</b> If all looks good, authorize your order with a TAN or another security method. Your order will now be sent to the exchange.</li>
+        </ul>
+
+        <p><b>Congratulations!</b> You’ve placed your first order. Now you wait to see if your limit is reached and the order executed. Your depot will show you as soon as the shares are in your possession.</p>
+
+        <p>
+          You’ve now learned how to open a depot, choose a broker, and place your first order. This is a big step on your way to becoming a successful investor! In the next module, we’ll explore initial strategies and the concept of diversification.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="moduleNo==='4'">
+      <div>
+        <p>
+          Now that you know the basics of the stock market and how to practically get started with trading, let's dive into perhaps the most exciting question: <b>What should I actually buy?</b>
+          This module will help you understand the different types of stocks and introduce you to some initial tools for evaluating companies.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>4.1: Different Types of Stocks</h2>
+        <p>
+          Not all stocks are created equal. Companies and their business models are as diverse as the market itself. Therefore, there are various categories that can help you find the right investments for your goals:
+        </p>
+
+        <ul>
+          <li><b>Value Stocks (Asset Stocks):</b> Imagine you find a house that's worth much more than the price it's currently offered at. Value stocks work similarly. These are shares in fundamentally strong, often established companies that might be trading below their "<u>fair</u>" value on the stock market. They often feature solid business models, stable profits, and a long history. Investors hope the market will eventually recognize the company’s true worth and that the price will rise accordingly.</li>
+
+          <li><b>Growth Stocks:</b> These are stocks of companies where investors expect high future growth. Often they are young, innovative firms that invest heavily in research and development and prefer to reinvest profits rather than pay dividends. Many tech companies fall into this category. The bet here is that the company will expand rapidly and the stock price will soar, even if current profits are low or the company is operating at a loss.</li>
+
+          <li><b>Dividend Stocks:</b> These companies are attractive to investors seeking regular income. Dividend stocks come from firms that distribute a portion of their profits regularly (usually annually) to shareholders. Often these are established companies in sectors with stable cash flows, such as utilities, consumer goods manufacturers, or telecom providers.</li>
+
+          <li><b>Blue Chips vs. Penny Stocks:</b>
+            <ul>
+              <li><b>Blue Chips:</b> These are the "<u>heavyweights</u>" of the market. They represent the largest, most well-known, and financially stable companies in an economy. They are often established for decades, have a high market capitalization, and are generally less volatile than smaller stocks (e.g., Siemens, Apple, Nestlé). They are the "<u>safe havens</u>" among stocks.</li>
+
+              <li><b>Penny Stocks:</b> These are high-risk stocks of very small companies, often traded at extremely low prices per share (a few cents or euros). They are highly volatile and come with a high risk of total loss, as the underlying companies often lack established business models or stable profits. Penny stocks are absolutely not recommended for beginners.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <mat-divider></mat-divider>
+
+        <h2>4.2: Introduction to Fundamental Analysis: Understand the Company</h2>
+        <p>
+          To make an informed decision about which stock to buy, it's helpful to understand the concept of <b>fundamental analysis</b>.
+        </p>
+        <p>
+          The basic idea behind fundamental analysis is simple: it’s about evaluating the economic health and future prospects of a company—not just its current stock price. You look at what the company actually does, how it makes money, and whether it has the potential to remain successful in the future. Imagine you want to buy a business—would you only look at the price, or also at how much profit it makes and what the future outlook is?
+        </p>
+
+        <h3>Key questions you should ask yourself:</h3>
+        <ul>
+          <li><b>What does the company do?</b> Understand the business model. Does it produce cars, software, food, or offer services? Is it in a sector with a promising future?</li>
+          <li><b>How does it make money?</b> Are revenues stable? Does the company have diverse income streams or is it dependent on a few customers or products?</li>
+          <li><b>Does it have a competitive advantage ("moat")?</b> This term, popularized by Warren Buffett, describes something that protects the company from competition. It could be a strong brand (Coca-Cola), a technological edge (patents), high barriers to entry for new competitors, or unique distribution channels. A strong "<u>moat</u>" helps a company stay successful and profitable in the long run.</li>
+        </ul>
+        <p>
+          Fundamental analysis helps you make an informed decision instead of buying stocks "<u>blindly</u>."
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>4.3: The Most Important Metrics for Beginners</h2>
+        <p>
+          Fundamental analysis can get very complex, but to start, a few key metrics are enough to get a feel for a company. Here we focus on two that give you a first indication without overwhelming you:
+        </p>
+
+        <h3>Price-to-Earnings Ratio (P/E Ratio):</h3>
+        <ul>
+          <li><b>Concept:</b> The P/E ratio is one of the most well-known metrics and relates the stock price to the company’s earnings per share. It shows how many years the earnings per share would "<u>take</u>" to cover the current stock price (simplified).</li>
+          <li><b>Formula:</b></li>
+        </ul>
+        <p style="margin-left: 20px;">
+          P/E Ratio = <br />
+          Stock Price <br />
+          Earnings per Share
+        </p>
+        <ul>
+          <li><b>Meaning:</b> A high P/E ratio can mean investors expect significant future growth or that the stock is expensive. A low P/E ratio might indicate an undervalued stock or limited growth prospects. Always compare the P/E with industry averages and the company’s historical values. It’s not the sole buying criterion but a good first indicator.</li>
+        </ul>
+
+        <h3>Dividend Yield:</h3>
+        <ul>
+          <li><b>Concept:</b> The dividend yield shows you what percentage of the current stock price you receive back as dividends. This is especially important for investors looking for regular income from their stocks.</li>
+          <li><b>Formula:</b></li>
+        </ul>
+        <p style="margin-left: 20px;">
+          Dividend Yield = <br />
+          Dividend per Share <br />
+          Stock Price <br />
+          × 100 %
+        </p>
+        <ul>
+          <li><b>Meaning:</b> A high dividend yield can be attractive, but always check whether the company can sustainably pay that dividend. An extremely high yield can also be a warning sign if the stock price has fallen sharply or if the dividend might be cut.</li>
+        </ul>
+
+        <p>
+          These two metrics give you a solid starting point to compare companies and get a feel for their valuation. Remember, metrics are just one part of the puzzle—the understanding of the business model is just as important!
+        </p>
+      </div>
+    </div>
+    <div *ngIf="moduleNo==='5'">
+      <div>
+        <p>
+          Congratulations! You’ve grasped the basics, know where and how trading happens, and are familiar with initial approaches to selecting stocks. But all this knowledge is only half the battle if you don’t master the <b>golden rule of investing</b>: <b>risk management</b>.
+          This module might be the most important one because it shows you how to stay successful in the long run and avoid major losses.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>5.1: The Essentials: The Power of Diversification</h2>
+        <p>
+          Imagine you’ve invested all your money in just one company. What happens if that company runs into trouble or even goes bankrupt? Your entire investment would be at risk! That’s why the most important principle in risk management is: <b>"Don’t put all your eggs in one basket."</b>
+        </p>
+        <p>
+          Diversification simply means spreading your risk. By distributing your capital across different asset types, industries, countries, and companies, you drastically reduce the chance that a single loss will significantly harm your entire portfolio.
+        </p>
+
+        <h3>Why is diversification so powerful?</h3>
+        <ul>
+          <li><b>Reducing individual stock risk:</b> If one of your ten stocks drops sharply, the other nine have a chance to offset or even outperform that loss.</li>
+          <li><b>Mitigating industry risks:</b> A crisis in one sector (e.g., automotive) won’t affect your whole portfolio if you also invest in other sectors (e.g., technology, healthcare).</li>
+          <li><b>Balancing country risks:</b> Economic or political problems in one country have less impact on your portfolio if you’re globally diversified.</li>
+        </ul>
+        <p>
+          Diversification is the cornerstone of a solid and long-term successful investment. It protects you from unpleasant surprises and helps stabilize your wealth growth.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>5.2: ETFs – The Easiest Way to Achieve Broad Diversification</h2>
+        <p>
+          The good news is: You don’t have to painstakingly buy hundreds of individual stocks to diversify broadly. This is where <b>ETFs (Exchange Traded Funds)</b> come into play.
+        </p>
+
+        <h3>What is an ETF?</h3>
+        <p>
+          An ETF is an investment fund traded on the stock exchange that tracks a specific index. Take the MSCI World Index as an example. An ETF on the MSCI World replicates exactly that index. This means it automatically invests in the same roughly 1,500 companies from 23 developed countries included in the index—and in the same proportions.
+        </p>
+        <p>
+          So, with a single ETF share, you buy a tiny piece of hundreds or even thousands of companies worldwide, without having to purchase each stock individually.
+        </p>
+
+        <h3>The advantages of ETFs:</h3>
+        <ul>
+          <li><b>Instant diversification:</b> With one purchase, you’re broadly spread across many companies, industries, and countries.</li>
+          <li><b>Low costs:</b> ETFs are usually very inexpensive because they’re passively managed (they simply track an index instead of having an expensive management team trying to beat the market). This saves you a lot of money over time.</li>
+          <li><b>Transparency:</b> You always know exactly which assets the ETF holds since it just mirrors the index.</li>
+          <li><b>Simplicity:</b> They’re easy to understand and trade, especially for beginners.</li>
+        </ul>
+        <p>
+          For these reasons, ETFs are often the best choice for beginners to enter the stock market and benefit from the long-term growth of global companies without taking on high individual risks.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>5.3: The Cost-Average Effect with Savings Plans</h2>
+        <p>
+          Even if you’re broadly diversified, the question remains: When is the best time to invest? The answer is often: There is no "<b>perfect</b>" time! The market fluctuates constantly, and it’s impossible to always catch the cheapest entry point. This is where the <b>cost-average effect</b> (dollar-cost averaging) combined with savings plans helps.
+        </p>
+
+        <h3>How the cost-average effect works:</h3>
+        <ul>
+          <li>The cost-average effect occurs when you invest a fixed amount regularly (monthly or at another fixed interval), instead of investing everything at once.</li>
+          <li>When prices are low: You buy more shares for your fixed amount because the stock or ETF is cheaper.</li>
+          <li>When prices are high: You buy fewer shares for the same amount because the price is higher.</li>
+        </ul>
+        <p>
+          Over time, your average purchase price smooths out because you automatically buy more when prices are low and less when prices are high. This evens out your entry price.
+        </p>
+
+        <h3>The benefits of savings plans:</h3>
+        <ul>
+          <li><b>Automated, disciplined investing:</b> You don’t have to constantly watch the market or try to time the perfect entry. Your broker executes the purchases automatically.</li>
+          <li><b>Psychological advantages:</b> You avoid the temptation to skip investing out of fear of losses or to jump in greedily at market peaks.</li>
+          <li><b>Long-term wealth building:</b> By investing regularly, you systematically build wealth over the years.</li>
+        </ul>
+        <p>
+          The cost-average effect combined with an ETF savings plan is one of the simplest and most effective strategies for long-term wealth building, especially for beginners.
+        </p>
+
+        <p>
+          You’ve now completed the crucial module on risk management and understand the importance of diversification, the benefits of ETFs, and how savings plans help you invest with discipline. These are the keys to a relaxed and successful investing experience.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="moduleNo==='6'">
+      <div>
+        <p>
+          Congratulations! You have now learned all the important building blocks of investing. In this final module, we bring these elements together into a complete picture and focus on the crucial aspects of your investment strategy and mindset. Because long-term success in the stock market depends not only on knowledge but also on the right attitude.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>6.1: Long-Term Investing vs. Short-Term Trading</h2>
+        <p>
+          Before you get active, it is essential that you make a clear decision: Do you want to invest for the long term or trade short term? These two approaches differ fundamentally:
+        </p>
+
+        <h3>Long-Term Investing (Buy and Hold):</h3>
+        <ul>
+          <li><b>Goal:</b> Building wealth over many years or decades.</li>
+          <li><b>Approach:</b> You buy stocks (or ETFs) of solid companies and hold them over a long period, often regardless of short-term market fluctuations. You benefit from company growth and compound interest.</li>
+          <li><b>Effort:</b> Low. Once invested, only occasional review is needed.</li>
+          <li><b>Recommendation for beginners:</b> This approach is clearly recommended for beginners. It is significantly less risky, requires less time and expertise, and historically has offered the best chances of success for private investors.</li>
+        </ul>
+
+        <h3>Short-Term Trading:</h3>
+        <ul>
+          <li><b>Goal:</b> Quick profits through short-term price movements lasting hours, days, or weeks.</li>
+          <li><b>Approach:</b> You buy and sell very frequently, often based on technical analyses or breaking news.</li>
+          <li><b>Effort:</b> Very high. Requires constant market monitoring, quick decisions, and extensive expertise.</li>
+          <li><b>Risk:</b> Extremely high. The probability that beginners lose money trading is very high.</li>
+        </ul>
+
+        <p>
+          For building your wealth and having a relaxed approach to the stock market, the long-term approach ("Buy and Hold") is the superior choice.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>6.2: The Power of Compound Interest – Your Best Friend</h2>
+        <p>
+          The compound interest effect is often called the "eighth wonder of the world," and rightly so. It is your best friend in long-term wealth building and the main reason why patience pays off in the stock market.
+        </p>
+
+        <h3>How does compound interest work?</h3>
+        <p>
+          It’s simple: You invest money and earn a return (e.g., through price gains or dividends). Instead of withdrawing the return, you reinvest it. This means in the next year, you earn returns not only on your original capital but also on the profits already made. Your money works for itself and the profits it generated before.
+        </p>
+
+        <h3>Example:</h3>
+        <ul>
+          <li>Imagine you invest a one-time amount of €10,000 and earn an average annual return of 7%.</li>
+          <li>After 10 years: Your capital grows to about €19,670.</li>
+          <li>After 20 years: Your capital grows to about €38,697.</li>
+          <li>After 30 years: Your capital grows to about €76,123.</li>
+        </ul>
+        <p>
+          As you can see, the capital grows faster over time because the base on which the return is earned keeps increasing. This exponential growth is the key to long-term success and hopefully motivates you to stay committed and keep reinvesting your gains.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>6.3: Market Psychology: How to Conquer Greed and Fear</h2>
+        <p>
+          The stock market is shaped not only by numbers and facts but also strongly by human emotions. The biggest enemies of your investment success are often not falling prices themselves, but your own emotions: greed and fear.
+        </p>
+
+        <h3>Greed:</h3>
+        <p>
+          When prices rise and everyone talks about the stock market, the feeling of missing out ("Fear of Missing Out" – FOMO) often arises. Greed tempts you to blindly invest in hyped stocks that are already expensive or to take excessively high risks.
+        </p>
+
+        <h3>Fear:</h3>
+        <p>
+          When prices fall and the news is bad, panic can set in. Fear tempts you to sell stocks—often exactly when prices are at their lowest and a recovery is about to begin. This leads to realized losses and missed opportunities.
+        </p>
+
+        <h3>Tips to conquer greed and fear:</h3>
+        <ul>
+          <li><b>Don’t sell in panic (stay calm):</b> Price declines are normal and part of the stock market. If you are broadly diversified and positioned for the long term, stick to your plan. Historically, markets have always recovered after crises.</li>
+          <li><b>Don’t buy blindly in hype:</b> Don’t get swept up by quick profit promises or "hot tips" from others. Every investment decision should be based on sound analysis, not emotions.</li>
+          <li><b>Have a clear plan and follow it:</b> Define your investment strategy, goals, and risk tolerance in advance. Set rules for when to buy and sell (e.g., via a savings plan). A solid plan helps you make rational decisions in emotional moments and avoid impulsive actions.</li>
+          <li><b>Stay informed, but don’t overdo it:</b> Keep up with world events but don’t let daily headlines drive you crazy. Long-term investors focus on big trends, not small fluctuations.</li>
+        </ul>
+
+        <p>
+          Remember: Your mindset is crucial. Patience, discipline, and trust in your long-term plan are your greatest assets in the stock market.
+        </p>
+
+        <p>
+          You have now completed all modules and understood the basics of investing—from the stock itself to the importance of mindset. Now it’s up to you to apply what you’ve learned and shape your own path as an investor.
+        </p>
+      </div>
+    </div>
+    <div *ngIf="moduleNo==='7'">
+      <div>
+        <p>
+          Congratulations! You have now completed the core modules of our guide and have a solid understanding of the stock market. However, before you get started, there are some important framework conditions to consider. This final module provides you with essential knowledge about taxes and summarizes the key insights for your start.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>7.1: Taxes on Capital Gains in Germany – What You Need to Know</h2>
+        <p>
+          Investing in the stock market can lead to profits – and the German government wants its share. But don’t worry, the system is simpler than it often sounds. The most important tax affecting you as an investor is the capital gains tax (Abgeltungsteuer).
+        </p>
+
+        <h3>The Capital Gains Tax: Simply Explained</h3>
+        <p>
+          The capital gains tax is a flat tax on your capital income. It is 25% in Germany. Additionally, there is the solidarity surcharge (5.5% of the capital gains tax) and, if applicable, church tax.
+        </p>
+
+        <h3>What counts as capital gains? These include:</h3>
+        <ul>
+          <li>Price gains: When you sell a stock or ETF for more than you bought it.</li>
+          <li>Dividends: Profit distributions from companies.</li>
+          <li>Interest: Earnings from fixed-interest securities or daily/time deposits.</li>
+        </ul>
+
+        <p>
+          The practical aspect of the capital gains tax is that your German broker usually deducts the tax automatically for you. So you don’t have to worry about declaring the gains in your tax return yourself. The money is deducted directly from your settlement account before being credited to you.
+        </p>
+
+        <h3>The Saver’s Allowance &amp; the Exemption Order</h3>
+        <p>
+          Here’s very good news for you as an investor: Not every gain is immediately taxable! In Germany, there is the so-called saver’s allowance (Sparer-Pauschbetrag).
+        </p>
+
+        <ul>
+          <li><b>Saver’s Allowance:</b> This is an annual tax-free allowance for capital gains. Currently (as of July 2025) it amounts to €1,000 for singles and €2,000 for married couples/registered partners. This means: Capital gains up to this limit remain tax-free.</li>
+          <li><b>Exemption Order:</b> To have your broker pay out your gains tax-free up to the saver’s allowance, you must issue an exemption order (Freistellungsauftrag). This is easy to do online in your broker’s customer area. You tell your broker up to what amount your gains should be exempt from capital gains tax. If you have multiple accounts, you can split the allowance among them. Remember, the total amount across all accounts must not exceed €1,000 (or €2,000). Without an exemption order, the broker deducts taxes directly, and you would have to reclaim any excess paid via your tax return.</li>
+        </ul>
+
+        <p>
+          Tax matters can get more complex, especially with international stocks or other special cases, but for a start, understanding the capital gains tax and saver’s allowance is the most important.
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <h2>7.2: Summary &amp; Your Path to Becoming an Investor</h2>
+        <p>
+          You made it! You now have a foundation of knowledge about the stock market that enables you to make informed decisions and take your financial future into your own hands.
+        </p>
+
+        <h3>Quick recap of the most important golden rules:</h3>
+        <ul>
+          <li><b>Understand what you buy:</b> A stock is a share in a company. Only buy what you understand.</li>
+          <li><b>Diversify:</b> Never put all your eggs in one basket. Spread your risk across many companies, industries, and countries. ETFs are an excellent tool for this.</li>
+          <li><b>Invest long term:</b> The stock market shows its strength over long periods. Ignore short-term fluctuations and let compound interest work for you.</li>
+          <li><b>Use the cost-average effect:</b> Regular investments via a savings plan smooth your entry price and help maintain disciplined investing.</li>
+          <li><b>Control your emotions:</b> Greed and fear are your biggest enemies. Stick to your plan and make rational decisions.</li>
+          <li><b>Watch out for costs:</b> Fees eat into returns. Pay attention to low depot and order fees.</li>
+          <li><b>Use your saver’s allowance:</b> Set up an exemption order with your broker.</li>
+        </ul>
+
+        <h3>Your path to becoming an investor: Start small and keep learning</h3>
+        <p>
+          Nobody becomes a stock market expert overnight. Your journey as an investor is a process of continuous learning and gaining experience.
+        </p>
+
+        <p>
+          Our clear recommendation for your start:<br>
+          Start small and with a simple approach. An ETF savings plan on a broadly diversified index like the MSCI World is ideal for most beginners. You immediately benefit from diversification, low costs, and the cost-average effect.
+        </p>
+
+        <p>
+          Start today: Consider how much you can invest monthly in a savings plan. It doesn’t have to be hundreds of euros; even small amounts make a big difference over time.
+        </p>
+
+        <p>
+          Stay curious: Read books, follow reputable financial news, exchange ideas with others. But always think critically and form your own opinion.
+        </p>
+
+        <p>
+          Be patient: Market cycles take years. Your wealth won’t grow linearly, but sticking with it pays off in the long run.
+        </p>
+
+        <p>
+          We hope this guide has given you the confidence and knowledge to take your first steps in the stock market. The world of investing is exciting and offers huge opportunities when approached with respect, knowledge, and discipline.
+        </p>
+      </div>
     </div>
   </div>
 </div>
