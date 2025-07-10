@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/backend"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/fflags"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/ollama"
+	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/telemetry"
 	"github.com/OliverSchlueter/mauerstrassenloewen/ai-worker/internal/tools"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/middleware"
 	"github.com/OliverSchlueter/mauerstrassenloewen/common/sloki"
+	"github.com/jackc/pgx/v5"
 	"github.com/justinas/alice"
 	"github.com/nats-io/nats.go"
 	"github.com/qdrant/go-client/qdrant"
@@ -29,6 +32,7 @@ const (
 	qdrantHostEnv           = "QDRANT_HOST"
 	qdrantPortEnv           = "QDRANT_PORT"
 	qdrantAPIKeyEnv         = "QDRANT_API_KEY"
+	postgresqlConnEnv 		= "POSTGRESQL_CONN"
 )
 
 func main() {
@@ -65,6 +69,20 @@ func main() {
 		return
 	}
 
+	// Setup PostgreSQL client
+	pgc, err := pgx.Connect(context.Background(), mustGetEnvStr(postgresqlConnEnv))
+	if err != nil {
+		slog.Error("failed to connect to PostgreSQL", sloki.WrapError(err))
+		return
+	}
+	defer pgc.Close(context.Background())
+
+	tm, err := telemetry.NewService(pgc)
+	if err != nil {
+		slog.Error("failed to create telemetry service", sloki.WrapError(err))
+		return
+	}
+
 	// Setup ollama client
 	oc, err := ollama.NewClient(ollama.Configuration{
 		BaseURL:        mustGetEnvStr(ollamaUrlEnv),
@@ -72,6 +90,7 @@ func main() {
 		EmbeddingModel: mustGetEnvStr(ollamaEmbeddingModelEnv),
 		Tools:          tc,
 		QC:             qc,
+		Telemetry:      tm,
 	})
 	if err != nil {
 		sloki.WrapError(err)
