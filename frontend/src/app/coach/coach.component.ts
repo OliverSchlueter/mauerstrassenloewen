@@ -25,6 +25,7 @@ export class CoachComponent implements OnInit {
   messageInput = "";
   chatID = "";
   messages: Message[] = [];
+  loading = false;
 
   constructor(private aiService: AiService, private authService: AuthService) {}
 
@@ -36,11 +37,14 @@ export class CoachComponent implements OnInit {
     const user = this.authService.user?.name
     if(user) {
       console.log("message input", this.messageInput)
+      this.loading = true;
       this.aiService.startChat(this.messageInput).subscribe(messages => {
         this.chatID = messages.id;
         this.messages = messages.messages;
         console.log(messages)
+        this.loading = false
       })
+      this.messageInput = "";
     }
   }
 
@@ -52,10 +56,13 @@ export class CoachComponent implements OnInit {
 
     const user = this.authService.user?.name
     if(user) {
+      this.loading = true;
       this.aiService.sendMessage(this.chatID, this.messageInput).subscribe(messages => {
         this.messages = messages.messages;
         console.log(messages)
+        this.loading = false;
       })
+      this.messageInput = "";
     }
   }
 

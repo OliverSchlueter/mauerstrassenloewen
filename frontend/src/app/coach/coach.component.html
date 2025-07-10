@@ -7,13 +7,15 @@
           <p>{{ message.content }}</p>
         </div>
       </div>
-
+    </div>
+    <div class="thinking" *ngIf="loading">
+      Thinking...
     </div>
     <div class="input-container">
       <textarea class="input" placeholder="Ask something about Trading" [(ngModel)]="messageInput"></textarea>
       <div class="flex-row-end">
         <button mat-icon-button (click)="sendMessage()">>
-          <mat-icon>arrow_forward</mat-icon>
+<!--          <mat-icon>arrow_forward</mat-icon>-->
         </button>
       </div>
     </div>

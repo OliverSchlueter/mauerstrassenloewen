@@ -20,7 +20,7 @@
 
 .messages-container {
   width: 800px;
-  padding-bottom: 10vh; /* Platz schaffen für input */
+  padding-bottom: 10vh;
 }
 
 .message {
@@ -45,6 +45,10 @@ p {
 }
 
 
+.thinking {
+  position: fixed;
+  bottom: 170px;
+}
 
 .input-container {
   position: fixed;

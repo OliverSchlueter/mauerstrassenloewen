@@ -13,14 +13,35 @@
         <mat-label>Email</mat-label>
         <input matInput [(ngModel)]="user.email">
       </mat-form-field>
+
       <mat-form-field class="mat-form-field">
         <mat-label>Password</mat-label>
-        <input matInput [(ngModel)]="user.password">
+        <input matInput [(ngModel)]="user.password" [type]="hidePassword() ? 'password' : 'text'"/>
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="clickPassword($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword()"
+        >
+          <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
         <mat-hint>min. length 14, number and symbol required</mat-hint>
       </mat-form-field>
+
+
       <mat-form-field class="mat-form-field">
         <mat-label>Repeat Password</mat-label>
-        <input matInput [(ngModel)]="repeatPassword">
+        <input matInput [(ngModel)]="repeatPassword" [type]="hideRepeatPassword() ? 'password' : 'text'"/>
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="clickRepeatPassword($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hideRepeatPassword()"
+        >
+          <mat-icon>{{hideRepeatPassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
       </mat-form-field>
     </mat-card-content>
     <mat-card-footer class="flex-container footer">
