@@ -24,7 +24,7 @@ func NewService(config Configuration) *Service {
 }
 
 // NewPromptRequest creates a new prompt request for the chatbot and returns the job.
-func (s *Service) NewPromptRequest(userMsg string, systemMsg natsdto.SystemMessage) (*natsdto.Chat, error) {
+func (s *Service) NewPromptRequest(userMsg string, systemMsg string) (*natsdto.Chat, error) {
 	req := natsdto.StartChatRequest{
 		UserMsg:   userMsg,
 		SystemMsg: systemMsg,

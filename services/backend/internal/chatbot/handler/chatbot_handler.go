@@ -119,9 +119,9 @@ func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	req.UserMsg += "\n\nUser Data:\n"
-	req.UserMsg += fmt.Sprintf("I am %s (%s) and my email is %s.\n", u.Name, u.ID, u.Email)
-	req.UserMsg += fmt.Sprintf("My profile data is: %s\n", string(profileData))
+	req.SystemMsg += "\n\nUser Data:\n"
+	req.SystemMsg += fmt.Sprintf("I am %s (%s) and my email is %s.\n", u.Name, u.ID, u.Email)
+	req.SystemMsg += fmt.Sprintf("My profile data is: %s\n", string(profileData))
 
 	chat, err := h.service.StartChat(req)
 	if err != nil {
@@ -130,7 +130,22 @@ func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	chatData, err := json.Marshal(chat)
+	newChat := natsdto.Chat{
+		ID:       chat.ID,
+		Messages: []natsdto.Message{},
+	}
+
+	for _, m := range chat.Messages {
+		if m.Role == "user" || m.Role == "assistant" {
+			newChat.AppendMsg(m)
+		}
+	}
+
+	//newChat.Messages = newChat.Messages[1:]
+
+	fmt.Sprintf("CHAT: %#v", newChat)
+
+	chatData, err := json.Marshal(newChat)
 	if err != nil {
 		slog.Error("Could not marshal chat response", sloki.WrapError(err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -157,7 +172,22 @@ func (h *Handler) handleGetChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	chatData, err := json.Marshal(chat)
+	newChat := natsdto.Chat{
+		ID:       chat.ID,
+		Messages: []natsdto.Message{},
+	}
+
+	for _, m := range chat.Messages {
+		if m.Role == "user" || m.Role == "assistant" {
+			newChat.AppendMsg(m)
+		}
+	}
+
+	newChat.Messages = newChat.Messages[1:]
+
+	fmt.Sprintf("CHAT: %#v", newChat)
+
+	chatData, err := json.Marshal(newChat)
 	if err != nil {
 		slog.Error("Could not marshal chat response", sloki.WrapError(err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -208,7 +238,22 @@ func (h *Handler) handleSendMessage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	chatData, err := json.Marshal(chat)
+	newChat := natsdto.Chat{
+		ID:       chat.ID,
+		Messages: []natsdto.Message{},
+	}
+
+	for _, m := range chat.Messages {
+		if m.Role == "user" || m.Role == "assistant" {
+			newChat.AppendMsg(m)
+		}
+	}
+
+	newChat.Messages = newChat.Messages[1:]
+
+	fmt.Sprintf("CHAT: %#v", newChat)
+
+	chatData, err := json.Marshal(newChat)
 	if err != nil {
 		slog.Error("Could not marshal chat response", sloki.WrapError(err), sloki.WrapRequest(r))
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)

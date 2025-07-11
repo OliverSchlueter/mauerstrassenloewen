@@ -5,8 +5,8 @@ import "time"
 type SystemMessage string
 
 type StartChatRequest struct {
-	UserMsg   string        `json:"user_msg"`
-	SystemMsg SystemMessage `json:"system_msg"`
+	UserMsg   string `json:"user_msg"`
+	SystemMsg string `json:"system_msg"`
 }
 
 type SendChatMessageRequest struct {

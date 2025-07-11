@@ -1,7 +1,5 @@
 package chatbot
 
-import "github.com/OliverSchlueter/mauerstrassenloewen/common/natsdto"
-
 const (
-	FinancialAdvisor = natsdto.SystemMessage("You are a financial advisor. You will help the user with their financial questions and provide them with the best advice possible.")
+	FinancialAdvisor = "You are a financial advisor. You will help the user with their financial questions and provide them with the best advice possible."
 )
