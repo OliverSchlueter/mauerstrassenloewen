@@ -8,9 +8,9 @@ require (
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/justinas/alice v1.2.0
 	github.com/nats-io/nats.go v1.43.0
-	github.com/ollama/ollama v0.9.5
+	github.com/ollama/ollama v0.9.6
 	github.com/qdrant/go-client v1.14.1
-	github.com/sashabaranov/go-openai v1.40.3
+	github.com/sashabaranov/go-openai v1.40.5
 )
 
 require (
