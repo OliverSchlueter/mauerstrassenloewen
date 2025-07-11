@@ -120,8 +120,8 @@ func (h *Handler) handleStartChat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	req.SystemMsg += "\n\nUser Data:\n"
-	req.SystemMsg += fmt.Sprintf("I am %s (%s) and my email is %s.\n", u.Name, u.ID, u.Email)
-	req.SystemMsg += fmt.Sprintf("My profile data is: %s\n", string(profileData))
+	req.SystemMsg += fmt.Sprintf("The user you are talking to is %s (%s) and the email is %s.\n", u.Name, u.ID, u.Email)
+	req.SystemMsg += fmt.Sprintf("My finanical profile data is: %s\n", string(profileData))
 
 	chat, err := h.service.StartChat(req)
 	if err != nil {
